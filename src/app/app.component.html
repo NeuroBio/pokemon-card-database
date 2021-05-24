@@ -5,12 +5,24 @@
         {{ static.NationalDex[static.Expansions[cardList[card][0].expansionName].cards[cardList[card][0].printNumber-1].dexNumber - 1] }}
         {{ static.Expansions[cardList[card][0].expansionName].cards[cardList[card][0].printNumber-1].printNumber }}/{{ static.Expansions[cardList[card][0].expansionName].numCards }}
         {{ static.Expansions[cardList[card][0].expansionName].cards[cardList[card][0].printNumber-1].rarity }}
+        {{ cardList[card].length }}
         <br>
         <div *ngFor="let instance of cardList[card]">
-            {{ instance.type }} {{ instance.condition }} --
-            Flaws:
+            {{ instance.type }} {{ instance.condition }} <br>
+
+            <span *ngIf="instance.creases">Creases:</span>
             <div *ngFor="let crease of instance.creases">
                 {{ crease.where }} {{ crease.landmark}}: {{ crease.severity }}
+            </div>
+
+            <span *ngIf="instance.scratches">Scratches:</span>
+            <div *ngFor="let scratch of instance.scratches">
+                {{ scratch.where }} {{ scratch.landmark}}: {{ scratch.severity }}
+            </div>
+
+            <span *ngIf="instance.dents">Dents:</span>
+            <div *ngFor="let dent of instance.dents">
+                {{ dent.where }} {{ dent.landmark}}: {{ dent.severity }}
             </div>
         </div>
 </div>

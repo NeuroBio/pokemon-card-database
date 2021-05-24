@@ -28,4 +28,19 @@ export class AppComponent implements OnInit {
     });
     return list;
   }
+
+  // getConditionCount(cards: CardInstance[]) {
+  //   const conditions = {'M': 0,'NM': 0, 'LP': 0, 'MP': 0, 'HP': 0};
+  //   let finalString: string;
+
+  //   cards.forEach(card => {
+  //     conditions[card.condition] != 0;
+  //   });
+
+  //   Object.keys(conditions).forEach(key => {
+  //     if (conditions[key] > 0) {
+
+  //     }
+  //   })
+  // }
 }
