@@ -1,0 +1,29 @@
+export class SetExpansion {
+    cards: Card[];
+    generation: number;
+    release: number;
+    numCards: number;
+
+    constructor(cards: Card[], generation: number, release: number, numCards: number) {
+        this.cards = cards;
+        this.generation = generation;
+        this.release = release;
+        this.numCards = numCards;
+    }
+}
+
+export class Card {
+    cardType: 'energy' | 'special-energy' | 'trainer' | 'pokemon';
+    dexNumber: number;
+    printNumber: number;
+    rarity: string;
+
+    constructor(
+        type: 'energy' | 'special-energy' | 'trainer' | 'pokemon',
+        dex: number, print: number, rarity: string) {
+            this.cardType = type;
+            this.dexNumber = dex;
+            this.printNumber = print;
+            this.rarity = rarity;
+    }
+}
