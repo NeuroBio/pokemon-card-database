@@ -10,15 +10,22 @@ import { CardInstance } from './_objects/card-instance';
 export class AppComponent implements OnInit {
 
   static = new StaticData();
-  sets: string[];
-  cardList: CardInstance[];
+  cardTypes: string[];
+  cardList: {};
 
   ngOnInit() {
-    this.sets = Object.keys(this.static.Expansions);
-    this.buildCardList(this.static.Cards)
+    this.cardList = this.buildCardList(this.static.Cards)
+    this.cardTypes = Object.keys(this.cardList);
   }
 
   buildCardList(cards: CardInstance[]) {
-
+    const list = {};
+    cards.forEach(card => {
+      if (!list[`${card.expansionName}-${card.printNumber}`]) {
+        list[`${card.expansionName}-${card.printNumber}`] = []
+      }
+      list[`${card.expansionName}-${card.printNumber}`].push(card);
+    });
+    return list;
   }
 }

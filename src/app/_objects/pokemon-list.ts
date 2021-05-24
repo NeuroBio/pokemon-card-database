@@ -8,7 +8,8 @@ export class StaticData {
         ], 1, 1, 102)
     };
     Cards = [
-        new CardInstance(1, 'Base Set', 'Unlimited', 'LP', 'test', [new Flaw('top-center', 'edge', 'mild')],)
+        new CardInstance(1, 'Base Set', 'Shadowless', 'LP', [new Flaw('top-center', 'edge', 'mild')]),
+        new CardInstance(1, 'Base Set', 'Unlimited', 'M')
     ];
     NationalDex = [
     'Bulbasaur',

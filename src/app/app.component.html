@@ -1,12 +1,16 @@
-<div *ngFor="let card of static.Cards">
-        {{ card.expansionName }}
-        {{ static.Expansions[card.expansionName].cards[card.printNumber-1].dexNumber }}
-        {{ static.NationalDex[static.Expansions[card.expansionName].cards[card.printNumber-1].dexNumber - 1] }}
-        {{ static.Expansions[card.expansionName].cards[card.printNumber-1].printNumber }}/{{ static.Expansions[card.expansionName].numCards }}
-        {{ static.Expansions[card.expansionName].cards[card.printNumber-1].rarity }}
+<div *ngFor="let card of cardTypes">
+        {{ cardList[card][0].expansionName }}
+        <!-- {{ card.uid }} -->
+        {{ static.Expansions[cardList[card][0].expansionName].cards[cardList[card][0].printNumber-1].dexNumber }}
+        {{ static.NationalDex[static.Expansions[cardList[card][0].expansionName].cards[cardList[card][0].printNumber-1].dexNumber - 1] }}
+        {{ static.Expansions[cardList[card][0].expansionName].cards[cardList[card][0].printNumber-1].printNumber }}/{{ static.Expansions[cardList[card][0].expansionName].numCards }}
+        {{ static.Expansions[cardList[card][0].expansionName].cards[cardList[card][0].printNumber-1].rarity }}
         <br>
-        Flaws:
-        <div *ngFor="let crease of card.creases">
-            {{ crease.where }} {{ crease.landmark}}: {{ crease.severity }}
+        <div *ngFor="let instance of cardList[card]">
+            {{ instance.type }} {{ instance.condition }} --
+            Flaws:
+            <div *ngFor="let crease of instance.creases">
+                {{ crease.where }} {{ crease.landmark}}: {{ crease.severity }}
+            </div>
         </div>
 </div>

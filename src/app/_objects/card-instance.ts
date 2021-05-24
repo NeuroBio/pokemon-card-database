@@ -1,3 +1,5 @@
+import * as uuid from 'uuid';
+
 export class CardInstance {
     printNumber: number;
     condition: 'M' | 'NM' | 'LP' | 'MP' | 'HP';
@@ -13,7 +15,7 @@ export class CardInstance {
 
     constructor(
         num: number, expansion: string, type: string, condition: 'M' | 'NM' | 'LP' | 'MP' | 'HP',
-        uid: string, creases?: Flaw[], scratches?: Flaw[], dents?: Flaw[], whitening?: Flaw[]) {
+        creases?: Flaw[], scratches?: Flaw[], dents?: Flaw[], whitening?: Flaw[]) {
             this.printNumber = num;
             this.expansionName = expansion;
             this.type = type;
@@ -22,7 +24,7 @@ export class CardInstance {
             this.scratches = scratches;
             this.dents = dents;
             this.whitening = whitening;
-            this.uid = uid;
+            this.uid = uuid.v4();
     }
 }
 
