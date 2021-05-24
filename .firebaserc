@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "carddatabase-6dfef": {
+      "hosting": {
+        "CardDatabase": [
+          "carddatabase-6dfef"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "cards": "carddatabase-6dfef"
+  }
+}
