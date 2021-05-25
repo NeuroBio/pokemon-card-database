@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { StaticData } from './_objects/pokemon-list';
 import { CardInstance } from './_objects/card-instance';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AddCardComponent } from './add-card/add-card/add-card.component';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +14,10 @@ export class AppComponent implements OnInit {
   static = new StaticData();
   cardTypes: string[];
   cardList: {};
+
+  constructor(private dialog: MatDialog) {
+
+  }
 
   ngOnInit() {
     this.cardList = this.buildCardList(this.static.Cards)
@@ -43,4 +49,10 @@ export class AppComponent implements OnInit {
   //     }
   //   })
   // }
+
+  addCard() {
+    this.dialog.open(AddCardComponent, {
+      width: '80vw'
+    });
+  }
 }

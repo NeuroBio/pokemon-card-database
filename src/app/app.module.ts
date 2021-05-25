@@ -9,6 +9,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from 'src/environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddCardModule } from './add-card/add-card.module';
+import { DisplayListsModule } from './display-lists/display-lists.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,7 @@ import { AddCardModule } from './add-card/add-card.module';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AddCardModule,
-    // NgxUidModule.forRoot(),
+    DisplayListsModule,
 
     AppRoutingModule,
     BrowserAnimationsModule
