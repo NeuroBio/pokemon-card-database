@@ -1,0 +1,54 @@
+table {
+    max-width: 800px;
+    width: 100%;
+}
+
+.mat-header-cell {
+    height: 100%;
+    padding-left: .1em;
+}
+
+.mat-cell {
+    height: 100%;
+    padding-left: .1em;
+}
+
+.mat-column-DropDown {
+    width: 50px;
+}
+
+.mat-column-Dex {
+    width: 50px;
+}
+
+.mat-column-Gen {
+    text-align: center;
+    justify-content: center !important;
+    width: 50px;
+}
+
+.mat-column-Release {
+    text-align: center;
+    justify-content: center !important;
+    width: 50px;
+}
+
+.mat-column-Print {
+    text-align: center;
+    justify-content: center !important;
+    width: 75px;
+}
+
+.drop-button {
+    display: flex;
+    height: 20pt !important;
+    width: 20pt !important;
+    margin: .2em;
+    justify-content: center;
+    align-items: center;
+
+    .mat-icon {
+        margin-top: 2px;
+        font-size: 14pt;
+    }
+}

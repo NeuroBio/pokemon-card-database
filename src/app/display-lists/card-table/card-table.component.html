@@ -1,1 +1,58 @@
 <p>card-table works!</p>
+<table mat-table [dataSource]="cards">
+
+    <!-- DropDown -->
+    <ng-container [matColumnDef]="displayColumns[0]">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let card">
+            <button mat-icon-button color="prime" class="drop-button">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <!-- Dex -->
+    <ng-container [matColumnDef]="displayColumns[1]">
+        <th mat-header-cell *matHeaderCellDef> {{ displayColumns[1] }}</th>
+        <td mat-cell *matCellDef="let card"> {{ card.dexNumber }} </td>
+    </ng-container>
+
+    <!-- Name -->
+    <ng-container [matColumnDef]="displayColumns[2]">
+        <th mat-header-cell *matHeaderCellDef> {{ displayColumns[2] }}</th>
+        <td mat-cell *matCellDef="let card"> {{ card.cardTitle }} </td>
+    </ng-container>
+
+    <!-- Expansion -->
+    <ng-container [matColumnDef]="displayColumns[3]">
+        <th mat-header-cell *matHeaderCellDef> {{ displayColumns[3] }}</th>
+        <td mat-cell *matCellDef="let card"> {{ card.expansionName }} </td>
+    </ng-container>
+
+    <!-- Generation -->
+    <ng-container [matColumnDef]="displayColumns[4]">
+        <th mat-header-cell *matHeaderCellDef> {{ displayColumns[4] }}</th>
+        <td mat-cell *matCellDef="let card"> {{ card.generation }} </td>
+    </ng-container>
+
+    <!-- Relase -->
+    <ng-container [matColumnDef]="displayColumns[5]">
+        <th mat-header-cell *matHeaderCellDef> {{ displayColumns[5] }}</th>
+        <td mat-cell *matCellDef="let card"> {{ card.release }} </td>
+    </ng-container>
+
+    <!-- Print -->
+    <ng-container [matColumnDef]="displayColumns[6]">
+        <th mat-header-cell *matHeaderCellDef> {{ displayColumns[6] }}</th>
+        <td mat-cell *matCellDef="let card"> {{ card.printNumber }}/{{ card.numCards }} </td>
+    </ng-container>
+
+    <!-- Copies -->
+    <ng-container [matColumnDef]="displayColumns[7]">
+        <th mat-header-cell *matHeaderCellDef> {{ displayColumns[7] }}</th>
+        <td mat-cell *matCellDef="let card"> {{ card.conditionCount() }} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+</table>
