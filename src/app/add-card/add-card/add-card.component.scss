@@ -1,0 +1,63 @@
+@import '../../Variables.scss';
+
+form {
+    position: relative;
+    max-width: 650px;
+    background-color: $palette2;
+    padding: 1em;
+}
+
+.push {
+    margin-right: 10px;
+}
+
+#print-input {
+    width: 60px;
+}
+
+#condition-input {
+    width: 100px;
+}
+
+h2 {
+    width: calc(100% - 1em);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: $palette3;
+    padding: .5em;
+    margin: 0px;
+    
+}
+
+h3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: $palette3;
+    padding: .5em;
+}
+
+#card-info-section {
+    background-color: $palette5;
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+}
+
+#card-info-inputs {
+    margin-left: 1em;
+}
+
+#flaw-section {
+    background-color: $palette5;
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    padding-bottom: 1em !important;
+}
+
+.sub-card {
+    margin: 0em 1em 1em 1em;
+    background-color: $palette6;
+}

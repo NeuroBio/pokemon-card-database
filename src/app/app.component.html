@@ -8,7 +8,7 @@
         {{ cardList[card].length }}
         <br>
         <div *ngFor="let instance of cardList[card]">
-            {{ instance.type }} {{ instance.condition }} <br>
+            {{ instance.form }} {{ instance.condition }} <br>
 
             <span *ngIf="instance.creases">Creases:</span>
             <div *ngFor="let crease of instance.creases">

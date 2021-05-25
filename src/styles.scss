@@ -1,4 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
+@import './app/Variables.scss';
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.tab {
+    margin-left: 1.5em;
+}
+
+.add-margin {
+    margin-left: 1em;
+}
+
+.tight-card {
+    padding: 0px !important;
+}
+
+.breathing-room {
+    padding: 0em 1em;
+}
+
+.mat-prime {
+    background-color: $palette1;
+    color: $palette6;
+}

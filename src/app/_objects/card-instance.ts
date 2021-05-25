@@ -4,35 +4,29 @@ export class CardInstance {
     printNumber: number;
     condition: 'M' | 'NM' | 'LP' | 'MP' | 'HP';
     expansionName: string;
-    type: string;
+    form: string;
     uid: string;
     front?: string;
     back?: string;
-    creases?: Flaw[];
-    scratches?: Flaw[];
-    dents?: Flaw[];
-    whitening?: Flaw[];
+    flaws?: Flaw[]
 
     constructor(
-        num: number, expansion: string, type: string, condition: 'M' | 'NM' | 'LP' | 'MP' | 'HP',
-        creases?: Flaw[], scratches?: Flaw[], dents?: Flaw[], whitening?: Flaw[]) {
+        num: number, expansion: string, form: string,
+        condition: 'M' | 'NM' | 'LP' | 'MP' | 'HP', flaws?: Flaw[]) {
             this.printNumber = num;
             this.expansionName = expansion;
-            this.type = type;
+            this.form = form;
             this.condition = condition;
-            this.creases = creases;
-            this.scratches = scratches;
-            this.dents = dents;
-            this.whitening = whitening;
+            this.flaws = flaws;
             this.uid = uuid.v4();
     }
 }
 
 export class Flaw {
-    where: 'top-center' | 'top-right' | 'right-center' | 'bottom-right'
-        | 'bottom-center' | 'bottom-left' | 'left-center' | 'top-left'
-    landmark: 'edge' | 'corner' | 'illustration' | 'holo' | 'text-box'
-    severity: 'mild' | 'moderate' | 'severe'
+    type: string;
+    where: string;
+    landmark: string;
+    severity: string;
 
     constructor(
         where: 'top-center' | 'top-right' | 'right-center' | 'bottom-right'
@@ -43,4 +37,14 @@ export class Flaw {
         this.landmark = landmark;
         this.severity = severity;
     }
+}
+
+export class FlawInfo {
+    types = ['crease', 'dent', 'scratch', 'whitening', 'burn', 'surface damage'];
+    wheres = [
+        'top-center', 'top-right', 'right-center', 'bottom-right',
+        'bottom-center', 'bottom-left', 'left-center', 'top-left'
+    ];
+    landmarks = ['edge', 'corner', 'illustration', 'holo', 'text-box'];
+    severities = ['negligible', 'mild', 'moderate', 'severe'];
 }

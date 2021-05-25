@@ -1,4 +1,158 @@
-<p>add-card works!</p>
 <form [formGroup]="cardForm">
-    <input matInput type="number" min="0">
+
+    <mat-card class="tight-card" id="card-info-section">
+
+        <!-- Header -->
+        <h2>
+            Card Info
+        </h2>
+        <br>
+    
+        <div class="add-margin">
+            <!-- Pick Card -->
+            <div>
+                <!-- Expansion -->
+                <mat-form-field class="push">
+                    <mat-label>Expansion</mat-label>
+                    <mat-select formControlName="expansionName">
+                        <mat-option *ngFor="let expansion of expansions"
+                        [value]="expansion">
+                            {{ expansion }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+        
+                <!-- Print Number -->
+                <mat-form-field id="print-input">
+                    <mat-label>Print</mat-label>
+                    <input matInput formControlName="printNumber" type="number" min="1">
+                </mat-form-field>
+        
+            </div>
+        
+            <!-- Active Card info -->
+            <mat-card *ngIf="activeCard" class="sub-card">
+                <b>Card:</b> {{ activeCard.cardTitle }}
+                <span *ngIf="activeCard.dexNumber">({{ activeCard.dexNumber }})</span>
+                -- {{ activeCard.rarity }}
+                <br>
+                <b>Card Type:</b> {{ activeCard.cardType | titlecase }}
+                <br>
+            </mat-card>
+
+            <!-- Activae card nonexistent -->
+            <mat-card *ngIf="NAcard" class="sub-card">
+                The card does not exist in the database.
+            </mat-card>
+        
+            <!-- Card Specifics -->
+            <div>
+                <!-- Card Form -->
+                <mat-form-field class="push">
+                    <mat-label>Form</mat-label>
+                    <input matInput formControlName="form" type="text"
+                    [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option *ngFor="let form of expectedForms" [value]="form">
+                            {{ form }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+        
+                <mat-form-field id="condition-input">
+                    <mat-label>Condition</mat-label>
+                    <mat-select formControlName="condition">
+                        <mat-option *ngFor="let condition of conditions" [value]="condition">
+                            {{ condition }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-card>
+
+    <br>
+    
+
+    <!-- Flaws -->
+    <mat-card formArrayName="flaws" class="tight-card" id="flaw-section">
+        <!-- header /w add button -->
+        <h2>
+            Flaws
+            <button mat-raised-button color="prime"
+            (click)="addFlaw()">
+            <mat-icon>add</mat-icon>
+                Add Flaw
+            </button>
+        </h2>
+        <br *ngIf="flaws.controls[0]">
+
+        <!-- Flaw form -->
+        <mat-card *ngFor="let flaw of flaws.controls, let i=index"
+        [formGroupName]="i" class="tight-card tab sub-card">
+
+
+            <h3>
+                Flaw {{ i + 1 }}
+
+                <button mat-raised-button color="warn"
+                (click)="removeFlaw(i)">
+                    <mat-icon>clear</mat-icon>
+                </button>
+            </h3>
+    
+            <div class="breathing-room">
+                <div>
+                    <!-- severity -->
+                    <mat-form-field class="push">
+                        <mat-label>Severity</mat-label>
+                        <mat-select formControlName="severity">
+                            <mat-option *ngFor="let severity of flawInfo.severities" [value]="severity">
+                                {{ severity }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+    
+                    <!-- Type -->
+                    <mat-form-field>
+                        <mat-label>Type</mat-label>
+                        <mat-select formControlName="type">
+                            <mat-option *ngFor="let type of flawInfo.types" [value]="type">
+                                {{ type }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+    
+                </div>
+                <br>
+                
+                <div id="flaw-location">
+                    <!-- Where -->
+                    <mat-form-field class="push">
+                        <mat-label>Location</mat-label>
+                        <mat-select formControlName="where">
+                            <mat-option *ngFor="let where of flawInfo.wheres" [value]="where">
+                                {{ where }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+    
+                    <!-- Landmark -->
+                    <mat-form-field>
+                        <mat-label>Landmark</mat-label>
+                        <mat-select formControlName="landmark">
+                            <mat-option *ngFor="let landmark of flawInfo.landmarks" [value]="landmark">
+                                {{ landmark }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-card>
+    
+    </mat-card>
+
+
+
+
 </form>

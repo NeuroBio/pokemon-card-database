@@ -4,7 +4,7 @@ import { CardInstance, Flaw } from './card-instance';
 export class StaticData {
     Expansions = {
         'Base Set': new SetExpansion([
-            new Card('pokemon', 65, 1, 'rare-holo')
+            new Card('Alakazam', 'pokemon', 65, 1, 'rare-holo')
         ], 1, 1, 102)
     };
     Cards = [
