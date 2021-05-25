@@ -54,10 +54,25 @@ h3 {
     display: flex;
     flex-flow: column;
     align-items: flex-start;
+}
+
+.open {
     padding-bottom: 1em !important;
 }
 
 .sub-card {
     margin: 0em 1em 1em 1em;
     background-color: $palette6;
+}
+
+.delete-flaw {
+    font-size: 12pt !important;
+    line-height: 1.5em !important;
+}
+
+.button-box {
+    display: flex;
+    flex-flow: row-reverse;
+    justify-content: space-between;
+    padding: 1em;
 }

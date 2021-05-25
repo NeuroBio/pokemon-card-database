@@ -75,7 +75,8 @@
     
 
     <!-- Flaws -->
-    <mat-card formArrayName="flaws" class="tight-card" id="flaw-section">
+    <mat-card formArrayName="flaws" class="tight-card" id="flaw-section"
+    [ngClass]="flaws.controls[0] ? 'open' : ''">
         <!-- header /w add button -->
         <h2>
             Flaws
@@ -96,6 +97,7 @@
                 Flaw {{ i + 1 }}
 
                 <button mat-raised-button color="warn"
+                class="delete-flaw" aria-label="{'Delete-Flaw-' + i}"
                 (click)="removeFlaw(i)">
                     <mat-icon>clear</mat-icon>
                 </button>
@@ -154,5 +156,14 @@
 
 
 
+    <div class="button-box">
+        <!-- Submit Card Form -->
+        <button mat-raised-button color="prime"
+        [disabled]="!cardForm.valid"
+        (click)="submit()">
+            <mat-icon>cloud_upload</mat-icon>
+            Add Card to Database
+        </button>
+    </div>
 
 </form>

@@ -118,4 +118,8 @@ export class AddCardComponent implements OnInit, OnDestroy {
     }
   }
 
+  submit() {
+    
+  }
+
 }
