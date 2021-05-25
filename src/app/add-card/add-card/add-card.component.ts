@@ -1,9 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { FlawInfo } from 'src/app/_objects/card-instance';
 import { Card } from 'src/app/_objects/expansion';
 import { StaticData } from 'src/app/_objects/pokemon-list';
+import { AddCardService } from 'src/app/_services/add-card.service';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'app-add-card',
@@ -28,7 +31,11 @@ export class AddCardComponent implements OnInit, OnDestroy {
   printSubscription: Subscription;
 
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private cardserv: AddCardService,
+    @Optional() public dialogRef: MatDialogRef<AddCardComponent>
+    ) { }
 
   ngOnInit(): void {
     this.flaws = this.createFlawArray();
@@ -119,7 +126,15 @@ export class AddCardComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-    
+    const newCard = this.cardForm.value;
+    newCard.uid = uuid.v4();
+    return this.cardserv.uploadCard(newCard)
+      .then(() => {
+        console.log('Successful upload.')
+        this.dialogRef.close();
+      }).catch(err => {
+        console.log('Card was not uploaded successfully.');
+      });
   }
 
 }
