@@ -8,15 +8,17 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 // import { NgxUidModule } from 'ngx-uid';
 import { environment } from 'src/environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AddCardModule } from './add-card/add-card.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    AddCardModule,
     // NgxUidModule.forRoot(),
 
     AppRoutingModule,
