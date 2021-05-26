@@ -1,0 +1,32 @@
+<header>
+    <h1>
+        My Pok&eacute;mon Card Collection
+    </h1>
+
+
+    <!-- Main sight actions -->
+    <div id="main-site-actions">
+        <div>
+            <button mat-raised-button color="second" class="main-actions"
+            (click)="addCard()">
+                Add Card
+            </button>
+            <button mat-raised-button color="second" class="main-actions">
+                Add Expansion
+            </button>
+            <button mat-raised-button color="second" class="main-actions">
+                Edit Expansion
+            </button>
+            <button mat-raised-button color="second" class="main-actions">
+                Create List
+            </button>
+            <button mat-raised-button color="second" class="main-actions">
+                Edit List
+            </button>
+        </div>
+
+        <button mat-raised-button color="second" class="main-actions">
+            {{ true ? 'Log in' : 'Log Out' }}
+        </button>
+    </div>
+</header>

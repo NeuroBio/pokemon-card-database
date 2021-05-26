@@ -29,3 +29,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background-color: $palette1;
     color: $palette6;
 }
+
+.mat-second {
+    background-color: $palette2;
+    color: black;
+}
+
+.mat-dialog-container {
+    padding: 0px !important;
+  }

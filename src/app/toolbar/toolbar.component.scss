@@ -1,0 +1,19 @@
+@import '../Variables.scss';
+
+header {
+    max-width: $max-width;
+    background-color: $palette7;
+}
+
+h1 {
+    padding: 1em 0em 0em 1em;
+}
+
+#main-site-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.main-actions {
+    margin: 0em .5em .5em .5em;
+}

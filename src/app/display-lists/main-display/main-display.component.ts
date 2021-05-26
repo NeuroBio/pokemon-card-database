@@ -1,12 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { AddCardComponent } from 'src/app/add-card/add-card/add-card.component';
 import { CardChunk } from 'src/app/_objects/card-chunk';
-import { CardInstance, CardStorage } from 'src/app/_objects/card-instance';
-import { CardService } from 'src/app/_services/card.service';
-import { tap } from 'rxjs/operators';
+import { CardStorage } from 'src/app/_objects/card-instance';
 import { CollectionService } from 'src/app/_services/collection.service';
 
 @Component({
@@ -26,8 +22,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private collectionserv: CollectionService,
-    private dialog: MatDialog
+    private collectionserv: CollectionService
     ) { }
 
   ngOnInit(): void {
@@ -39,12 +34,6 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.listSubscription.unsubscribe();
-  }
-
-  addCard() {
-    this.dialog.open(AddCardComponent, {
-      width: '80vw'
-    });
   }
 
 }
