@@ -1,3 +1,5 @@
+@import '../../Variables.scss';
+
 table {
     max-width: 800px;
     width: 100%;
@@ -6,6 +8,7 @@ table {
 .mat-header-cell {
     height: 100%;
     padding-left: .1em;
+    font-size: 12pt;
 }
 
 .mat-cell {
@@ -46,6 +49,18 @@ table {
     margin: .2em;
     justify-content: center;
     align-items: center;
+}
+
+.header-row {
+    background-color: $palette3;
+}
+
+.main-rows {
+    background-color: $palette2;
+}
+
+.drop-down {
+    background-color: $palette6;
 }
 
 .origin {
