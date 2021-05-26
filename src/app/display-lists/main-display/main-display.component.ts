@@ -32,15 +32,6 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.masterList = this.collectionserv.getMaster()
-    // .pipe(tap(data => {
-    //   console.log('returned')
-    //   console.log(data)
-    // }))
-      // .subscribe(cards => {
-      //   // this.allCards = cards;
-
-      // });
-
     this.whichList = this.fb.control('Master List');
     this.listSubscription = this.whichList.valueChanges
       .subscribe(list => console.log('swap'));

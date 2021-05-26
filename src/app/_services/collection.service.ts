@@ -31,7 +31,7 @@ export class CollectionService {
 
   getCards(): Observable<CardStorage[]> {
     return this.af.collection<CardStorage>('pokemon-cards').valueChanges()
-      .pipe(tap(cards => {this.allCards.next(cards);console.log(cards)}));
+      .pipe(tap(cards => this.allCards.next(cards)));
   }
 
   getExpansions(): Observable<SetExpansion[]> {
@@ -40,8 +40,7 @@ export class CollectionService {
   }
 
   getMaster(): CardChunk[] {
-    console.log('fetching')
-    return []// this.convertToCardChunks(this.allCards.value);
+    return [] // this.convertToCardChunks(this.allCards.value);
   }
 
   convertToCardChunks(cards: CardStorage[]): CardChunk[] {

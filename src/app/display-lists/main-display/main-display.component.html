@@ -2,6 +2,7 @@
 <div id="title-select">
     <h1>{{ whichList.value }}</h1>
     
+    <!-- Select -->
     <mat-form-field appearance="fill" id="list-picker" color="prime">
         <mat-label>Show...</mat-label>
         <mat-select [formControl]="whichList">
@@ -10,6 +11,7 @@
             </mat-option>
         </mat-select>
     </mat-form-field>
+
 </div>
 
 <app-card-table
