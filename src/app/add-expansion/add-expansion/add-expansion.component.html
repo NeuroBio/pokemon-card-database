@@ -1,0 +1,43 @@
+<form [formGroup]="expansionForm">
+
+    <mat-card class="tight-card">
+        <!-- header -->
+        <h2>Expansion Info</h2><br>
+
+        <div id="main-input-section">
+            <!-- Generation -->
+            <mat-form-field>
+                <mat-label>Generation</mat-label>
+                <input matInput type="number" formControlName="generation">
+            </mat-form-field>
+
+            <!-- Release -->
+            <mat-form-field>
+                <mat-label>Release</mat-label>
+                <input matInput type="number" formControlName="release">
+            </mat-form-field>
+            
+            <!-- NumCards -->
+            <mat-form-field>
+                <mat-label>Number of Cards</mat-label>
+                <input matInput type="number" formControlName="numCards">
+            </mat-form-field>
+
+            <!-- Cards -->
+            <p>
+                <button mat-raised-button color="primary"
+                        (click)="fileInput.click()">
+                    <mat-icon>cloud_upload</mat-icon> Upload Card .csv File
+                </button>
+                
+                <!-- Actual uploader -->
+                <input #fileInput type="file" (change)="onFileInput($event)"
+                        style="display:none;" id="file">
+                <br>
+
+                <b>Expected Form:</b> Name, Type, Rarity (print number is inferred by order).
+            </p>
+        </div>
+
+    </mat-card>
+</form>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddCardComponent } from '../add-card/add-card/add-card.component';
+import { AddExpansionComponent } from '../add-expansion/add-expansion/add-expansion.component';
 
 @Component({
   selector: 'app-toolbar',
@@ -16,6 +17,13 @@ export class ToolbarComponent implements OnInit {
 
   addCard() {
     this.dialog.open(AddCardComponent, {
+      width: '80vw',
+      maxWidth: '650px'
+    });
+  }
+
+  addExpansion() {
+    this.dialog.open(AddExpansionComponent, {
       width: '80vw',
       maxWidth: '650px'
     });

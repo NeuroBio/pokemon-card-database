@@ -1,0 +1,29 @@
+@import '../../Variables.scss';
+
+form {
+    position: relative;
+    max-width: 650px;
+    background-color: $palette2;
+    padding: 1em;
+}
+
+h2 {
+    width: calc(100% - 1em);
+    background: $palette3;
+    padding: .5em;
+    margin: 0px;
+}
+
+mat-card {
+    background-color: $palette5;
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+}
+
+#main-input-section {
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    margin-left: 1em;
+}

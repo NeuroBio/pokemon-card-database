@@ -12,6 +12,8 @@ import { CollectionService } from './_services/collection.service';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { AddCardModule } from './add-card/add-card.module';
+import { AddExpansionModule } from './add-expansion/add-expansion.module';
 
 export function CollectionFactory(provider: CollectionService) {
   return () => provider.load();
@@ -26,6 +28,8 @@ export function CollectionFactory(provider: CollectionService) {
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     DisplayListsModule,
+    AddCardModule,
+    AddExpansionModule,
 
     MatButtonModule,
     MatDialogModule,
