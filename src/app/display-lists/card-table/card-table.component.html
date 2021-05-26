@@ -1,12 +1,14 @@
-<p>card-table works!</p>
-<table mat-table [dataSource]="cards">
+<table mat-table [dataSource]="cards" multiTemplateDataRows>
 
     <!-- DropDown -->
     <ng-container [matColumnDef]="displayColumns[0]">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let card">
-            <button mat-icon-button color="prime" class="drop-button">
-                <mat-icon>chevron_right</mat-icon>
+            <button mat-icon-button color="prime" class="drop-button"
+            (click)="expanded = card === expanded ? undefined : card">
+                <mat-icon [ngClass]="card === expanded ? 'rotate' : 'origin'">
+                    chevron_right
+                </mat-icon>
             </button>
         </td>
     </ng-container>
@@ -53,6 +55,33 @@
         <td mat-cell *matCellDef="let card"> {{ card.conditionCount() }} </td>
     </ng-container>
 
+    <!-- Individual Cards -->
+    <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let card" [attr.colspan]="displayColumns.length">
+            <div [@detailExpand]="check(card)">
+                <div *ngFor="let instance of card.owned">
+                    <!-- images of the card -->
+                    <div class="image-holder">
+                        <div *ngIf="instance.front">
+                            <img src="instance.front">
+                        </div>
+                        <div *ngIf="instance.back">
+                            <img src="instance.back">
+                        </div>    
+                    </div>
+
+                    <!-- Card state -->
+                    {{ instance.form }} {{ instance.condition }}
+                    <div class="tab" *ngFor="let flaw of instance.flaws">
+                        - {{ flaw.severity }} {{ flaw.type }} {{ flaw.where }}  {{ flaw.landmark }}
+                    </div>
+                </div>
+            </div>
+        </td>
+    </ng-container>
+
     <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+
+    <tr mat-row *matRowDef="let card; columns: ['expandedDetail']"></tr>
 </table>

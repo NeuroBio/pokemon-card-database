@@ -46,9 +46,21 @@ table {
     margin: .2em;
     justify-content: center;
     align-items: center;
+}
 
-    .mat-icon {
-        margin-top: 2px;
-        font-size: 14pt;
-    }
+.origin {
+    margin-top: 2px;
+    font-size: 14pt;
+    transition: all .2s ease-out !important;
+}
+
+.rotate {
+    margin-top: 2px;
+    font-size: 14pt;
+    transform: rotate(90deg);
+    transition: all .2s ease-out !important;
+}
+
+.image-holder {
+    display: flex;
 }

@@ -1,6 +1,5 @@
-<div *ngFor="let card of cardTypes">
+<!-- <div *ngFor="let card of cardTypes">
         {{ cardList[card][0].expansionName }}
-        <!-- {{ card.uid }} -->
         {{ static.Expansions[cardList[card][0].expansionName].cards[cardList[card][0].printNumber-1].dexNumber }}
         {{ static.NationalDex[static.Expansions[cardList[card][0].expansionName].cards[cardList[card][0].printNumber-1].dexNumber - 1] }}
         {{ static.Expansions[cardList[card][0].expansionName].cards[cardList[card][0].printNumber-1].printNumber }}/{{ static.Expansions[cardList[card][0].expansionName].numCards }}
@@ -25,6 +24,6 @@
                 {{ dent.where }} {{ dent.landmark}}: {{ dent.severity }}
             </div>
         </div>
-</div>
+</div> -->
 <app-card-table></app-card-table>
-<button (click)="addCard()">click me</button>
+<!-- <button (click)="addCard()">click me</button> -->

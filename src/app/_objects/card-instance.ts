@@ -1,10 +1,10 @@
 import * as uuid from 'uuid';
 
 export class CardInstance {
-    printNumber: number;
     condition: 'M' | 'NM' | 'LP' | 'MP' | 'HP';
     expansionName: string;
     form: string;
+    printNumber: number;
     uid: string;
     front?: string;
     back?: string;
@@ -28,11 +28,8 @@ export class Flaw {
     landmark: string;
     severity: string;
 
-    constructor(
-        where: 'top-center' | 'top-right' | 'right-center' | 'bottom-right'
-        | 'bottom-center' | 'bottom-left' | 'left-center' | 'top-left',
-        landmark: 'edge' | 'corner' | 'illustration' | 'holo' | 'text-box',
-        severity: 'mild' | 'moderate' | 'severe') {
+    constructor(type: string, where: string, landmark: string, severity: string) {
+        this.type = type;
         this.where = where;
         this.landmark = landmark;
         this.severity = severity;
