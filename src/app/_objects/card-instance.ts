@@ -45,3 +45,15 @@ export class FlawInfo {
     landmarks = ['edge', 'corner', 'illustration', 'holo', 'text-box'];
     severities = ['negligible', 'mild', 'moderate', 'severe'];
 }
+
+export class CardStorage {
+    cards: CardInstance[];
+    expansionName: string;
+    printNumber: number;
+
+    constructor(expansion: string, print: number) {
+        this.expansionName = expansion;
+        this.printNumber = print;
+        this.cards = [];
+    }
+}

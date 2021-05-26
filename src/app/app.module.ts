@@ -5,10 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-// import { NgxUidModule } from 'ngx-uid';
 import { environment } from 'src/environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AddCardModule } from './add-card/add-card.module';
 import { DisplayListsModule } from './display-lists/display-lists.module';
 
 @NgModule({
@@ -19,7 +17,6 @@ import { DisplayListsModule } from './display-lists/display-lists.module';
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    AddCardModule,
     DisplayListsModule,
 
     AppRoutingModule,

@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { FlawInfo } from 'src/app/_objects/card-instance';
 import { Card } from 'src/app/_objects/expansion';
 import { StaticData } from 'src/app/_objects/pokemon-list';
@@ -128,13 +129,12 @@ export class AddCardComponent implements OnInit, OnDestroy {
   submit() {
     const newCard = this.cardForm.value;
     newCard.uid = uuid.v4();
+    
     return this.cardserv.uploadCard(newCard)
-      .then(() => {
+      .pipe(take(1)).subscribe(() => {
         console.log('Successful upload.')
         this.dialogRef.close();
-      }).catch(err => {
-        console.log('Card was not uploaded successfully.');
-      });
+    });
   }
 
 }

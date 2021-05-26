@@ -18,6 +18,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { MainDisplayComponent } from './main-display/main-display.component';
+import { AddCardModule } from '../add-card/add-card.module';
 
 
 @NgModule({
@@ -28,6 +29,8 @@ import { MainDisplayComponent } from './main-display/main-display.component';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+
+    AddCardModule,
 
     MatButtonModule,
     MatCardModule,

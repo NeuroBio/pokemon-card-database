@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
   cardTypes: string[];
   cardList: {};
 
-  constructor(private dialog: MatDialog) {
+  constructor() {
 
   }
 
@@ -50,9 +50,5 @@ export class AppComponent implements OnInit {
   //   })
   // }
 
-  addCard() {
-    this.dialog.open(AddCardComponent, {
-      width: '80vw'
-    });
-  }
+
 }
