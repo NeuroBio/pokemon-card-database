@@ -12,5 +12,7 @@
     </mat-form-field>
 </div>
 
-<app-card-table></app-card-table>
+<app-card-table
+    [displayCards]="masterList"
+></app-card-table>
 <button (click)="addCard()">click me</button>

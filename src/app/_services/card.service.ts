@@ -52,7 +52,4 @@ export class CardService {
     );
   }
 
-  getCards() {
-    return this.af.collection('pokemon-cards').valueChanges();
-  }
 }

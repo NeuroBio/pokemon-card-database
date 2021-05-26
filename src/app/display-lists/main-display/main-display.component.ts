@@ -4,9 +4,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { AddCardComponent } from 'src/app/add-card/add-card/add-card.component';
 import { CardChunk } from 'src/app/_objects/card-chunk';
-import { CardInstance } from 'src/app/_objects/card-instance';
+import { CardInstance, CardStorage } from 'src/app/_objects/card-instance';
 import { CardService } from 'src/app/_services/card.service';
 import { tap } from 'rxjs/operators';
+import { CollectionService } from 'src/app/_services/collection.service';
 
 @Component({
   selector: 'app-main-display',
@@ -15,7 +16,7 @@ import { tap } from 'rxjs/operators';
 })
 export class MainDisplayComponent implements OnInit, OnDestroy {
 
-  allCards: CardInstance[];
+  allCards: CardStorage[];
   cardSubscription: Subscription;
   masterList: CardChunk[];
 
@@ -25,16 +26,12 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private cardserv: CardService,
+    private collectionserv: CollectionService,
     private dialog: MatDialog
     ) { }
 
   ngOnInit(): void {
-    // this.cardSubscription =
-    this.cardserv.getCards().subscribe(x => {
-      console.log('done')
-      console.log(x)
-    })
+    this.masterList = this.collectionserv.getMaster()
     // .pipe(tap(data => {
     //   console.log('returned')
     //   console.log(data)

@@ -9,8 +9,13 @@ export class CardChunk extends Card {
     numCards: number;
     release: number;
 
-    constructor(card: Card, expansionName: string, expansion: SetExpansion) {
-        super(card.cardTitle, card.cardType, card.dexNumber, card.printNumber, card.rarity)
+    constructor(print: number, expansionName: string, expansion: SetExpansion) {
+        super(
+            expansion[expansionName][print].cardTitle,
+            expansion[expansionName][print].cardType,
+            expansion[expansionName][print].dexNumber,
+            expansion[expansionName][print].printNumber,
+            expansion[expansionName][print].rarity)
         this.expansionName = expansionName;
         this.generation = expansion.generation;
         this.numCards = expansion.numCards;
