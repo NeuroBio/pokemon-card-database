@@ -20,6 +20,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     padding: 0em 1em;
 }
 
+.center-align {
+    display: flex;
+    align-items: center;
+}
+
 .mat-prime {
     background-color: $palette1;
     color: $palette6;

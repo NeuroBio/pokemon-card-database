@@ -1,7 +1,36 @@
 @import '../../Variables.scss';
 
+#table-holder {
+    background-color: $palette6;
+    max-width: 950px;
+}
+
+// filter CSS
+#filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+#filter-header {
+    margin-right: 1em;
+}
+
+.filter {
+    width: 70px;
+    margin-right: 1em;
+}
+
+.filter-long {
+    width: 150px;
+    margin-right: 1em;
+}
+
+mat-label {
+    font-weight: bold;
+}
+
+// table CSS
 table {
-    max-width: 800px;
     width: 100%;
 }
 
@@ -79,3 +108,4 @@ table {
 .image-holder {
     display: flex;
 }
+

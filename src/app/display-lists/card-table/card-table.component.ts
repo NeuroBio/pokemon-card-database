@@ -32,6 +32,10 @@ export class CardTableComponent implements OnInit {
   ];
   expanded: CardChunk;
 
+  filterObject  = {
+    dex: '', title: '', expansion: '',
+    gen: '', release: '', print: '', copies: ''
+  };
   filterForm: FormGroup;
   filterSubscription: Subscription;
 
@@ -91,25 +95,16 @@ export class CardTableComponent implements OnInit {
 
   // Filter functions
   createFilterForm(): FormGroup {
-    return this.fb.group({
-      dex: '', //
-      title: '', //
-      expansion: '', //
-      gen: '', //
-      release: '', //
-      print: '', //
-      copies: ''
-    });
+    return this.fb.group(this.filterObject);
   }
 
   clearFilter(): void {
-    this.filterForm.reset();
+    this.filterForm.reset(this.filterObject);
   }
 
   customFilterPredicate() {
     const myFilterPredicate = (card: CardChunk, filter: string) => {
       const searchString = JSON.parse(filter);
-
       // Filter tests
       const include = 
         // filter on card title
@@ -125,7 +120,7 @@ export class CardTableComponent implements OnInit {
         // filter on print
         && (!searchString.print || card.printNumber === searchString.print)
         // filter on copies
-        && (!searchString.copies || card.owned.length === searchString.copies);
+        && (searchString.copies >= 0 || card.owned.length === searchString.copies);
       return include;
     };
     return myFilterPredicate;
