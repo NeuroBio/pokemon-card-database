@@ -14,15 +14,13 @@ export class SetExpansion {
 
 export class Card {
     cardTitle: string;
-    cardType: 'energy' | 'special-energy' | 'trainer' | 'pokemon';
+    cardType: string;
     dexNumber: number;
     printNumber: number;
     rarity: string;
 
     constructor(
-        cardTitle: string,
-        type: 'energy' | 'special-energy' | 'trainer' | 'pokemon',
-        dex: number, print: number, rarity: string) {
+        cardTitle: string, type: string, dex: number, print: number, rarity: string) {
             this.cardTitle = cardTitle;
             this.cardType = type;
             this.dexNumber = dex;
