@@ -1,0 +1,45 @@
+@import '../../Variables.scss';
+
+#title-select {
+    background-color: $palette4;
+    color: $palette6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: $max-width;
+}
+
+h1 {
+    margin: .5em;
+    font-size: 20pt;
+}
+
+#list-picker {
+    margin: 1em 1em 1em 0em;
+    height: 51px;
+
+    mat-label {
+        color: $palette6;
+    }
+
+    ::ng-deep .mat-form-field-ripple {
+        /*change color of underline when focused*/
+        background-color: $palette6 !important;
+    }
+
+    ::ng-deep .mat-select-value {
+        color: $palette6 !important;
+    }
+
+    ::ng-deep .mat-select-arrow {
+        color: $palette6 !important;
+    }
+}
+  
+.mat-option {
+    color: $palette6;
+}
+
+
+
+

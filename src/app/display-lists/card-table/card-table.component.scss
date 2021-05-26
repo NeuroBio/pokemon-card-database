@@ -2,7 +2,7 @@
 
 #table-holder {
     background-color: $palette6;
-    max-width: 950px;
+    max-width: calc(#{$max-width} - 2.2em);
 }
 
 // filter CSS

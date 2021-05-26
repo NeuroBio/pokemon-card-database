@@ -34,7 +34,7 @@ export class CardTableComponent implements OnInit {
 
   filterObject  = {
     dex: '', title: '', expansion: '',
-    gen: '', release: '', print: '', copies: ''
+    gen: '', release: '', print: '', copies: null
   };
   filterForm: FormGroup;
   filterSubscription: Subscription;
@@ -120,7 +120,7 @@ export class CardTableComponent implements OnInit {
         // filter on print
         && (!searchString.print || card.printNumber === searchString.print)
         // filter on copies
-        && (searchString.copies >= 0 || card.owned.length === searchString.copies);
+        && (searchString.copies === null || card.owned.length === searchString.copies);
       return include;
     };
     return myFilterPredicate;

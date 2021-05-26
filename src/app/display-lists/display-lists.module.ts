@@ -17,11 +17,13 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
+import { MainDisplayComponent } from './main-display/main-display.component';
 
 
 @NgModule({
   declarations: [
-    CardTableComponent
+    CardTableComponent,
+    MainDisplayComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +44,7 @@ import { MatCardModule } from '@angular/material/card';
     DisplayListsRoutingModule
   ],
   exports: [
-    CardTableComponent
+    MainDisplayComponent
   ]
 })
 export class DisplayListsModule { }

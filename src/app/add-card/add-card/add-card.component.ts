@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { FlawInfo } from 'src/app/_objects/card-instance';
 import { Card } from 'src/app/_objects/expansion';
 import { StaticData } from 'src/app/_objects/pokemon-list';
-import { AddCardService } from 'src/app/_services/add-card.service';
+import { CardService } from 'src/app/_services/card.service';
 import * as uuid from 'uuid';
 
 @Component({
@@ -33,7 +33,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private cardserv: AddCardService,
+    private cardserv: CardService,
     @Optional() public dialogRef: MatDialogRef<AddCardComponent>
     ) { }
 
