@@ -1,10 +1,12 @@
 export class SetExpansion {
+    name: string;
     cards: Card[];
     generation: number;
     release: number;
     numCards: number;
 
-    constructor(cards: Card[], generation: number, release: number, numCards: number) {
+    constructor(name: string, cards: Card[], generation: number, release: number, numCards: number) {
+        this.name = name;
         this.cards = cards;
         this.generation = generation;
         this.release = release;

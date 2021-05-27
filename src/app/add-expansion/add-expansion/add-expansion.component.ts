@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Card } from 'src/app/_objects/expansion';
 import { StaticData } from 'src/app/_objects/pokemon-list';
 import { CollectionService } from 'src/app/_services/collection.service';
@@ -18,7 +19,8 @@ export class AddExpansionComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private collectionserv: CollectionService) { }
+    private collectionserv: CollectionService,
+    @Optional() public dialogRef: MatDialogRef<AddExpansionComponent>) { }
 
   ngOnInit(): void {
     this.expansionForm = this.createExpansionForm();
@@ -26,6 +28,7 @@ export class AddExpansionComponent implements OnInit {
 
   createExpansionForm(): FormGroup {
     return this.fb.group({
+      name: ['', Validators.required],
       cards: ['', Validators.required],
       generation: [1, Validators.required],
       release: [1, Validators.required],
@@ -63,7 +66,14 @@ export class AddExpansionComponent implements OnInit {
     // create cards
     for(let i = 0; i < numCards; i++) {
       const name = properties[0 + 3 * i];
-      const type = properties[1 + 3 * i];
+      const type = properties[1 + 3 * i].toLowerCase();
+      if (!this.static.ValidTypes.includes(type)) {
+        console.log(this.static.ValidTypes)
+        console.log(type)
+        console.log(this.static.ValidTypes.includes(type))
+
+        throw new Error (`Found unexpected type in card ${i+1}: ${properties[1 + 3 * i]}`);
+      }
       const rarity = properties[2 + 3 * i];
       const dex = this.getDexNumber(name, type);
 
@@ -88,9 +98,17 @@ export class AddExpansionComponent implements OnInit {
     return ind;
   }
 
+  clearCards() {
+    this.expansionForm.patchValue({cards: ''});
+  }
+
   submit() {
     console.log(this.expansionForm.value);
-    // this.collectionserv.addExpantion()
+    return this.collectionserv.addExpansion(this.expansionForm.value)
+        .then(() => {
+        console.log('Successful upload.');
+        this.dialogRef.close();
+    });
   }
 
 }

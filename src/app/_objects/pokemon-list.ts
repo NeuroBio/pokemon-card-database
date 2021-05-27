@@ -3,7 +3,7 @@ import { CardInstance, Flaw } from './card-instance';
 
 export class StaticData {
     Expansions = {
-        'Base Set': new SetExpansion([
+        'Base Set': new SetExpansion('Base Set', [
             new Card('Alakazam', 'pokemon', 65, 1, 'rare-holo'),
             new Card('Blastoise', 'pokemon', 9, 2, 'rare-holo')
         ], 1, 1, 102)
@@ -11,6 +11,13 @@ export class StaticData {
     Cards = [
         new CardInstance(1, 'Base Set', 'Shadowless', 'LP', [new Flaw('scratch', 'top-center', 'edge', 'mild')]),
         new CardInstance(1, 'Base Set', 'Unlimited', 'M')
+    ];
+    ValidTypes = [
+        'pokemon',
+        'trainer',
+        'energy',
+        'special energy',
+        'tcgo'
     ];
     NationalDex = [
     'Bulbasaur',

@@ -12,6 +12,8 @@ h2 {
     background: $palette3;
     padding: .5em;
     margin: 0px;
+    display: flex;
+    justify-content: space-between;
 }
 
 #main-card {
@@ -30,11 +32,20 @@ h2 {
 
 #individual-cards {
     background-color: $palette6;
-    margin-bottom: 1em;
+    margin: 0em 0em 1em 1em;
+    width: calc(100% - 2em);
 }
 
 #individual-cards-card {
     padding: 1em;
     display: flex;
     flex-flow: column;
+}
+
+#expected-form {
+    margin: 0em 1em 1em 1em;
+}
+
+th {
+    text-align: left;
 }
