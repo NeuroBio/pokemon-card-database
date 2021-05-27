@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
-import { skip, take, tap } from 'rxjs/operators';
+import { map, skip, take, tap } from 'rxjs/operators';
 import { CardChunk } from '../_objects/card-chunk';
 import { CardStorage } from '../_objects/card-instance';
 import { SetExpansion } from '../_objects/expansion';
@@ -32,12 +32,18 @@ export class CollectionService {
   }
 
   getExpansions(): Observable<SetExpansion[]> {
-    return this.af.collection<SetExpansion>('expansions').valueChanges()
-      .pipe(tap(expansions => this.expansions.next(expansions)));
+    return this.af.collection<any>('expansions').valueChanges()
+      .pipe(
+        map(expansions => expansions.map(exp => {
+          exp.cards = JSON.parse(exp.cards);
+          return exp as SetExpansion;
+        })),
+        tap(expansions => this.expansions.next(expansions)));
   }
 
   getMaster(): CardChunk[] {
-    return [] // this.convertToCardChunks(this.allCards.value);
+    console.log(this.expansions.value)
+    return []//this.convertToCardChunks(this.allCards.value);
   }
 
   convertToCardChunks(cards: CardStorage[]): CardChunk[] {
@@ -54,9 +60,10 @@ export class CollectionService {
     return cardChunks;
   }
 
-  addExpansion(newExpansion: SetExpansion) {
-    return this.af.collection<SetExpansion>('expansions')
-      .doc(`${newExpansion.name}`)
+  addExpansion(newExpansion: any) {
+    newExpansion.cards = JSON.stringify(newExpansion.cards); 
+    return this.af.collection<any>('expansions')
+      .doc(`${newExpansion.name.split(' ').join('-')}`)
       .set(Object.assign({}, newExpansion));
   }
 
