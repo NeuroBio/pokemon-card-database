@@ -61,6 +61,12 @@ export class CollectionService {
     return this.convertToCardChunks(this.allCards.value);
   }
 
+  getCheckList(listName: string): CardChunk[] {
+    const list = this.checkLists.value.find(list => list.name === listName);
+    console.log(list)
+    return [];
+  }
+
   private convertToCardChunks(cards: any[]): CardChunk[] {
     const cardChunks: CardChunk[] = [];
     cards.forEach(card => {     

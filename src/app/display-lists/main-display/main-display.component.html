@@ -13,7 +13,7 @@
     <mat-form-field appearance="fill" id="list-picker" color="prime">
         <mat-label>Show...</mat-label>
         <mat-select [formControl]="whichList">
-            <mat-option *ngFor="let list of cardLists" [value]="list">
+            <mat-option *ngFor="let list of checklists" [value]="list">
                 {{ list }}
             </mat-option>
         </mat-select>

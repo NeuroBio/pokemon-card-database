@@ -14,12 +14,12 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
 
   cardSubscription: Subscription;
 
-  cardLists = ['Master List', 'Checklist'];
+  checklists: string[];
   activeList: CardChunk[];
-  activeListName = 'Master List';
 
   whichList: FormControl;
   listSubscription: Subscription;
+  activeListSubscription: Subscription;
 
   allowEdit = false;
 
@@ -29,17 +29,26 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit(): void {
+    // control active list
+    this.whichList = this.fb.control('Masterlist');
+
     this.cardSubscription = this.collectionserv.allCards
       .subscribe(() => this.getList());
-    
-    this.whichList = this.fb.control('Master List');
-    this.listSubscription = this.whichList.valueChanges
-      .subscribe(list => this.activeList = list);
+
+    this.listSubscription = this.collectionserv.checkLists
+      .subscribe(lists => {
+        this.checklists = lists.map(list => list.name)
+        this.checklists.splice(0, 0, 'Masterlist')
+    });
+
+    this.activeListSubscription = this.whichList.valueChanges
+      .subscribe(() => this.getList());
   }
 
   ngOnDestroy() {
     this.cardSubscription.unsubscribe();
     this.listSubscription.unsubscribe();
+    this.activeListSubscription.unsubscribe();
   }
 
   lockSwitch() {
@@ -47,11 +56,12 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
   }
 
   getList() {
-    console.log('called')
-    switch(this.activeListName) {
-      case 'Master List':
+    switch(this.whichList.value) {
+      case 'Masterlist':
         this.activeList = this.collectionserv.getMaster();
       break;
+      default:
+        this.activeList = this.collectionserv.getCheckList(this.whichList.value);
     }
   }
 
