@@ -1,6 +1,6 @@
 <form [formGroup]="expansionForm">
 
-    <mat-card class="tight-card">
+    <mat-card class="tight-card" id="main-card">
         <!-- header -->
         <h2>Expansion Info</h2><br>
 
@@ -37,6 +37,24 @@
 
                 <b>Expected Form:</b> Name, Type, Rarity (print number is inferred by order).
             </p>
+
+            <!-- Individual cards -->
+            <mat-card id="individual-cards" class="tight-card"
+            *ngIf="expansionForm.get('cards').value">
+                <h2>Cards in Set:</h2>
+                <div id="individual-cards-card">
+                    <span *ngFor="let card of expansionForm.get('cards').value">
+                        <b>Card:</b>
+                        {{ card.printNumber }}
+                        {{ card.cardTitle }}
+                        ({{ card.dexNumber}}),
+                        <b>Rarity:</b>
+                        {{ card.rarity }},
+                        <b>Card Type:</b>
+                        {{ card.cardType }}
+                    </span>    
+                </div>
+            </mat-card>
         </div>
 
     </mat-card>

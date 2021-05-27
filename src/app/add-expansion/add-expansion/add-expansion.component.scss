@@ -14,7 +14,7 @@ h2 {
     margin: 0px;
 }
 
-mat-card {
+#main-card {
     background-color: $palette5;
     display: flex;
     flex-flow: column;
@@ -26,4 +26,15 @@ mat-card {
     flex-flow: column;
     align-items: flex-start;
     margin-left: 1em;
+}
+
+#individual-cards {
+    background-color: $palette6;
+    margin-bottom: 1em;
+}
+
+#individual-cards-card {
+    padding: 1em;
+    display: flex;
+    flex-flow: column;
 }

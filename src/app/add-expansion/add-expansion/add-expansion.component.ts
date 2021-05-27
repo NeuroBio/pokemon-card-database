@@ -67,7 +67,6 @@ export class AddExpansionComponent implements OnInit {
       cards.push(new Card(name, type, dex ,i , rarity));
     }
 
-    console.log(cards);
     this.expansionForm.patchValue({ cards });
   }
 
