@@ -12,12 +12,14 @@ export class CardService {
   constructor(private af: AngularFirestore) { }
 
   uploadCard(newCard:CardInstance): Observable<void> {
-    return this.af.doc<CardStorage>(`pokemon-cards/${newCard.expansionName}-${newCard.printNumber}`)
+    return this.af.doc<any>(`pokemon-cards/${newCard.expansionName}-${newCard.printNumber}`)
     .valueChanges().pipe(
       take(1),
       switchMap(cardBox => {
         if (!cardBox) {
           cardBox = new CardStorage(newCard.expansionName, newCard.printNumber);
+        } else {
+          cardBox.cards = JSON.parse(cardBox.cards);  
         }
         cardBox.cards[newCard.uid] = newCard;
         cardBox.cards = JSON.stringify(cardBox.cards);
