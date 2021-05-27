@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Card } from 'src/app/_objects/expansion';
 import { StaticData } from 'src/app/_objects/pokemon-list';
-import { CollectionService } from 'src/app/_services/collection.service';
+import { ExpansionService } from 'src/app/_services/expansion.service';
 import { MessengerService } from 'src/app/_services/messenger.service';
 
 @Component({
@@ -20,7 +20,7 @@ export class AddExpansionComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private collectionserv: CollectionService,
+    private expansionserv: ExpansionService,
     private messenger: MessengerService,
     @Optional() public dialogRef: MatDialogRef<AddExpansionComponent>) { }
 
@@ -109,7 +109,7 @@ export class AddExpansionComponent implements OnInit {
   }
 
   submit() {
-    return this.collectionserv.addExpansion(this.expansionForm.value)
+    return this.expansionserv.addExpansion(this.expansionForm.value)
       .then(() => {
         this.messenger.send('Expansion uploaded.');
         this.dialogRef.close();

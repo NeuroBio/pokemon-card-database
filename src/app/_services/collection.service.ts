@@ -13,16 +13,21 @@ export class CollectionService {
 
   allCards = new BehaviorSubject<CardStorage[]>([]);
   expansions = new BehaviorSubject<Object>([]);
+  checkLists = new BehaviorSubject<any>(undefined);
 
   constructor(private af: AngularFirestore) { 
     this.getCards().pipe(skip(1)).subscribe();
     this.getExpansions().pipe(skip(1)).subscribe();
+    this.getCheckLists().pipe(skip(1)).subscribe();
   }
 
   load() {
     return new Promise((resolve) => {
-      forkJoin([this.getCards().pipe(take(1)), this.getExpansions().pipe(take(1))])
-        .subscribe(x => resolve(true))
+      forkJoin([
+        this.getCards().pipe(take(1)),
+        this.getExpansions().pipe(take(1)),
+        this.getCheckLists().pipe(take(1))
+      ]).subscribe(() => resolve(true))
     });
   }
 
@@ -42,7 +47,13 @@ export class CollectionService {
           });
           return expantionDict;
         }),
-        tap(expansions => this.expansions.next(expansions)));
+        tap(expansions => this.expansions.next(expansions))
+      );
+  }
+
+  private getCheckLists(): Observable<any> {
+    return this.af.collection<any>('check-lists').valueChanges()
+      .pipe(tap(lists => this.checkLists.next(lists)));
   }
 
   getMaster(): CardChunk[] {
@@ -62,13 +73,6 @@ export class CollectionService {
     });
 
     return cardChunks;
-  }
-
-  addExpansion(newExpansion: any) {
-    newExpansion.cards = JSON.stringify(newExpansion.cards); 
-    return this.af.collection<any>('expansions')
-      .doc(`${newExpansion.name.split(' ').join('-')}`)
-      .set(Object.assign({}, newExpansion));
   }
 
   getActiveCard(exp: string, print: number) {
