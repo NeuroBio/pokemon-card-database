@@ -25,6 +25,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { AddCardModule } from './add-card/add-card.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AddListModule } from './add-list/add-list.module';
 
 export function CollectionFactory(provider: CollectionService) {
   return () => provider.load();
@@ -41,6 +42,7 @@ export function CollectionFactory(provider: CollectionService) {
     DisplayListsModule,
     AddCardModule,
     AddExpansionModule,
+    AddListModule,
 
     MatButtonModule,
     MatDialogModule,
