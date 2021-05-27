@@ -33,7 +33,7 @@ export class ToolbarComponent implements OnInit {
   addList() {
     this.dialog.open(AddListComponent, {
       width: '80vw',
-      maxWidth: '650px'
+      maxWidth: '800px'
     });
   }
 

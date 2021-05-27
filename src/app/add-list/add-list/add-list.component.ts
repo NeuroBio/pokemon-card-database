@@ -15,8 +15,7 @@ export class AddListComponent implements OnInit, OnDestroy {
 
   listForm: FormGroup;
   cardForm: FormGroup;
-  listTypes = ['checklist', 'count list'];
-  cards: string[] = [];
+  cards: any[] = [];
 
   activeCard: Card;
   expansionSubscription: Subscription;
@@ -59,7 +58,6 @@ export class AddListComponent implements OnInit, OnDestroy {
   createListForm(): FormGroup {
     return this.fb.group({
       name: ['', Validators.required],
-      listType: 'checklist',
     });
   }
 
@@ -81,7 +79,20 @@ export class AddListComponent implements OnInit, OnDestroy {
 
   addCard(): void {
     const cardinfo = this.cardForm.value;
-    this.cards.push(`${cardinfo.expansion}-${cardinfo.print}`);
+    this.cards.push({
+      preview: this.activeCard,
+      exp: this.expansions[cardinfo.expansion],
+      path: `${cardinfo.expansion}-${cardinfo.print}`,
+      instance: ''
+    });
+  }
+
+  removeCard(index: number): void {
+    this.cards.splice(index, 1)
+  }
+
+  submit() {
+
   }
 
 }

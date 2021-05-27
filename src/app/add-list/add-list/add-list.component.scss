@@ -18,6 +18,7 @@ h2 {
 #main-list-inputs {
     display: flex;
     flex-flow: column;
+    align-items: flex-start;
 }
 
 mat-divider {
@@ -49,7 +50,11 @@ mat-divider {
     flex-grow: 1;
 }
 
-.add-instance-button {
+.action-buttons {
+    display: flex;
+}
+
+.action-button {
     display: flex;
     height: 20pt !important;
     width: 20pt !important;
@@ -60,6 +65,7 @@ mat-divider {
 
 app-card-preview {
     width: 300px;
+    margin: 0em -1.5em 0em -1em;
 }
 // CSS for drag and drop
 // original code form https://www.thirdrocktechkno.com/blog/building-interactive-lists-with-the-new-angular-7-drag-and-drop-tool/
@@ -110,5 +116,3 @@ app-card-preview {
     min-height: 60px;
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
-
-

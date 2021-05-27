@@ -15,18 +15,8 @@
             <div id="main-list-inputs">
                 <!-- List Name -->
                 <mat-form-field>
-                    <mat-label>Name</mat-label>
+                    <mat-label>List Name</mat-label>
                     <input matInput formControlNmae="name" type="text">
-                </mat-form-field>
-    
-                <!-- List Type -->
-                <mat-form-field>
-                    <mat-label>List Type</mat-label>
-                    <mat-select formControlName="listType">
-                        <mat-option *ngFor="let type of listTypes" [value]="type">
-                            {{ type }}
-                        </mat-option>
-                    </mat-select>
                 </mat-form-field>
     
                 <!-- Add Cards -->
@@ -73,22 +63,44 @@
             <div id="drag-n-drop">
                 <h3>Cards in List</h3>
                 <div cdkDropList class="card-list" (cdkDropListDropped)="drop($event)">
-                    <div class="card-box" *ngFor="let card of cards" cdkDrag>
+                    <div class="card-box" *ngFor="let card of cards; let i = index" cdkDrag>
                         <div class="card-placeholder" *cdkDragPlaceholder></div>
                         <div class="center-align">
-                            <mat-icon>height</mat-icon>
-                            {{ card }}
+                            {{ card.exp.name }}:
+                            {{ card.preview.cardTitle }}
+                            {{ card.preview.printNumber }}/{{ card.exp.numCards }}
+                            {{ card.preview.rarity }}
                         </div>
 
-                        <button mat-icon-button aria-label="'Add Card Instance'"
-                        color="prime" class="add-instance-button">
-                            <mat-icon>add</mat-icon>
-                        </button>
+                        <!-- <div class="action-buttons"> -->
+                            <!-- add instance -->
+                            <!-- <button mat-icon-button aria-label="Add-Card-Instance"
+                            color="prime" class="action-button">
+                                <mat-icon>add</mat-icon>
+                            </button> -->
+
+                            <!-- remove card -->
+                            <button mat-icon-button aria-label="Remove-Card"
+                            color="tert" class="action-button"
+                            (click)="removeCard(i)">
+                                <mat-icon>clear</mat-icon>
+
+                            </button>
+    
+                        <!-- </div> -->
                     </div>
                 </div>
             </div>
         </div>
     </mat-card>
     
+    <div class="button-box">
+        <!-- Submission button -->
+        <button mat-raised-button color="prime"
+        (click)="submit()">
+            <mat-icon>cloud_upload</mat-icon>
+            Add List to Database
+        </button>
+    </div>
 
 </form>
