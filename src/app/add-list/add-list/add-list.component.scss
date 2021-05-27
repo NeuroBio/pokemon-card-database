@@ -42,6 +42,15 @@ mat-divider {
 #drag-n-drop {
     flex-grow: 1;
 }
+
+.add-instance-button {
+    display: flex;
+    height: 20pt !important;
+    width: 20pt !important;
+    margin: .2em;
+    justify-content: center;
+    align-items: center;
+}
 // CSS for drag and drop
 // original code form https://www.thirdrocktechkno.com/blog/building-interactive-lists-with-the-new-angular-7-drag-and-drop-tool/
 
