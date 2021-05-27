@@ -1,6 +1,13 @@
 <!-- Pick List -->
 <div id="title-select">
-    <h2>{{ whichList.value }}</h2>
+    <h2 class="center-align">
+        {{ whichList.value }}
+        <button mat-icon-button
+        aria-label="{ allowEdit ? 'stop-editing-cards' : 'start-editing-cards'}"
+        (click)="lockSwitch()">
+            <mat-icon>{{ allowEdit ? 'lock_open' : 'lock' }}</mat-icon>
+        </button>
+    </h2>
     
     <!-- Select -->
     <mat-form-field appearance="fill" id="list-picker" color="prime">
@@ -16,4 +23,5 @@
 
 <app-card-table
     [displayCards]="masterList"
+    [allowEdit]="allowEdit"
 ></app-card-table>

@@ -122,18 +122,10 @@
             <td mat-cell *matCellDef="let card" [attr.colspan]="displayColumns.length">
                 <div [@detailExpand]="expanded === card ? 'expanded' : 'collapsed'">
                     <div *ngFor="let instance of card.owned">
-                        <!-- images of the card -->
-                        <div class="image-holder">
-                            <div *ngIf="instance.front">
-                                <img src="instance.front">
-                            </div>
-                            <div *ngIf="instance.back">
-                                <img src="instance.back">
-                            </div>    
-                        </div>
-    
-                        <!-- Card state -->
-                        {{ instance.form }} {{ instance.condition }}
+                       <app-individual-card
+                        [instance]="instance"
+                        [allowEdit]="allowEdit"
+                       ></app-individual-card>
                         <div class="tab" *ngFor="let flaw of instance.flaws">
                             - {{ flaw.severity }} {{ flaw.type }} {{ flaw.where }}  {{ flaw.landmark }}
                         </div>

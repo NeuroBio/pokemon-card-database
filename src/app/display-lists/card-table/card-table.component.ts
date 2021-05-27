@@ -26,6 +26,8 @@ import { StaticData } from 'src/app/_objects/pokemon-list';
 export class CardTableComponent implements OnInit {
 
   @Input() displayCards: CardChunk[] = [];
+  @Input() allowEdit: boolean = false;
+
   cards = new MatTableDataSource<CardChunk>();
   displayColumns = [
     'DropDown', 'Dex' ,'Name', 'Expansion', 'Gen',

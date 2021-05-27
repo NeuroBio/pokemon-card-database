@@ -1,0 +1,20 @@
+ <!-- images of the card -->
+ <div class="image-holder">
+    <div *ngIf="instance.front">
+        <img src="instance.front">
+    </div>
+    <div *ngIf="instance.back">
+        <img src="instance.back">
+    </div>    
+</div>
+
+<!-- Card state -->
+{{ instance.form }} {{ instance.condition }}
+
+<button mat-icon-button color="prime" *ngIf="allowEdit"
+class="edit-button"
+(click)="edit()">
+    <mat-icon>edit</mat-icon>
+</button>
+
+<mat-divider></mat-divider>

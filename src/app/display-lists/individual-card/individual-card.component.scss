@@ -1,0 +1,20 @@
+.image-holder {
+    display: flex;
+}
+
+button {
+    font-size: 6pt;
+}
+
+.edit-button {
+    display: inline-flex;
+    height: 20pt !important;
+    width: 20pt !important;
+    margin: .2em;
+    justify-content: center;
+    align-items: center;
+
+    .mat-icon {
+        font-size: 14pt;
+    }
+}
