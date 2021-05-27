@@ -5,6 +5,11 @@
         <!-- Header -->
         <h2>
             Card Info
+
+            <button mat-icon-button aria-label="close-dialog-box" color="tert"
+            (click)="close()">
+                <mat-icon>clear</mat-icon>
+            </button>
         </h2>
         <br>
     
@@ -14,7 +19,7 @@
                 <!-- Expansion -->
                 <mat-form-field class="push">
                     <mat-label>Expansion</mat-label>
-                    <mat-select formControlName="expansionName">
+                    <mat-select formControlName="expansionName" cdkFocusInitial>
                         <mat-option *ngFor="let expansion of expansions"
                         [value]="expansion">
                             {{ expansion }}

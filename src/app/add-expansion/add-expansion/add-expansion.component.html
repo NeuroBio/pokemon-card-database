@@ -2,13 +2,20 @@
 
     <mat-card class="tight-card" id="main-card">
         <!-- header -->
-        <h2>Expansion Info</h2><br>
+        <h2>
+            Expansion Info
+            
+            <button mat-icon-button aria-label="close-dialog-box" color="tert"
+            (click)="close()">
+                <mat-icon>clear</mat-icon>
+            </button>
+        </h2><br>
 
         <div id="main-input-section">
             <!-- Name -->
             <mat-form-field>
                 <mat-label>Expansion Name</mat-label>
-                <input matInput type="text" formControlName="name">
+                <input matInput type="text" formControlName="name" cdkFocusInitial>
             </mat-form-field>
 
             <!-- Generation -->

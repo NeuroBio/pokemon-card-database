@@ -116,4 +116,8 @@ export class AddExpansionComponent implements OnInit {
     });
   }
 
+  close() {
+    this.dialogRef.close();
+  }
+
 }

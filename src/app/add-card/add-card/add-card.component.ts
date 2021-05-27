@@ -139,4 +139,8 @@ export class AddCardComponent implements OnInit, OnDestroy {
     });
   }
 
+  close() {
+    this.dialogRef.close();
+  }
+
 }
