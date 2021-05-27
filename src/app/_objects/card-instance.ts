@@ -47,13 +47,13 @@ export class FlawInfo {
 }
 
 export class CardStorage {
-    cards: CardInstance[];
+    cards: {};
     expansionName: string;
     printNumber: number;
 
     constructor(expansion: string, print: number) {
         this.expansionName = expansion;
         this.printNumber = print;
-        this.cards = [];
+        this.cards = {};
     }
 }

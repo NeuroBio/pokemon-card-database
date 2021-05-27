@@ -49,14 +49,16 @@ export class CollectionService {
     return this.convertToCardChunks(this.allCards.value);
   }
 
-  convertToCardChunks(cards: CardStorage[]): CardChunk[] {
+  convertToCardChunks(cards: any[]): CardChunk[] {
     const cardChunks: CardChunk[] = [];
     cards.forEach(card => {     
       cardChunks.push(new CardChunk(
         card.printNumber,
         this.expansions.value[card.expansionName])
       );
-      cardChunks[cardChunks.length-1].owned = card.cards;
+      const rawCards = JSON.parse(card.cards);
+      Object.keys(rawCards).forEach(uid =>
+        cardChunks[cardChunks.length-1].owned.push(rawCards[uid]))
     });
 
     return cardChunks;
