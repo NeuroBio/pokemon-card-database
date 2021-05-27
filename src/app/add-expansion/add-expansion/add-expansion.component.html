@@ -46,8 +46,10 @@
                     <span *ngFor="let card of expansionForm.get('cards').value">
                         <b>Card:</b>
                         {{ card.printNumber }}
-                        {{ card.cardTitle }}
-                        ({{ card.dexNumber}}),
+                        {{ card.cardTitle }}<span
+                        *ngIf="card.dexNumber">
+                            ({{ card.dexNumber}})
+                        </span>,
                         <b>Rarity:</b>
                         {{ card.rarity }},
                         <b>Card Type:</b>
@@ -56,6 +58,15 @@
                 </div>
             </mat-card>
         </div>
-
     </mat-card>
+
+    <div class="button-box">
+        <button mat-raised-button color="prime"
+        [disabled]="!expansionForm.valid"
+        (click)="submit()">
+            <mat-icon>cloud_upload</mat-icon>
+            Add Expansion to Database
+        </button>
+    </div>
+
 </form>

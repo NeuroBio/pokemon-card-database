@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Card } from 'src/app/_objects/expansion';
 import { StaticData } from 'src/app/_objects/pokemon-list';
+import { CollectionService } from 'src/app/_services/collection.service';
 
 @Component({
   selector: 'app-add-expansion',
@@ -15,7 +16,9 @@ export class AddExpansionComponent implements OnInit {
   private static = new StaticData()
   parseError = false;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private collectionserv: CollectionService) { }
 
   ngOnInit(): void {
     this.expansionForm = this.createExpansionForm();
@@ -23,10 +26,10 @@ export class AddExpansionComponent implements OnInit {
 
   createExpansionForm(): FormGroup {
     return this.fb.group({
-      cards: '',
-      generation: 1,
-      release: 1,
-      numCards: 1
+      cards: ['', Validators.required],
+      generation: [1, Validators.required],
+      release: [1, Validators.required],
+      numCards: [1, Validators.required]
     });
   }
 
@@ -83,6 +86,11 @@ export class AddExpansionComponent implements OnInit {
       }
     }
     return ind;
+  }
+
+  submit() {
+    console.log(this.expansionForm.value);
+    // this.collectionserv.addExpantion()
   }
 
 }
