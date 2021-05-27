@@ -20,7 +20,7 @@
                 <mat-form-field class="push">
                     <mat-label>Expansion</mat-label>
                     <mat-select formControlName="expansionName" cdkFocusInitial>
-                        <mat-option *ngFor="let expansion of expansions"
+                        <mat-option *ngFor="let expansion of expansionNames"
                         [value]="expansion">
                             {{ expansion }}
                         </mat-option>

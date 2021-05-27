@@ -5,8 +5,8 @@ import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { CardInstance, FlawInfo } from 'src/app/_objects/card-instance';
 import { Card } from 'src/app/_objects/expansion';
-import { StaticData } from 'src/app/_objects/pokemon-list';
 import { CardService } from 'src/app/_services/card.service';
+import { CollectionService } from 'src/app/_services/collection.service';
 import { MessengerService } from 'src/app/_services/messenger.service';
 import * as uuid from 'uuid';
 
@@ -19,9 +19,10 @@ export class AddCardComponent implements OnInit, OnDestroy {
 
   cardForm: FormGroup;
   flaws: FormArray;
-  static = new StaticData();
 
-  expansions = Object.keys(this.static.Expansions);
+  expansions: {};
+  expansionNames: string[];
+
   conditions = ['M', 'NM', 'LP', 'MP', 'HP'];
   flawInfo = new FlawInfo();
 
@@ -37,11 +38,15 @@ export class AddCardComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private cardserv: CardService,
     private messenger: MessengerService,
+    private collectionserv: CollectionService,
     private dialogRef: MatDialogRef<AddCardComponent>,
     @Inject(MAT_DIALOG_DATA) private data: CardInstance
     ) { }
 
   ngOnInit(): void {
+    this.expansions = this.collectionserv.expansions.value;
+    this.expansionNames = Object.keys(this.expansions);
+
     this.flaws = this.createFlawArray();
     if (this.data) {
       this.cardForm = this.createEditForm(this.data);      
@@ -61,7 +66,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
       .subscribe(print => {
         const exp = this.cardForm.controls.expansionName.value;
         this.getActiveCard(exp, print);
-      })
+    });
   }
 
   ngOnDestroy() {
@@ -122,7 +127,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
 
   getActiveCard(exp: string, print: number) {
     if (print && exp) {
-      this.activeCard = this.static.Expansions[exp].cards[print-1];
+      this.activeCard = this.expansions[exp].cards[print-1];
       this.NAcard = !this.activeCard
     } else {
       this.activeCard = undefined;
