@@ -3,7 +3,7 @@
     <h2 class="center-align">
         {{ whichList.value }}
         <button mat-icon-button
-        aria-label="{ allowEdit ? 'stop-editing-cards' : 'start-editing-cards'}"
+        attr.aria-label="allowEdit ? 'stop-editing-cards' : 'start-editing-cards'"
         (click)="lockSwitch()">
             <mat-icon>{{ allowEdit ? 'lock_open' : 'lock' }}</mat-icon>
         </button>

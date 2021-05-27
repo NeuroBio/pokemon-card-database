@@ -1,3 +1,5 @@
+@import '../../Variables.scss';
+
 .image-holder {
     display: flex;
 }
@@ -20,5 +22,5 @@ button {
 }
 
 .card-instance {
-    border-bottom: 1px solid #c2c2c2;
+    border-bottom: 1px solid $borders-grey;
 }

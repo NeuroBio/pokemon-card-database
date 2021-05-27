@@ -1,1 +1,80 @@
-<p>add-list works!</p>
+<form [formGroup]="listForm" id="list-form">
+    <!-- Header -->
+    <mat-card class="tight-card">
+        <h2>
+            Create List
+    
+            <button mat-icon-button aria-label="close-dialog-box" color="tert"
+            (click)="close()">
+                <mat-icon>clear</mat-icon>
+            </button>
+        </h2>
+    
+        <div class="side-by-side breathing-room">
+            <!-- List inputs -->
+            <div id="main-list-inputs">
+                <!-- List Name -->
+                <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlNmae="name" type="text">
+                </mat-form-field>
+    
+                <!-- List Type -->
+                <mat-form-field>
+                    <mat-label>List Type</mat-label>
+                    <mat-select formControlName="listType">
+                        <mat-option *ngFor="let type of listTypes" [value]="type">
+                            {{ type }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+    
+                <!-- Add Cards -->
+                <form [formGroup]="cardForm" id="card-form">
+                    <br>
+                    <h3>Add Card</h3>
+
+                    <!-- expansion Name -->
+                    <mat-form-field>
+                        <mat-label>Expansion</mat-label>
+                        <mat-select formControlName="expansion">
+                            <mat-option *ngFor="let exp of expansionNames" [value]="exp">
+                                {{ exp }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <!-- Print Number -->
+                    <mat-form-field id="small-print-input">
+                        <mat-label>Print</mat-label>
+                        <input matInput formControlName="print" type="number"
+                        min="1" max="{{ expansions[cardForm.get('expansion').value].cards.length }}">
+                    </mat-form-field>
+
+                    <button mat-raised-button color="prime"
+                    (click)="addCard()">
+                        <mat-icon>add</mat-icon>
+                        Add Card
+                    </button>
+                    
+                </form>
+            </div>
+    
+            <mat-divider [vertical]="true"></mat-divider>
+    
+            <!-- Drag and Drop -->
+            <div id="drag-n-drop">
+                <h3>Cards in List</h3>
+                <div cdkDropList class="card-list" (cdkDropListDropped)="drop($event)">
+                    <div class="card-box" *ngFor="let card of cards" cdkDrag>
+                        <div class="card-placeholder" *cdkDragPlaceholder></div>
+                        {{ card }}
+                        <mat-icon>height</mat-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card>
+    
+
+</form>
