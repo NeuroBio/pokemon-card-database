@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -22,7 +22,7 @@ import { StaticData } from 'src/app/_objects/pokemon-list';
     ]),
   ]
 })
-export class CardTableComponent implements OnInit {
+export class CardTableComponent implements OnInit, OnChanges {
 
   @Input() displayCards: CardChunk[] = [];
   @Input() allowEdit: boolean = false;
@@ -46,11 +46,14 @@ export class CardTableComponent implements OnInit {
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.cards.data = this.displayCards;
     this.filterForm = this.createFilterForm();
     this.filterSubscription = this.filterForm.valueChanges
       .subscribe(value => this.cards.filter = JSON.stringify(value));
     this.cards.filterPredicate = this.customFilterPredicate();
+  }
+
+  ngOnChanges() {
+    this.cards.data = this.displayCards;
   }
 
   // Sorting functions

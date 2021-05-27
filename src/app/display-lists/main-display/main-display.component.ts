@@ -12,11 +12,12 @@ import { CollectionService } from 'src/app/_services/collection.service';
 })
 export class MainDisplayComponent implements OnInit, OnDestroy {
 
-  allCards: CardStorage[];
   cardSubscription: Subscription;
-  masterList: CardChunk[];
 
   cardLists = ['Master List', 'Checklist'];
+  activeList: CardChunk[];
+  activeListName = 'Master List';
+
   whichList: FormControl;
   listSubscription: Subscription;
 
@@ -28,18 +29,30 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit(): void {
-    this.masterList = this.collectionserv.getMaster()
+    this.cardSubscription = this.collectionserv.allCards
+      .subscribe(() => this.getList());
+    
     this.whichList = this.fb.control('Master List');
     this.listSubscription = this.whichList.valueChanges
-      .subscribe(list => console.log('swap'));
+      .subscribe(list => this.activeList = list);
   }
 
   ngOnDestroy() {
+    this.cardSubscription.unsubscribe();
     this.listSubscription.unsubscribe();
   }
 
   lockSwitch() {
     this.allowEdit = !this.allowEdit;
+  }
+
+  getList() {
+    console.log('called')
+    switch(this.activeListName) {
+      case 'Master List':
+        this.activeList = this.collectionserv.getMaster();
+      break;
+    }
   }
 
 }

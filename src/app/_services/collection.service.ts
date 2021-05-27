@@ -26,12 +26,12 @@ export class CollectionService {
     });
   }
 
-  getCards(): Observable<CardStorage[]> {
+  private getCards(): Observable<CardStorage[]> {
     return this.af.collection<CardStorage>('pokemon-cards').valueChanges()
       .pipe(tap(cards => this.allCards.next(cards)));
   }
 
-  getExpansions(): Observable<Object> {
+  private getExpansions(): Observable<Object> {
     return this.af.collection<any>('expansions').valueChanges()
       .pipe(
         map(expansions => {
@@ -49,7 +49,7 @@ export class CollectionService {
     return this.convertToCardChunks(this.allCards.value);
   }
 
-  convertToCardChunks(cards: any[]): CardChunk[] {
+  private convertToCardChunks(cards: any[]): CardChunk[] {
     const cardChunks: CardChunk[] = [];
     cards.forEach(card => {     
       cardChunks.push(new CardChunk(
