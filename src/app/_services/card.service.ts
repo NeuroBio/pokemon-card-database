@@ -49,12 +49,16 @@ export class CardService {
       take(1),
       switchMap(cardBox => {
         cardBox.cards = JSON.parse(cardBox.cards);
-        delete cardBox.cards[uid];
-        cardBox.cards = JSON.stringify(cardBox.cards);
-        return this.af.collection<any>(`pokemon-cards`)
-          .doc(`${expansion}-${print}`).set(Object.assign({}, cardBox));
+        if (Object.keys(cardBox.cards).length === 1) {
+          return this.af.doc(`pokemon-cards/${expansion}-${print}`).delete();
+        } else {
+          delete cardBox.cards[uid];
+          cardBox.cards = JSON.stringify(cardBox.cards);
+          return this.af.collection<any>(`pokemon-cards`)
+            .doc(`${expansion}-${print}`).set(Object.assign({}, cardBox));
+  
+        }
       })
     );
   }
-
 }

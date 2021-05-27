@@ -169,6 +169,15 @@
             <mat-icon>cloud_upload</mat-icon>
             Add Card to Database
         </button>
+
+
+        <!-- Delete card -->
+        <button mat-raised-button color="warn"
+        *ngIf="data"
+        (click)="delete()">
+            <mat-icon>delete_outline</mat-icon>
+            Delete Card
+        </button>
     </div>
 
 </form>

@@ -1,8 +1,9 @@
 import { Component, Inject, OnDestroy, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { ConfirmComponent } from 'src/app/confirm/confirm/confirm.component';
 import { CardInstance, FlawInfo } from 'src/app/_objects/card-instance';
 import { Card } from 'src/app/_objects/expansion';
 import { CardService } from 'src/app/_services/card.service';
@@ -39,8 +40,9 @@ export class AddCardComponent implements OnInit, OnDestroy {
     private cardserv: CardService,
     private messenger: MessengerService,
     private collectionserv: CollectionService,
+    private dialog: MatDialog,
     private dialogRef: MatDialogRef<AddCardComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: CardInstance
+    @Inject(MAT_DIALOG_DATA) public data: CardInstance
     ) { }
 
   ngOnInit(): void {
@@ -181,6 +183,26 @@ export class AddCardComponent implements OnInit, OnDestroy {
 
   close() {
     this.dialogRef.close();
+  }
+
+  delete() {
+    const cardType: Card = this.expansions[this.data.expansionName].cards[this.data.printNumber-1];
+    this.dialog.open(ConfirmComponent, {
+      width: '450px',
+      data: `Are you sure you want to delete this copy of ${
+        cardType.cardTitle} (${cardType.printNumber}/${this.expansions[this.data.expansionName].numCards})?`
+      }).afterClosed().pipe(take(1)).subscribe(confirmed => {
+        if (confirmed) {
+          return this.cardserv.deleteCard(
+            this.data.expansionName,
+            this.data.printNumber,
+            this.data.uid).pipe(take(1))
+            .subscribe(() => {
+              this.messenger.send('Card deleted.');
+              this.dialogRef.close();
+            });
+        }
+      })
   }
 
 }

@@ -17,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ConfirmModule } from '../confirm/confirm.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+
+    ConfirmModule,
 
 
     MatAutocompleteModule,

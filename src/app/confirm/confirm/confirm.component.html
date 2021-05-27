@@ -1,0 +1,21 @@
+<div id="confirm-holder">
+    <!-- message -->
+    <p>{{ data }}</p>
+
+    <mat-divider></mat-divider>
+
+    <!-- action buttons -->
+    <div class="button-box">
+        <button mat-raised-button color="prime"
+        (click)="confirm(true)">
+            <mat-icon>check</mat-icon>
+            Confirm
+        </button>
+    
+        <button mat-raised-button color="warn"
+        (click)="confirm(false)">
+            <mat-icon>clear</mat-icon>
+            Cancel
+        </button>
+    </div>
+</div>
