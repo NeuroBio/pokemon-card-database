@@ -119,7 +119,7 @@
     
         <!-- Individual Cards -->
         <ng-container matColumnDef="expandedDetail">
-            <td mat-cell *matCellDef="let card" [attr.colspan]="displayColumns.length">
+            <td mat-cell *matCellDef="let card" [attr.colspan]="displayColumns.length" class="expanded">
                 <div [@detailExpand]="expanded === card ? 'expanded' : 'collapsed'">
                     <div *ngFor="let instance of card.owned">
                        <app-individual-card

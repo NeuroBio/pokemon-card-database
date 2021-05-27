@@ -17,7 +17,6 @@ import { StaticData } from 'src/app/_objects/pokemon-list';
       style({
         height: '0px',
         padding: '0px',
-        color: 'transparent'
       })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),

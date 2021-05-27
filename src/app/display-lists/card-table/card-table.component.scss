@@ -85,6 +85,8 @@ table {
 
 .drop-down {
     background-color: $palette6;
+    height: 0px;
+    overflow: hidden;
 }
 
 .origin {
@@ -98,4 +100,9 @@ table {
     font-size: 14pt;
     transform: rotate(90deg);
     transition: all .2s ease-out !important;
+}
+
+.expanded {
+    height: 0px;
+    overflow: hidden;
 }
