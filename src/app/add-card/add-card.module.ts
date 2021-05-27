@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ConfirmModule } from '../confirm/confirm.module';
+import { CardPreviewModule } from '../card-preview/card-preview.module';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { ConfirmModule } from '../confirm/confirm.module';
     ReactiveFormsModule,
 
     ConfirmModule,
-
+    CardPreviewModule,
 
     MatAutocompleteModule,
     MatButtonModule,

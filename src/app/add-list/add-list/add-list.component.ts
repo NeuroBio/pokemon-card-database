@@ -1,7 +1,8 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 import { Card, SetExpansion } from 'src/app/_objects/expansion';
 import { CollectionService } from 'src/app/_services/collection.service';
 
@@ -10,12 +11,16 @@ import { CollectionService } from 'src/app/_services/collection.service';
   templateUrl: './add-list.component.html',
   styleUrls: ['./add-list.component.scss']
 })
-export class AddListComponent implements OnInit {
+export class AddListComponent implements OnInit, OnDestroy {
 
   listForm: FormGroup;
   cardForm: FormGroup;
   listTypes = ['checklist', 'count list'];
   cards: string[] = [];
+
+  activeCard: Card;
+  expansionSubscription: Subscription;
+  printSubscription: Subscription;
 
   expansions: {};
   expansionNames: string[];
@@ -31,6 +36,24 @@ export class AddListComponent implements OnInit {
     this.expansionNames = Object.keys(this.expansions);
     this.listForm = this.createListForm();
     this.cardForm = this.createCardForm();
+    this.activeCard = this.collectionserv.getActiveCard('Base Set', 1);
+
+    this.expansionSubscription = this.cardForm.controls.expansion.valueChanges
+      .subscribe(exp => { 
+        const print = this.cardForm.controls.print.value;
+        this.activeCard = this.collectionserv.getActiveCard(exp, print);
+    });
+
+    this.printSubscription = this.cardForm.controls.print.valueChanges
+      .subscribe(print => {
+        const exp = this.cardForm.controls.expansion.value;
+        this.activeCard = this.collectionserv.getActiveCard(exp, print);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.expansionSubscription.unsubscribe();
+    this.printSubscription.unsubscribe();
   }
 
   createListForm(): FormGroup {

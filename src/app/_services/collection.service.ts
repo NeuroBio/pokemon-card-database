@@ -71,4 +71,17 @@ export class CollectionService {
       .set(Object.assign({}, newExpansion));
   }
 
+  getActiveCard(exp: string, print: number) {
+    if (print && exp) {
+      const card = this.expansions.value[exp].cards[print-1];
+      if (!card) {
+        return null;
+      } else {
+        return card;
+      }
+    } else {
+      undefined;
+    }
+  }
+
 }

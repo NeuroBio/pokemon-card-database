@@ -33,6 +33,12 @@ mat-divider {
     display: flex;
     flex-flow: column;
     align-items: flex-start;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+#push-exp {
+    margin-right: 1em;
 }
 
 #small-print-input {
@@ -50,6 +56,10 @@ mat-divider {
     margin: .2em;
     justify-content: center;
     align-items: center;
+}
+
+app-card-preview {
+    width: 300px;
 }
 // CSS for drag and drop
 // original code form https://www.thirdrocktechkno.com/blog/building-interactive-lists-with-the-new-angular-7-drag-and-drop-tool/

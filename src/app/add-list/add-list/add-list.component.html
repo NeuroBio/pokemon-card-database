@@ -34,22 +34,29 @@
                     <br>
                     <h3>Add Card</h3>
 
-                    <!-- expansion Name -->
-                    <mat-form-field>
-                        <mat-label>Expansion</mat-label>
-                        <mat-select formControlName="expansion">
-                            <mat-option *ngFor="let exp of expansionNames" [value]="exp">
-                                {{ exp }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                    <div>
+                        <!-- expansion Name -->
+                        <mat-form-field id="push-exp">
+                            <mat-label>Expansion</mat-label>
+                            <mat-select formControlName="expansion">
+                                <mat-option *ngFor="let exp of expansionNames" [value]="exp">
+                                    {{ exp }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
 
-                    <!-- Print Number -->
-                    <mat-form-field id="small-print-input">
-                        <mat-label>Print</mat-label>
-                        <input matInput formControlName="print" type="number"
-                        min="1" max="{{ expansions[cardForm.get('expansion').value].cards.length }}">
-                    </mat-form-field>
+                        <!-- Print Number -->
+                        <mat-form-field id="small-print-input">
+                            <mat-label>Print</mat-label>
+                            <input matInput formControlName="print" type="number"
+                            min="1" max="{{ expansions[cardForm.get('expansion').value].cards.length }}">
+                        </mat-form-field>
+                    </div>
+
+
+                    <app-card-preview
+                    [activeCard]="activeCard"
+                    ></app-card-preview>
 
                     <button mat-raised-button color="prime"
                     (click)="addCard()">

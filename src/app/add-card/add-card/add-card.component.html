@@ -32,24 +32,15 @@
                     <mat-label>Print</mat-label>
                     <input matInput formControlName="printNumber" type="number" min="1">
                 </mat-form-field>
+
+                <!-- Card preview -->
+                <app-card-preview
+                [activeCard]="activeCard"
+                ></app-card-preview>
         
             </div>
         
-            <!-- Active Card info -->
-            <mat-card *ngIf="activeCard" class="sub-card">
-                <b>Card:</b> {{ activeCard.cardTitle }}
-                <span *ngIf="activeCard.dexNumber">({{ activeCard.dexNumber }})</span>
-                -- {{ activeCard.rarity }}
-                <br>
-                <b>Card Type:</b> {{ activeCard.cardType | titlecase }}
-                <br>
-            </mat-card>
-
-            <!-- Activae card nonexistent -->
-            <mat-card *ngIf="NAcard" class="sub-card">
-                The card does not exist in the database.
-            </mat-card>
-        
+            
             <!-- Card Specifics -->
             <div>
                 <!-- Card Form -->
@@ -164,7 +155,7 @@
     <div class="button-box">
         <!-- Submit Card Form -->
         <button mat-raised-button color="prime"
-        [disabled]="!cardForm.valid"
+        [disabled]="!cardForm.valid || activeCard === null"
         (click)="submit()">
             <mat-icon>cloud_upload</mat-icon>
             Add Card to Database

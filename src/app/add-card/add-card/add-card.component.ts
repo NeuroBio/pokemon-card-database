@@ -60,14 +60,14 @@ export class AddCardComponent implements OnInit, OnDestroy {
     this.expansionSubscription = this.cardForm.controls.expansionName.valueChanges
       .subscribe(exp => { 
         const print = this.cardForm.controls.printNumber.value;
-        this.getActiveCard(exp, print);
+        this.activeCard = this.collectionserv.getActiveCard(exp, print);
         this.setForms(exp);
     });
 
     this.printSubscription = this.cardForm.controls.printNumber.valueChanges
       .subscribe(print => {
         const exp = this.cardForm.controls.expansionName.value;
-        this.getActiveCard(exp, print);
+        this.activeCard = this.collectionserv.getActiveCard(exp, print);
     });
   }
 
@@ -125,16 +125,6 @@ export class AddCardComponent implements OnInit, OnDestroy {
 
   removeFlaw(index: number): void {
     this.flaws.removeAt(index);
-  }
-
-  getActiveCard(exp: string, print: number) {
-    if (print && exp) {
-      this.activeCard = this.expansions[exp].cards[print-1];
-      this.NAcard = !this.activeCard
-    } else {
-      this.activeCard = undefined;
-      this.NAcard = false;
-    }
   }
 
   setForms(exp: string) {

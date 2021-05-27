@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
+import { CardPreviewModule } from '../card-preview/card-preview.module';
 
 
 @NgModule({
@@ -22,6 +23,8 @@ import { MatCardModule } from '@angular/material/card';
     CommonModule,
     AddListRoutingModule,
     ReactiveFormsModule,
+
+    CardPreviewModule,
 
     MatButtonModule,
     MatCardModule,
