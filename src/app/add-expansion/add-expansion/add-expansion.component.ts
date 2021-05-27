@@ -54,7 +54,11 @@ export class AddExpansionComponent implements OnInit {
   }
 
   parseCSV(contents: string) {
-    const properties = contents.split(',');
+    const properties = contents.replace(/\r?\n|\r/g, ',').split(',');
+    console.log(properties.length)
+    if (properties[properties.length-1] === '') {
+      properties.pop();
+    }
     const numCards = properties.length / 3;
     const cards = [];
     
@@ -65,13 +69,10 @@ export class AddExpansionComponent implements OnInit {
 
     // create cards
     for(let i = 0; i < numCards; i++) {
-      const name = properties[0 + 3 * i];
+      const name = properties[0 + 3 * i]
+        .replace('(m)', '♂').replace('(f)', '♀').replace("'",'’').replace('�', 'é');
       const type = properties[1 + 3 * i].toLowerCase();
       if (!this.static.ValidTypes.includes(type)) {
-        console.log(this.static.ValidTypes)
-        console.log(type)
-        console.log(this.static.ValidTypes.includes(type))
-
         throw new Error (`Found unexpected type in card ${i+1}: ${properties[1 + 3 * i]}`);
       }
       const rarity = properties[2 + 3 * i];
@@ -84,22 +85,25 @@ export class AddExpansionComponent implements OnInit {
   }
 
   getDexNumber(name: string, type: string): number {
+
+    // early abort
     if (type !== 'pokemon') {
       return null;
     }
+
     const nameParts = name.split(' ');
     let ind = this.static.NationalDex.findIndex(name => name === nameParts[0]);
     if (ind === -1) {
       ind = this.static.NationalDex.findIndex(name => name === nameParts[1]);
       if (ind === -1) {
-        throw new Error('Pokemon not in Pokedex');
+        throw new Error(`Pokemon ${name} not in Pokedex`);
       }
     }
     return ind;
   }
 
   clearCards() {
-    this.expansionForm.patchValue({cards: ''});
+    this.expansionForm.patchValue({ cards: '' });
   }
 
   submit() {
