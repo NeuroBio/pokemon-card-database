@@ -4,6 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Card } from 'src/app/_objects/expansion';
 import { StaticData } from 'src/app/_objects/pokemon-list';
 import { CollectionService } from 'src/app/_services/collection.service';
+import { MessengerService } from 'src/app/_services/messenger.service';
 
 @Component({
   selector: 'app-add-expansion',
@@ -20,6 +21,7 @@ export class AddExpansionComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private collectionserv: CollectionService,
+    private messenger: MessengerService,
     @Optional() public dialogRef: MatDialogRef<AddExpansionComponent>) { }
 
   ngOnInit(): void {
@@ -107,10 +109,9 @@ export class AddExpansionComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.expansionForm.value);
     return this.collectionserv.addExpansion(this.expansionForm.value)
-        .then(() => {
-        console.log('Successful upload.');
+      .then(() => {
+        this.messenger.send('Expansion uploaded.');
         this.dialogRef.close();
     });
   }

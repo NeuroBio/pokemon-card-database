@@ -7,6 +7,7 @@ import { FlawInfo } from 'src/app/_objects/card-instance';
 import { Card } from 'src/app/_objects/expansion';
 import { StaticData } from 'src/app/_objects/pokemon-list';
 import { CardService } from 'src/app/_services/card.service';
+import { MessengerService } from 'src/app/_services/messenger.service';
 import * as uuid from 'uuid';
 
 @Component({
@@ -35,6 +36,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private cardserv: CardService,
+    private messenger: MessengerService,
     @Optional() public dialogRef: MatDialogRef<AddCardComponent>
     ) { }
 
@@ -132,7 +134,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
     
     return this.cardserv.uploadCard(newCard)
       .pipe(take(1)).subscribe(() => {
-        console.log('Successful upload.')
+        this.messenger.send('Card uploaded.');
         this.dialogRef.close();
     });
   }
