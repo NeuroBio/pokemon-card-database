@@ -45,32 +45,14 @@ export class CardTableComponent implements OnInit {
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    console.log(this.displayCards)
     this.cards.data = this.displayCards;
-    // NONSENSE
-    // const carder = new CardChunk(this.static.Expansions['Base Set'].cards[0], 'Base Set', this.static.Expansions['Base Set'])
-    // carder.addCard(this.static.Cards[0]);
-    // carder.addCard(this.static.Cards[0]);
-    // const modified = Object.assign({}, this.static.Cards[0]);
-    // modified.condition = "NM";
-    // carder.addCard(modified);
-    // carder.addCard(this.static.Cards[1]);
-    // this.cards.data = [carder,
-    //   new CardChunk(this.static.Expansions['Base Set'].cards[1], 'Base Set', this.static.Expansions['Base Set']),
-    //   new CardChunk(this.static.Expansions['Base Set'].cards[1], 'Base Set', this.static.Expansions['Base Set'])
-    // ];
-
-    // legit
     this.filterForm = this.createFilterForm();
     this.filterSubscription = this.filterForm.valueChanges
       .subscribe(value => this.cards.filter = JSON.stringify(value));
     this.cards.filterPredicate = this.customFilterPredicate();
-
   }
 
-
   // Sorting functions
-
   sortData(sort: Sort) {
     const data = this.cards.data.slice();
     if (!sort.active || sort.direction === '') {

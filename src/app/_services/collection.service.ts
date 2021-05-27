@@ -12,7 +12,7 @@ import { SetExpansion } from '../_objects/expansion';
 export class CollectionService {
 
   allCards = new BehaviorSubject<CardStorage[]>([]);
-  expansions = new BehaviorSubject<SetExpansion[]>([]);
+  expansions = new BehaviorSubject<Object>([]);
 
   constructor(private af: AngularFirestore) { 
     this.getCards().pipe(skip(1)).subscribe();
@@ -31,30 +31,32 @@ export class CollectionService {
       .pipe(tap(cards => this.allCards.next(cards)));
   }
 
-  getExpansions(): Observable<SetExpansion[]> {
+  getExpansions(): Observable<Object> {
     return this.af.collection<any>('expansions').valueChanges()
       .pipe(
-        map(expansions => expansions.map(exp => {
-          exp.cards = JSON.parse(exp.cards);
-          return exp as SetExpansion;
-        })),
+        map(expansions => {
+          const expantionDict = {};
+          expansions.forEach(exp => {
+            exp.cards = JSON.parse(exp.cards);
+            expantionDict[exp.name] = exp as SetExpansion;
+          });
+          return expantionDict;
+        }),
         tap(expansions => this.expansions.next(expansions)));
   }
 
   getMaster(): CardChunk[] {
-    console.log(this.expansions.value)
-    return []//this.convertToCardChunks(this.allCards.value);
+    return this.convertToCardChunks(this.allCards.value);
   }
 
   convertToCardChunks(cards: CardStorage[]): CardChunk[] {
     const cardChunks: CardChunk[] = [];
-
-    cards.forEach(card => {
+    cards.forEach(card => {     
       cardChunks.push(new CardChunk(
         card.printNumber,
-        card.expansionName,
-        this.expansions.value[card.expansionName]));
-      cardChunks[-1].owned = card.cards;
+        this.expansions.value[card.expansionName])
+      );
+      cardChunks[cardChunks.length-1].owned = card.cards;
     });
 
     return cardChunks;
