@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit, Optional } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { FlawInfo } from 'src/app/_objects/card-instance';
+import { CardInstance, FlawInfo } from 'src/app/_objects/card-instance';
 import { Card } from 'src/app/_objects/expansion';
 import { StaticData } from 'src/app/_objects/pokemon-list';
 import { CardService } from 'src/app/_services/card.service';
@@ -37,12 +37,18 @@ export class AddCardComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private cardserv: CardService,
     private messenger: MessengerService,
-    @Optional() public dialogRef: MatDialogRef<AddCardComponent>
+    private dialogRef: MatDialogRef<AddCardComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: CardInstance
     ) { }
 
   ngOnInit(): void {
     this.flaws = this.createFlawArray();
-    this.cardForm = this.createForm();
+    if (this.data) {
+      this.cardForm = this.createEditForm(this.data);      
+    } else {
+      this.cardForm = this.createAddForm();
+
+    }
 
     this.expansionSubscription = this.cardForm.controls.expansionName.valueChanges
       .subscribe(exp => { 
@@ -63,7 +69,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
     this.printSubscription.unsubscribe();
   }
 
-  createForm(): FormGroup {
+  createAddForm(): FormGroup {
     return this.fb.group({
       expansionName: ['', Validators.required],
       printNumber: ['', Validators.required],
@@ -75,16 +81,38 @@ export class AddCardComponent implements OnInit, OnDestroy {
     });
   }
 
+  createEditForm(data: CardInstance): FormGroup {
+    data.flaws.forEach(flaw =>
+      this.addFlaw(flaw.type, flaw.where, flaw.landmark, flaw.severity));
+
+    return this.fb.group({
+      expansionName: [
+        { value: data.expansionName, disabled: true },
+        Validators.required],
+      printNumber: [
+        { value: data.printNumber, disabled: true },
+        Validators.required],
+      condition: data.condition,
+      form: { value: data.form, disabled: true },
+      front: data.front,
+      back: data.back,
+      flaws: this.flaws,
+    });
+  }
+
   createFlawArray(): FormArray {
     return this.fb.array([]);
   }
 
-  addFlaw(): void {
+  addFlaw(
+    type: string = '', where: string = '',
+    landmark: string = '', severity: string = ''
+  ): void {
     this.flaws.push(this.fb.group({
-      type: ['whitening', Validators.required],
-      where: ['top-right', Validators.required],
-      landmark: ['corner', Validators.required],
-      severity: ['negligible', Validators.required]
+      type: [type, Validators.required],
+      where: [where, Validators.required],
+      landmark: [landmark, Validators.required],
+      severity: [severity, Validators.required]
     }));
   }
 
@@ -129,12 +157,19 @@ export class AddCardComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-    const newCard = this.cardForm.value;
-    newCard.uid = uuid.v4();
-    
+    const newCard = this.cardForm.getRawValue();
+
+    if (!newCard.uid) {
+      newCard.uid = uuid.v4();
+    }
+
     return this.cardserv.uploadCard(newCard)
       .pipe(take(1)).subscribe(() => {
-        this.messenger.send('Card uploaded.');
+        if (this.data) {
+          this.messenger.send('Card edited.')
+        } else {
+          this.messenger.send('Card uploaded.');
+        }
         this.dialogRef.close();
     });
   }
