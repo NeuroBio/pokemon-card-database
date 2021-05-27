@@ -80,7 +80,7 @@ export class AddExpansionComponent implements OnInit {
       const rarity = properties[2 + 3 * i];
       const dex = this.getDexNumber(name, type);
 
-      cards.push(new Card(name, type, dex ,i , rarity));
+      cards.push(new Card(name, type, dex , i + 1, rarity));
     }
 
     this.expansionForm.patchValue({ cards });
