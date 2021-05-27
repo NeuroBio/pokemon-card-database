@@ -16,7 +16,7 @@
                 <!-- List Name -->
                 <mat-form-field>
                     <mat-label>List Name</mat-label>
-                    <input matInput formControlNmae="name" type="text">
+                    <input matInput formControlName="name" type="text">
                 </mat-form-field>
     
                 <!-- Add Cards -->
@@ -97,6 +97,7 @@
     <div class="button-box">
         <!-- Submission button -->
         <button mat-raised-button color="prime"
+        [disabled]="!listForm.valid"
         (click)="submit()">
             <mat-icon>cloud_upload</mat-icon>
             Add List to Database

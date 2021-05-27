@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Checklist } from '../_objects/checklist';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +9,9 @@ export class CheckListService {
 
   constructor(private af: AngularFirestore) { }
 
-  uploadList(list: any) {
-    return this.af.collection<any>('check-lists').doc(list.name).set(list);
+  uploadList(list: Checklist) {
+    return this.af.collection<Checklist>('check-lists')
+      .doc(`${list.name}`).set(Object.assign({}, list));
   }
 
   delete(listName: string) {

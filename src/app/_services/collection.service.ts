@@ -4,6 +4,7 @@ import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { map, skip, take, tap } from 'rxjs/operators';
 import { CardChunk } from '../_objects/card-chunk';
 import { CardStorage } from '../_objects/card-instance';
+import { Checklist } from '../_objects/checklist';
 import { SetExpansion } from '../_objects/expansion';
 
 @Injectable({
@@ -13,7 +14,7 @@ export class CollectionService {
 
   allCards = new BehaviorSubject<CardStorage[]>([]);
   expansions = new BehaviorSubject<Object>([]);
-  checkLists = new BehaviorSubject<any>(undefined);
+  checkLists = new BehaviorSubject<Checklist[]>(undefined);
 
   constructor(private af: AngularFirestore) { 
     this.getCards().pipe(skip(1)).subscribe();
@@ -51,8 +52,8 @@ export class CollectionService {
       );
   }
 
-  private getCheckLists(): Observable<any> {
-    return this.af.collection<any>('check-lists').valueChanges()
+  private getCheckLists(): Observable<Checklist[]> {
+    return this.af.collection<Checklist>('check-lists').valueChanges()
       .pipe(tap(lists => this.checkLists.next(lists)));
   }
 

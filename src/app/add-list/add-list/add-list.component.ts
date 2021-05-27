@@ -3,8 +3,11 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { Card, SetExpansion } from 'src/app/_objects/expansion';
+import { Checklist } from 'src/app/_objects/checklist';
+import { Card } from 'src/app/_objects/expansion';
+import { CheckListService } from 'src/app/_services/check-list.service';
 import { CollectionService } from 'src/app/_services/collection.service';
+import { MessengerService } from 'src/app/_services/messenger.service';
 
 @Component({
   selector: 'app-add-list',
@@ -27,6 +30,8 @@ export class AddListComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private collectionserv: CollectionService,
+    private checklistserv: CheckListService,
+    private messenger: MessengerService,
     private dialogRef: MatDialogRef<AddListComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
@@ -92,7 +97,12 @@ export class AddListComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-
+    const checklist = new Checklist(this.listForm.value.name, this.cards.map(card => card.path));
+    return this.checklistserv.uploadList(checklist)
+      .then(() => {
+        this.messenger.send('Checklist uploaded.');
+        this.dialogRef.close();
+      });
   }
 
 }
