@@ -21,11 +21,13 @@ export class CheckListService {
   }
 
   changeCard(newCheckInfo: CheckInfo, listName: string, index: number): Observable<void> {
-    return this.af.collection('check-lists').doc(`${listName}`)
+    return this.af.collection<any>('check-lists').doc(`${listName}`)
     .valueChanges().pipe(
       switchMap(list => {
-        list[index].checkInfo = newCheckInfo;
-        return this.af.collection('check-lists').doc(`${listName}`).set(list);
+        list.checkInfo = JSON.parse(list.checkInfo);
+        list.checkInfo[index] = newCheckInfo;
+        list.checkInfo = JSON.stringify(list.checkInfo);
+        return this.af.collection('check-lists').doc(`${listName}`).set(Object.assign({}, list));
       })
     );
   }

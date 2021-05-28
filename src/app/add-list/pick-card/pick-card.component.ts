@@ -68,6 +68,7 @@ export class PickCardComponent implements OnInit, OnDestroy {
     const key = `${activeCard.expansionName}-${activeCard.printNumber}`;
     const placeholder = key !== this.data.key;
     const newCheckInfo = new CheckInfo(placeholder, activeCard.uid, key);
+    console.log(newCheckInfo, this.data.listName, this.data.index)
     return this.checklistserv.changeCard(newCheckInfo, this.data.listName, this.data.index)
       .pipe(take(1)).subscribe(() => {
         this.messenger.send(`Card in ${this.data.listName} updated.`);

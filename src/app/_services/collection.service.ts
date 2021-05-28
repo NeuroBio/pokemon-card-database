@@ -100,11 +100,13 @@ export class CollectionService {
   }
 
   getCheckList(listName: string): CardChunk[] {
-    const list = this.checkLists.value.find(list => list.name === listName);
+    const list: any = this.checkLists.value.find(list => list.name === listName);
+    list.checkInfo = JSON.parse(list.checkInfo);
     const cardChunks: CardChunk[] = [];
     const cards: any = this.allCards.value;
     const expansions = this.expansions.value;
 
+    console.log('works til here')
     // for each card in a list
     list.cardKeys.forEach((key, i) => {
       const keyParts = key.split('-')
@@ -115,7 +117,7 @@ export class CollectionService {
       // if there is a card instance, get it and load it into the new chard chunk
       if (list.checkInfo[i].uid) {
         const cardType = cards[list.checkInfo[i].key];
-        newChunk.owned.push(JSON.parse(cardType.cards)[list.checkInfo[i].uid]);
+        newChunk.owned.push(cardType[list.checkInfo[i].uid]);
       }
       cardChunks.push(newChunk);
     });
