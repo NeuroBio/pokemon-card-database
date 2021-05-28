@@ -21,10 +21,17 @@
     
                 <!-- Add Cards -->
                 <form [formGroup]="cardForm" id="card-form">
-                    <br>
-                    <h3>Add Card</h3>
+                    <div id="select-mode">
+                        <mat-form-field>
+                            <mat-label>Action</mat-label>
+                            <mat-select formControlName="drag">
+                                <mat-option [value]="true">Modify Checklist</mat-option>
+                                <mat-option [value]="false">Assign Cards to Slots</mat-option>
+                            </mat-select>
+                        </mat-form-field>    
+                    </div>
 
-                    <div>
+                    <div *ngIf="this.cardForm.get('drag').value">
                         <!-- expansion Name -->
                         <mat-form-field id="push-exp">
                             <mat-label>Expansion</mat-label>
@@ -45,10 +52,13 @@
 
 
                     <app-card-preview
+                    *ngIf="this.cardForm.get('drag').value"
                     [activeCard]="activeCard"
                     ></app-card-preview>
 
                     <button mat-raised-button color="prime"
+                    *ngIf="this.cardForm.get('drag').value"
+                    [disabled]="!this.cardForm.get('drag').value"
                     (click)="addCard()">
                         <mat-icon>add</mat-icon>
                         Add Card
@@ -61,9 +71,10 @@
     
             <!-- Drag and Drop -->
             <div id="drag-n-drop">
-                <h3>Cards in List</h3>
+                <h3>Cards in List:</h3>
                 <div cdkDropList class="card-list" (cdkDropListDropped)="drop($event)">
-                    <div class="card-box" *ngFor="let card of cards; let i = index" cdkDrag>
+                    <div class="card-box" *ngFor="let card of cards; let i = index"
+                    cdkDrag [cdkDragDisabled]="!this.cardForm.get('drag').value">
                         <div class="card-placeholder" *cdkDragPlaceholder></div>
                         <div class="center-align">
                             {{ card.exp.name }}:
@@ -71,23 +82,13 @@
                             {{ card.preview.printNumber }}/{{ card.exp.numCards }}
                             {{ card.preview.rarity }}
                         </div>
+                        <!-- remove card -->
+                        <button mat-icon-button *ngIf="this.cardForm.get('drag').value"
+                        aria-label="Remove-Card" color="tert" class="action-button"
+                        (click)="removeCard(i)">
+                            <mat-icon>clear</mat-icon>
 
-                        <!-- <div class="action-buttons"> -->
-                            <!-- add instance -->
-                            <!-- <button mat-icon-button aria-label="Add-Card-Instance"
-                            color="prime" class="action-button">
-                                <mat-icon>add</mat-icon>
-                            </button> -->
-
-                            <!-- remove card -->
-                            <button mat-icon-button aria-label="Remove-Card"
-                            color="tert" class="action-button"
-                            (click)="removeCard(i)">
-                                <mat-icon>clear</mat-icon>
-
-                            </button>
-    
-                        <!-- </div> -->
+                        </button>
                     </div>
                 </div>
             </div>

@@ -80,6 +80,6 @@ export class PickCardComponent implements OnInit, OnDestroy {
   }
 
   setIndex(index: number): void {
-    this.cardForm.patchValue({activeCardChunk: this.masterList[index].owned});
+    this.cardForm.patchValue({ activeCardChunk: this.masterList[index].owned });
   }
 }

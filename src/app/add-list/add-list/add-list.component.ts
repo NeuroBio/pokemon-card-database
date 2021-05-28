@@ -19,6 +19,7 @@ export class AddListComponent implements OnInit, OnDestroy {
   listForm: FormGroup;
   cardForm: FormGroup;
   cards: any[] = [];
+  drag = true;
 
   activeCard: Card;
   expansionSubscription: Subscription;
@@ -68,6 +69,7 @@ export class AddListComponent implements OnInit, OnDestroy {
 
   createCardForm(): FormGroup {
     return this.fb.group({
+      drag: true,
       expansion: this.expansionNames[0],
       print: [1, Validators.required],
     })
