@@ -1,0 +1,33 @@
+ <div class="card-instance">
+     <div *ngIf="instance">
+        <!-- images of the card -->
+        <div class="image-holder">
+            <div *ngIf="instance.front">
+                <img src="instance.front">
+            </div>
+            <div *ngIf="instance.back">
+                <img src="instance.back">
+            </div>    
+        </div>
+
+        <!-- Card state -->
+        {{ instance.form }} {{ instance.condition }}
+        <br>
+        Flaws:
+        <div class="tab" *ngFor="let flaw of instance.flaws">
+            - {{ flaw.severity }} {{ flaw.type }} {{ flaw.where }}  {{ flaw.landmark }}
+        </div>
+        <div *ngIf="instance.flaws.length === 0" class="tab">
+            - None
+        </div>
+
+    </div>
+
+
+    <!-- Edit button -->
+    <button mat-icon-button color="prime" *ngIf="allowEdit"
+    class="edit-button"
+    (click)="edit()">
+        <mat-icon>edit</mat-icon>
+    </button>
+ </div>

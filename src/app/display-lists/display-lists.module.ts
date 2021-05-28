@@ -19,20 +19,20 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { MainDisplayComponent } from './main-display/main-display.component';
 import { AddCardModule } from '../add-card/add-card.module';
-import { IndividualCardComponent } from './individual-card/individual-card.component';
+import { CardPreviewModule } from '../card-preview/card-preview.module';
 
 
 @NgModule({
   declarations: [
     CardTableComponent,
-    MainDisplayComponent,
-    IndividualCardComponent
+    MainDisplayComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
 
     AddCardModule,
+    CardPreviewModule,
 
     MatButtonModule,
     MatCardModule,

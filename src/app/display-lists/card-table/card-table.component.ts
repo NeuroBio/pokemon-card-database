@@ -1,9 +1,11 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
+import { PickCardComponent } from 'src/app/add-list/pick-card/pick-card.component';
 import { CardChunk } from 'src/app/_objects/card-chunk';
 import { CheckInfo } from 'src/app/_objects/checklist';
 import { StaticData } from 'src/app/_objects/pokemon-list';
@@ -27,7 +29,7 @@ export class CardTableComponent implements OnInit, OnChanges {
 
   @Input() displayCards: CardChunk[] = [];
   @Input() allowEdit: boolean = false;
-  @Input() isMaster: boolean = true;
+  @Input() listName: string = '';
 
   cards = new MatTableDataSource<CardChunk>();
   displayColumns = [
@@ -46,7 +48,9 @@ export class CardTableComponent implements OnInit, OnChanges {
 
   static = new StaticData();
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.filterForm = this.createFilterForm();
@@ -71,8 +75,15 @@ export class CardTableComponent implements OnInit, OnChanges {
     }
   }
 
-  editChecklistCard(card: CardChunk): void {
-
+  editChecklistCard(card: CardChunk, index: number): void {
+    this.dialog.open(PickCardComponent, {
+      width: '80vw',
+      maxWidth: '650px',
+      data: {
+        key: `${card.expansionName}-${card.printNumber}`,
+        listName: this.listName,
+        index
+    } });
   }
 
   // Sorting functions
@@ -138,5 +149,9 @@ export class CardTableComponent implements OnInit, OnChanges {
       return include;
     };
     return myFilterPredicate;
+  }
+
+  isMaster() {
+    return this.listName === 'Masterlist'
   }
 }

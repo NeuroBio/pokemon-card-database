@@ -1,0 +1,47 @@
+@import '../../Variables.scss';
+
+form {
+    position: relative;
+    max-width: 650px;
+    background-color: $palette2;
+    padding: 1em;
+}
+
+h2 {
+    width: calc(100% - 1em);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: $palette3;
+    padding: .5em;
+    margin: 0px;
+}
+
+#choose-card-section {
+    background-color: $palette5;
+    display: flex;
+    flex-flow: column;
+}
+
+.side-by-side {
+    display: flex;
+    background-color: $palette5;
+    justify-content: flex-start;
+}
+
+#card-picking-section {
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    margin: 1em 0em 0em 1em;
+}
+
+mat-divider {
+    padding: 0em 1em;
+}
+
+#decision-section {
+    flex-grow: 1;
+    margin: 1em 0em 0em 1em;
+}
+

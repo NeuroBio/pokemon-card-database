@@ -15,8 +15,8 @@ export class CollectionService {
   allCards = new BehaviorSubject<CardStorage[]>([]);
   expansions = new BehaviorSubject<Object>([]);
   checkLists = new BehaviorSubject<Checklist[]>(undefined);
-
-  private masterList = new BehaviorSubject<CardChunk[]>([]);
+  masterList = new BehaviorSubject<CardChunk[]>([]);
+  
   private changed: boolean;
 
   constructor(private af: AngularFirestore) { 

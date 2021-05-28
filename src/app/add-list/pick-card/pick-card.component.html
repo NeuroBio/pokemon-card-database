@@ -1,1 +1,54 @@
-<p>pick-card works!</p>
+<form [formGroup]="cardForm">
+    <mat-card class="tight-card" id="choose-card-section">
+        <h2>
+            Create List
+    
+            <button mat-icon-button aria-label="close-dialog-box" color="tert"
+            (click)="close()">
+                <mat-icon>clear</mat-icon>
+            </button>
+        </h2>
+    
+        <div class="side-by-side">
+            <div id="card-picking-section">
+                <mat-form-field>
+                    <mat-label>Card</mat-label>
+                    <mat-select formControlName="activeCardChunk">
+                        <mat-option *ngFor="let card of masterList"
+                        [value]="card">
+                            {{ card.expansionName }}: {{ card.cardTitle }} ({{ card.printNumber }}/{{ card.numCards }})
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            
+                <mat-form-field *ngIf="this.getValue('activeCardChunk')">
+                    <mat-label>Card Instance</mat-label>
+                    <mat-select formControlName="activeCard">
+                        <mat-option *ngFor="let instance of this.getValue('activeCardChunk').owned" [value]="instance">
+                            {{ instance.form }} {{ instance.condition }}
+                        </mat-option>    
+                    </mat-select>
+                </mat-form-field>
+    
+            </div>
+
+            <mat-divider [vertical]="true"></mat-divider>
+
+            <div id="decision-section">
+                <app-individual-card
+                [instance]="cardForm.get('activeCard').value"
+                ></app-individual-card>
+            </div>
+        </div>
+
+    </mat-card>
+
+    <div class="button-box">
+        <button mat-raised-button color="prime"
+        [disabled]="!this.getValue('activeCard')"
+        (click)="submit()">
+            <mat-icon>check</mat-icon>
+            Submit Changes
+        </button>    
+    </div>
+</form>
