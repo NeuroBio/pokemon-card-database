@@ -1,0 +1,36 @@
+@import '../../Variables.scss';
+
+#card-form-sub {
+    background-color: $palette2;
+}
+
+#inputs-section {
+    padding: 1em;
+    background-color: $palette5;
+}
+
+h2 {
+    width: calc(100% - 1em);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: $palette3;
+    padding: .5em;
+    margin: 0px;
+}
+
+#push-exp-2 {
+    margin-right: 1em;
+}
+
+#small-print-input-2 {
+    width: 50px;
+}
+
+.sub-card {
+    background-color: $palette6;
+}
+
+#card-choices {
+    display: flex;
+}

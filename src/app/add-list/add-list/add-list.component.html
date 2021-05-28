@@ -113,6 +113,14 @@
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
+
+                        <div *ngIf="populateMethods[i].method === 'useCard'">
+                            <br>
+                            Using: 
+                            <app-individual-card
+                            [instance]="getCard(populateMethods[i])"
+                            ></app-individual-card>
+                        </div>
                     </div>
                 </div>
             </div>

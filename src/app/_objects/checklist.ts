@@ -27,12 +27,11 @@ export class PopulateMethod {
     key?: string;
     uid?: string
 
-    constructor(method: string) {
+    constructor(method: string, exp?: string, print?: string, uid?: string) {
         this.method = method;
-    }
-
-    setCard(exp: string, print: string, uid: string) {
-        this.key = `${exp}-${print}`;
-        this.uid = uid;
+        if (method === 'useCard') {
+            this.key = `${exp}-${print}`;
+            this.uid = uid;
+        }
     }
 }

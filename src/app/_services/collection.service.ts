@@ -142,6 +142,10 @@ export class CollectionService {
     return chunk ? Object.values(chunk) : null;
   }
 
+  getCard(key: string, uid: string) {
+    return this.allCards.value[key][uid];
+  }
+
   getBestCard(cards: CardInstance[]): CardInstance {
     // get the best card based on 1) form and 2) condition
     let bestCard: CardInstance;

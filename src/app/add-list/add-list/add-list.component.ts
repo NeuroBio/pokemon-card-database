@@ -1,13 +1,15 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { CheckInfo, Checklist, PopulateMethod } from 'src/app/_objects/checklist';
 import { Card } from 'src/app/_objects/expansion';
 import { CheckListService } from 'src/app/_services/check-list.service';
 import { CollectionService } from 'src/app/_services/collection.service';
 import { MessengerService } from 'src/app/_services/messenger.service';
+import { SelectCardComponent } from '../select-card/select-card.component';
 
 @Component({
   selector: 'app-add-list',
@@ -36,6 +38,7 @@ export class AddListComponent implements OnInit, OnDestroy {
     private collectionserv: CollectionService,
     private checklistserv: CheckListService,
     private messenger: MessengerService,
+    private dialog: MatDialog,
     private dialogRef: MatDialogRef<AddListComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
@@ -97,6 +100,7 @@ export class AddListComponent implements OnInit, OnDestroy {
       instance: ''
     });
     this.populateMethods.push({});
+    this.cardForm.patchValue({ print: this.cardForm.get('print').value + 1 });
   }
 
   removeCard(index: number): void {
@@ -105,7 +109,21 @@ export class AddListComponent implements OnInit, OnDestroy {
   }
 
   populateOption(method: string, index: number): void {
-    this.populateMethods[index] = new PopulateMethod(method);
+    if (method === 'useCard') {
+      this.dialog.open(SelectCardComponent).afterClosed()
+        .pipe(take(1)).subscribe(cardData => {
+          if (cardData) {
+            this.populateMethods[index] = new PopulateMethod(method,
+              cardData.expansion, cardData.print, cardData.uid);
+          }
+      })
+    } else {
+      this.populateMethods[index] = new PopulateMethod(method);
+    }
+  }
+
+  getCard(info: PopulateMethod) {
+    return this.collectionserv.getCard(info.key, info.uid);
   }
 
   submit() {
@@ -121,16 +139,16 @@ export class AddListComponent implements OnInit, OnDestroy {
           }
         } else if (method.method === 'useCard') {
           checklist.checkInfo[i] = new CheckInfo(
-            method.key === checklist.cardKeys[i], method.uid, method.key);
+            method.key !== checklist.cardKeys[i], method.uid, method.key);
         }
       })
     }
 
-    return this.checklistserv.uploadList(checklist)
-      .then(() => {
-        this.messenger.send('Checklist uploaded.');
-        this.dialogRef.close();
-      });
+    // return this.checklistserv.uploadList(checklist)
+    //   .then(() => {
+    //     this.messenger.send('Checklist uploaded.');
+    //     this.dialogRef.close();
+    //   });
   }
 
 }
