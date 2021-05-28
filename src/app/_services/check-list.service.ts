@@ -11,8 +11,9 @@ export class CheckListService {
 
   constructor(private af: AngularFirestore) { }
 
-  uploadList(list: Checklist): Promise<void> {
-    return this.af.collection<Checklist>('check-lists')
+  uploadList(list: any): Promise<void> {
+    list.checkInfo = JSON.stringify(list.checkInfo);
+    return this.af.collection<any>('check-lists')
       .doc(`${list.name}`).set(Object.assign({}, list));
   }
 

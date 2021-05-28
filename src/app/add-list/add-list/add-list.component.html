@@ -21,17 +21,9 @@
     
                 <!-- Add Cards -->
                 <form [formGroup]="cardForm" id="card-form">
-                    <div id="select-mode">
-                        <mat-form-field>
-                            <mat-label>Action</mat-label>
-                            <mat-select formControlName="drag">
-                                <mat-option [value]="true">Modify Checklist</mat-option>
-                                <mat-option [value]="false">Assign Cards to Slots</mat-option>
-                            </mat-select>
-                        </mat-form-field>    
-                    </div>
+                    <h3>{{ drag ? 'Add Cards to List' : 'Prepopulation Options'}}</h3>
 
-                    <div *ngIf="this.cardForm.get('drag').value">
+                    <div *ngIf="drag">
                         <!-- expansion Name -->
                         <mat-form-field id="push-exp">
                             <mat-label>Expansion</mat-label>
@@ -50,19 +42,35 @@
                         </mat-form-field>
                     </div>
 
-
+                    <!-- Preview card to add -->
                     <app-card-preview
-                    *ngIf="this.cardForm.get('drag').value"
+                    *ngIf="drag"
                     [activeCard]="activeCard"
                     ></app-card-preview>
 
-                    <button mat-raised-button color="prime"
-                    *ngIf="this.cardForm.get('drag').value"
-                    [disabled]="!this.cardForm.get('drag').value"
-                    (click)="addCard()">
-                        <mat-icon>add</mat-icon>
-                        Add Card
-                    </button>
+                    <!-- prepopulate List -->
+                    <div *ngIf="!drag" color="prime">
+                        <mat-slide-toggle formControlName="prepopulate">
+                            Auto-prepopulate
+                        </mat-slide-toggle>
+                    </div>
+
+                    <div class="button-box-2">
+                        <button mat-raised-button color="prime"
+                        *ngIf="drag"
+                        [disabled]="!drag"
+                        (click)="addCard()">
+                            <mat-icon>add</mat-icon>
+                            Add Card
+                        </button>
+
+                        <button mat-raised-button color="prime"
+                        (click)="drag = !drag">
+                            <mat-icon>{{ drag ? 'check' : 'arrow_back_ios' }}</mat-icon>
+                            {{ drag ? 'Finalize' : 'Back' }}
+                        </button>
+    
+                    </div>
                     
                 </form>
             </div>
@@ -74,7 +82,7 @@
                 <h3>Cards in List:</h3>
                 <div cdkDropList class="card-list" (cdkDropListDropped)="drop($event)">
                     <div class="card-box" *ngFor="let card of cards; let i = index"
-                    cdkDrag [cdkDragDisabled]="!this.cardForm.get('drag').value">
+                    cdkDrag [cdkDragDisabled]="!drag">
                         <div class="card-placeholder" *cdkDragPlaceholder></div>
                         <div class="center-align">
                             {{ card.exp.name }}:
@@ -83,12 +91,28 @@
                             {{ card.preview.rarity }}
                         </div>
                         <!-- remove card -->
-                        <button mat-icon-button *ngIf="this.cardForm.get('drag').value"
+                        <button mat-icon-button *ngIf="drag"
                         aria-label="Remove-Card" color="tert" class="action-button"
                         (click)="removeCard(i)">
                             <mat-icon>clear</mat-icon>
 
                         </button>
+
+                        <!-- Pick method to prepopulate list -->
+                        <mat-form-field *ngIf="!drag">
+                            <mat-label>Prepopulation Method</mat-label>
+                            <mat-select  [(value)]="selected" [disabled]="!cardForm.get('prepopulate').value">
+                                <mat-option value="best" (click)="populateOption('best', i)">
+                                    Best Card
+                                </mat-option>
+                                <mat-option value="useCard" (click)="populateOption('useCard', i)">
+                                    Use Specific Card
+                                </mat-option>
+                                <mat-option value="skip" (click)="populateOption('skip', i)">
+                                    Skip
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
             </div>
@@ -98,7 +122,7 @@
     <div class="button-box">
         <!-- Submission button -->
         <button mat-raised-button color="prime"
-        [disabled]="!listForm.valid"
+        [disabled]="!listForm.valid || drag"
         (click)="submit()">
             <mat-icon>cloud_upload</mat-icon>
             Add List to Database

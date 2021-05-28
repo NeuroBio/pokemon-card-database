@@ -21,3 +21,18 @@ export class CheckInfo {
         this.key = key;
     }
 }
+
+export class PopulateMethod {
+    method: string;
+    key?: string;
+    uid?: string
+
+    constructor(method: string) {
+        this.method = method;
+    }
+
+    setCard(exp: string, print: string, uid: string) {
+        this.key = `${exp}-${print}`;
+        this.uid = uid;
+    }
+}

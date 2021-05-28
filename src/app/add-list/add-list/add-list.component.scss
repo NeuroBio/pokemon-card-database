@@ -36,11 +36,20 @@ mat-divider {
     background-color: $palette5;
 }
 
+mat-slide-toggle {
+    margin: 1em 0em;
+}
+
+.button-box-2 {
+    display: flex;
+    justify-content: space-between;
+}
+
 #card-form {
     display: flex;
     flex-flow: column;
-    align-items: flex-start;
-    align-items: center;
+    // align-items: flex-start;
+    // align-items: center;
     margin-bottom: 1em;
 }
 

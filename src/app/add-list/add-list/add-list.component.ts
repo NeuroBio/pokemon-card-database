@@ -3,7 +3,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { Checklist } from 'src/app/_objects/checklist';
+import { CheckInfo, Checklist, PopulateMethod } from 'src/app/_objects/checklist';
 import { Card } from 'src/app/_objects/expansion';
 import { CheckListService } from 'src/app/_services/check-list.service';
 import { CollectionService } from 'src/app/_services/collection.service';
@@ -20,6 +20,9 @@ export class AddListComponent implements OnInit, OnDestroy {
   cardForm: FormGroup;
   cards: any[] = [];
   drag = true;
+
+  selected = 'best';
+  populateMethods = [];
 
   activeCard: Card;
   expansionSubscription: Subscription;
@@ -69,7 +72,7 @@ export class AddListComponent implements OnInit, OnDestroy {
 
   createCardForm(): FormGroup {
     return this.fb.group({
-      drag: true,
+      prepopulate: true,
       expansion: this.expansionNames[0],
       print: [1, Validators.required],
     })
@@ -82,6 +85,7 @@ export class AddListComponent implements OnInit, OnDestroy {
   // Drag and drop
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.cards, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.populateMethods, event.previousIndex, event.currentIndex);
   }
 
   addCard(): void {
@@ -92,14 +96,36 @@ export class AddListComponent implements OnInit, OnDestroy {
       path: `${cardinfo.expansion}-${cardinfo.print}`,
       instance: ''
     });
+    this.populateMethods.push({});
   }
 
   removeCard(index: number): void {
-    this.cards.splice(index, 1)
+    this.cards.splice(index, 1);
+    this.populateMethods.splice(index, 1);
+  }
+
+  populateOption(method: string, index: number): void {
+    this.populateMethods[index] = new PopulateMethod(method);
   }
 
   submit() {
     const checklist = new Checklist(this.listForm.value.name, this.cards.map(card => card.path));
+    // prepopulation
+    if (this.cardForm.get('prepopulate').value) {
+      this.populateMethods.forEach((method, i) => {
+        if (!method.method || method.method === 'best') {
+          const cards = this.collectionserv.getChunk(checklist.cardKeys[i]);
+          const bestCard = this.collectionserv.getBestCard(cards);
+          if (bestCard) { // a suitable card ws found
+            checklist.checkInfo[i] = new CheckInfo(false, bestCard.uid, checklist.cardKeys[i]);
+          }
+        } else if (method.method === 'useCard') {
+          checklist.checkInfo[i] = new CheckInfo(
+            method.key === checklist.cardKeys[i], method.uid, method.key);
+        }
+      })
+    }
+
     return this.checklistserv.uploadList(checklist)
       .then(() => {
         this.messenger.send('Checklist uploaded.');
