@@ -32,6 +32,7 @@ export class CardTableComponent implements OnInit, OnChanges {
     'DropDown', 'Dex' ,'Name', 'Expansion', 'Gen',
     'Release', 'Print', 'Copies'
   ];
+  
   expanded: CardChunk;
 
   filterObject  = {

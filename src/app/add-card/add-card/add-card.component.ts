@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, Optional } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -54,7 +54,6 @@ export class AddCardComponent implements OnInit, OnDestroy {
       this.cardForm = this.createEditForm(this.data);      
     } else {
       this.cardForm = this.createAddForm();
-
     }
 
     this.expansionSubscription = this.cardForm.controls.expansionName.valueChanges
@@ -177,12 +176,13 @@ export class AddCardComponent implements OnInit, OnDestroy {
 
   delete() {
     const cardType: Card = this.expansions[this.data.expansionName].cards[this.data.printNumber-1];
+    // check whether to delete
     this.dialog.open(ConfirmComponent, {
       width: '450px',
       data: `Are you sure you want to delete this copy of ${
         cardType.cardTitle} (${cardType.printNumber}/${this.expansions[this.data.expansionName].numCards})?`
       }).afterClosed().pipe(take(1)).subscribe(confirmed => {
-        if (confirmed) {
+        if (confirmed) { // actually delete
           return this.cardserv.deleteCard(
             this.data.expansionName,
             this.data.printNumber,

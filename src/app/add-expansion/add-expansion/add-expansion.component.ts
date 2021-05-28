@@ -47,7 +47,7 @@ export class AddExpansionComponent implements OnInit {
       try { // try to parse file
         const contents = this.reader.result as string;
         this.parseCSV(contents);
-      } catch (err) {
+      } catch (err) { //TODO: give viual cues to parse errors
         this.parseError = true;
         console.error(err);
       }
@@ -64,13 +64,14 @@ export class AddExpansionComponent implements OnInit {
     const numCards = properties.length / 3;
     const cards = [];
     
-    // Chekc if there are three properties per card
+    // Check if there are three properties per card
     if (numCards % 1 !== 0) {
       throw new Error('CSV file did not have the expected numer of properties.');
     }
 
     // create cards
     for(let i = 0; i < numCards; i++) {
+      // handle special characters
       const name = properties[0 + 3 * i]
         .replace('(m)', '♂').replace('(f)', '♀').replace("'",'’').replace('�', 'é');
       const type = properties[1 + 3 * i].toLowerCase();
@@ -94,8 +95,10 @@ export class AddExpansionComponent implements OnInit {
     }
 
     const nameParts = name.split(' ');
+    // standard
     let ind = this.static.NationalDex.findIndex(name => name === nameParts[0]);
     if (ind === -1) {
+      // check of dark pokemon or pokemon ex/gx/v/ect
       ind = this.static.NationalDex.findIndex(name => name === nameParts[1]);
       if (ind === -1) {
         throw new Error(`Pokemon ${name} not in Pokedex`);

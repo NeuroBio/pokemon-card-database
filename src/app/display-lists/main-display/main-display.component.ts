@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CardChunk } from 'src/app/_objects/card-chunk';
-import { CardStorage } from 'src/app/_objects/card-instance';
 import { CollectionService } from 'src/app/_services/collection.service';
 
 @Component({
