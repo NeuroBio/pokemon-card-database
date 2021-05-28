@@ -124,7 +124,6 @@ export class AddListComponent implements OnInit, OnDestroy {
       })
     } else {
       this.populateMethods[index] = new PopulateMethod(method);
-      console.log(this.populateMethods[index])
     }
   }
 
