@@ -32,7 +32,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     this.whichList = this.fb.control('Masterlist');
 
     this.cardSubscription = this.collectionserv.allCards
-      .subscribe(() => this.getList(false));
+      .subscribe(() => this.getList());
 
     this.listSubscription = this.collectionserv.checkLists
       .subscribe(lists => {
@@ -41,7 +41,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     });
 
     this.activeListSubscription = this.whichList.valueChanges
-      .subscribe(() => this.getList(true));
+      .subscribe(() => this.getList());
   }
 
   ngOnDestroy() {
@@ -54,9 +54,9 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     this.allowEdit = !this.allowEdit;
   }
 
-  getList(unchanged: boolean) {
+  getList() {
     if (this.whichList.value === 'Masterlist') {
-      this.activeList = this.collectionserv.getMaster(unchanged);
+      this.activeList = this.collectionserv.getMaster();
     } else {
       this.activeList = this.collectionserv.getCheckList(this.whichList.value);
     }

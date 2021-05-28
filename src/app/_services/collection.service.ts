@@ -13,9 +13,11 @@ import { SetExpansion } from '../_objects/expansion';
 export class CollectionService {
 
   allCards = new BehaviorSubject<CardStorage[]>([]);
-  masterList = new BehaviorSubject<CardChunk[]>([]);
   expansions = new BehaviorSubject<Object>([]);
   checkLists = new BehaviorSubject<Checklist[]>(undefined);
+
+  private masterList = new BehaviorSubject<CardChunk[]>([]);
+  private changed: boolean;
 
   constructor(private af: AngularFirestore) { 
     this.getCards().pipe(skip(1)).subscribe();
@@ -35,7 +37,10 @@ export class CollectionService {
 
   private getCards(): Observable<CardStorage[]> {
     return this.af.collection<CardStorage>('pokemon-cards').valueChanges()
-      .pipe(tap(cards => this.allCards.next(cards)));
+      .pipe(tap(cards => {
+        this.allCards.next(cards)
+        this.changed = true;
+      }));
   }
 
   private getExpansions(): Observable<Object> {
@@ -58,8 +63,8 @@ export class CollectionService {
       .pipe(tap(lists => this.checkLists.next(lists)));
   }
 
-  getMaster(unchanged: boolean): CardChunk[] {
-    if (unchanged) {
+  getMaster(): CardChunk[] {
+    if (!this.changed) {
       return this.masterList.value;
     }
 
@@ -81,6 +86,7 @@ export class CollectionService {
     });
 
     this.masterList.next(cardChunks);
+    this.changed = false;
     return cardChunks;
   }
 
