@@ -13,9 +13,9 @@
             <div id="card-picking-section">
                 <mat-form-field>
                     <mat-label>Card</mat-label>
-                    <mat-select formControlName="activeCardChunk">
-                        <mat-option *ngFor="let card of masterList"
-                        [value]="card">
+                    <mat-select formControlName="activeCardChunkKey">
+                        <mat-option *ngFor="let card of masterList; let i = index" (click)="setIndex(i)"
+                        [value]="card.expansionName + '-' + card.printNumber">
                             {{ card.expansionName }}: {{ card.cardTitle }} ({{ card.printNumber }}/{{ card.numCards }})
                         </mat-option>
                     </mat-select>
@@ -24,7 +24,7 @@
                 <mat-form-field *ngIf="this.getValue('activeCardChunk')">
                     <mat-label>Card Instance</mat-label>
                     <mat-select formControlName="activeCard">
-                        <mat-option *ngFor="let instance of this.getValue('activeCardChunk').owned" [value]="instance">
+                        <mat-option *ngFor="let instance of this.getValue('activeCardChunk')" [value]="instance">
                             {{ instance.form }} {{ instance.condition }}
                         </mat-option>    
                     </mat-select>
@@ -49,6 +49,6 @@
         (click)="submit()">
             <mat-icon>check</mat-icon>
             Submit Changes
-        </button>    
+        </button>
     </div>
 </form>

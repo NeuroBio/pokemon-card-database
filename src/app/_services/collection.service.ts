@@ -3,7 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { map, skip, take, tap } from 'rxjs/operators';
 import { CardChunk } from '../_objects/card-chunk';
-import { CardStorage } from '../_objects/card-instance';
+import { CardInstance } from '../_objects/card-instance';
 import { Checklist } from '../_objects/checklist';
 import { SetExpansion } from '../_objects/expansion';
 
@@ -12,11 +12,13 @@ import { SetExpansion } from '../_objects/expansion';
 })
 export class CollectionService {
 
-  allCards = new BehaviorSubject<CardStorage[]>([]);
+  allCards = new BehaviorSubject<Object>([]);
   expansions = new BehaviorSubject<Object>([]);
   checkLists = new BehaviorSubject<Checklist[]>(undefined);
   masterList = new BehaviorSubject<CardChunk[]>([]);
-  
+
+  private bestForm = {'1st': 0, 'shadowless': 1, 'UK 2000': 2, 'unlimited': 3, 'reverse': 4, 'standard': 5};
+  private bestCondition = {'M': 0, 'NM': 1, 'LP': 2, 'MP': 3, 'HP': 4};
   private changed: boolean;
 
   constructor(private af: AngularFirestore) { 
@@ -35,9 +37,16 @@ export class CollectionService {
     });
   }
 
-  private getCards(): Observable<CardStorage[]> {
-    return this.af.collection<CardStorage>('pokemon-cards').valueChanges()
-      .pipe(tap(cards => {
+  private getCards(): Observable<Object> {
+    return this.af.collection<any>('pokemon-cards').valueChanges()
+      .pipe(
+        map(cards => {
+          const cardObject = {}
+          cards.forEach(cardType =>
+            cardObject[`${cardType.expansionName}-${cardType.printNumber}`] = JSON.parse(cardType.cards));
+          return cardObject;
+        }),
+        tap(cards => {
         this.allCards.next(cards)
         this.changed = true;
       }));
@@ -68,21 +77,21 @@ export class CollectionService {
       return this.masterList.value;
     }
 
-    const cards: any[] = this.allCards.value;
+    const cards = this.allCards.value;
     const cardChunks: CardChunk[] = [];
     // loop through all cards
-    cards.forEach(card => {
+    Object.keys(cards).forEach(key => {
+      const keyParts = key.split('-');
 
       // create card chunk based on print/expansion
       cardChunks.push(new CardChunk(
-        card.printNumber,
-        this.expansions.value[card.expansionName])
+        +keyParts[1],
+        this.expansions.value[keyParts[0]])
       );
 
       // load in the desired cards
-      const rawCards = JSON.parse(card.cards);
-      Object.keys(rawCards).forEach(uid =>
-        cardChunks[cardChunks.length-1].owned.push(rawCards[uid]))
+      Object.keys(cards[key]).forEach(uid =>
+        cardChunks[cardChunks.length-1].owned.push(cards[key][uid]))
     });
 
     this.masterList.next(cardChunks);
@@ -125,6 +134,43 @@ export class CollectionService {
     } else {
       undefined;
     }
+  }
+
+  getChunk(key: string): CardInstance[] {
+    const chunk = this.allCards.value[key];
+    return chunk ? Object.values(chunk) : null;
+  }
+
+  getBestCard(cards: CardInstance[]): CardInstance {
+    // get the best card based on 1) form and 2) condition
+    let bestCard: CardInstance;
+    const isRareHolo = this.expansions.value[cards[0].expansionName]
+      .cards[cards[0].printNumber].rarity === 'rare-holo';
+
+    cards.forEach(card => {
+      if (!bestCard) { // add first card
+        bestCard = card;
+        return;
+      }
+
+      if (this.bestForm[card.form] < this.bestForm[bestCard.form]) { // get better form
+        // catch case where holos are better than reverse rares
+        if (isRareHolo && bestCard.form === 'standard' && card.form === 'reverse') {
+          return;
+        }
+
+        // standrd cases
+        bestCard = card;
+        return;
+      } else if (this.bestForm[card.form] === this.bestForm[bestCard.form]) { // same form
+        //check condition
+        if (this.bestCondition[card.condition] < this.bestCondition[bestCard.condition]) { // better condition
+          bestCard = card;
+        }
+      }
+    });
+
+    return bestCard;
   }
 
 }

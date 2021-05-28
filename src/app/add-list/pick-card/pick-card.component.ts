@@ -22,6 +22,8 @@ export class PickCardComponent implements OnInit, OnDestroy {
   masterList: CardChunk[];
   masterSubscription: Subscription;
 
+  chunkSubscription: Subscription;
+
   constructor(
     private checklistserv: CheckListService,
     private collectionserv: CollectionService,
@@ -33,6 +35,14 @@ export class PickCardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.cardForm = this.createForm();
+    const chunk: CardInstance[] = this.collectionserv.getChunk(this.data.key);
+    if (chunk) {
+      this.cardForm.patchValue({
+        activeCardChunkKey: this.data.key,
+        activeCardChunk: chunk,
+        activeCard: this.collectionserv.getBestCard(chunk)
+      });
+    }
     this.masterSubscription = this.collectionserv.masterList
       .subscribe(list => this.masterList = list);
   }
@@ -43,6 +53,7 @@ export class PickCardComponent implements OnInit, OnDestroy {
 
   createForm() {
     return this.fb.group({
+      activeCardChunkKey: '',
       activeCardChunk: '',
       activeCard: ''
     });
@@ -68,4 +79,7 @@ export class PickCardComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
 
+  setIndex(index: number): void {
+    this.cardForm.patchValue({activeCardChunk: this.masterList[index].owned});
+  }
 }
