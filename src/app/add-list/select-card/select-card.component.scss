@@ -32,5 +32,16 @@ h2 {
 }
 
 #card-choices {
+    position: relative;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+app-individual-card {
+    flex-grow: 1;
+}
+
+#preview-card-container {
+    max-width: 350px;
 }

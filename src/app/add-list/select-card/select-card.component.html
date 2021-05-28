@@ -30,9 +30,11 @@
         </mat-form-field>
 
         <!-- Preview card to add -->
-        <app-card-preview
-        [activeCard]="activeCard"
-        ></app-card-preview>
+        <div id="preview-card-container">
+            <app-card-preview
+            [activeCard]="activeCard"
+            ></app-card-preview>    
+        </div>
 
         <mat-card class="sub-card">
             <h3>Card Instances</h3>
@@ -44,10 +46,9 @@
                 [instance]="instance"
                 ></app-individual-card>
 
-                <button mat-raised-button 
+                <button mat-icon-button color="prime" aria-label="Select-Card"
                 (click)="submit(i)">
                     <mat-icon>check</mat-icon>
-                    Select Card
                 </button>
             </div>
         </mat-card>

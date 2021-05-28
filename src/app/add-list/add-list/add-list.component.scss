@@ -90,6 +90,15 @@ app-card-preview {
     width: 300px;
     margin: 0em -1.5em 0em -1em;
 }
+
+#population-methods {
+    display: flex;
+    justify-content: space-between;
+}
+
+#add-a-top-line {
+    border-top: 1px solid $borders-grey;
+}
 // CSS for drag and drop
 // original code form https://www.thirdrocktechkno.com/blog/building-interactive-lists-with-the-new-angular-7-drag-and-drop-tool/
 
@@ -107,9 +116,6 @@ app-card-preview {
     padding: 1em;
     border-bottom: solid 1px $palette9;
     background-color: $palette6;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     cursor: move;
 }
   

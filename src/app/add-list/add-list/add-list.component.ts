@@ -23,7 +23,6 @@ export class AddListComponent implements OnInit, OnDestroy {
   cards: any[] = [];
   drag = true;
 
-  selected = 'best';
   populateMethods = [];
 
   activeCard: Card;
@@ -110,7 +109,10 @@ export class AddListComponent implements OnInit, OnDestroy {
 
   populateOption(method: string, index: number): void {
     if (method === 'useCard') {
-      this.dialog.open(SelectCardComponent).afterClosed()
+      this.dialog.open(SelectCardComponent, {
+        width: '80vw',
+        maxWidth: '650px'
+      }).afterClosed()
         .pipe(take(1)).subscribe(cardData => {
           if (cardData) {
             this.populateMethods[index] = new PopulateMethod(method,
@@ -120,6 +122,10 @@ export class AddListComponent implements OnInit, OnDestroy {
     } else {
       this.populateMethods[index] = new PopulateMethod(method);
     }
+  }
+
+  getMethodValue(index: number) {
+    return this.populateMethods[index].method ? this.populateMethods[index].method : 'best';
   }
 
   getCard(info: PopulateMethod) {
@@ -144,11 +150,11 @@ export class AddListComponent implements OnInit, OnDestroy {
       })
     }
 
-    // return this.checklistserv.uploadList(checklist)
-    //   .then(() => {
-    //     this.messenger.send('Checklist uploaded.');
-    //     this.dialogRef.close();
-    //   });
+    return this.checklistserv.uploadList(checklist)
+      .then(() => {
+        this.messenger.send('Checklist uploaded.');
+        this.dialogRef.close();
+      });
   }
 
 }
