@@ -20,7 +20,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
   listSubscription: Subscription;
   activeListSubscription: Subscription;
 
-  allowEdit = true// false;
+  allowEdit = false;
 
   constructor(
     private fb: FormBuilder,
@@ -30,7 +30,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // control active list
     this.collectionserv.getMaster();
-    this.whichList = this.fb.control('test')// 'Masterlist');
+    this.whichList = this.fb.control('Masterlist');
 
     this.cardSubscription = this.collectionserv.allCards
       .subscribe(() => this.getList());
@@ -39,6 +39,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
       .subscribe(lists => {
         this.checklists = lists.map(list => list.name)
         this.checklists.splice(0, 0, 'Masterlist')
+        this.getList();
     });
 
     this.activeListSubscription = this.whichList.valueChanges

@@ -100,13 +100,12 @@ export class CollectionService {
   }
 
   getCheckList(listName: string): CardChunk[] {
-    const list: any = this.checkLists.value.find(list => list.name === listName);
+    const list: any =  Object.assign({}, this.checkLists.value.find(list => list.name === listName));
     list.checkInfo = JSON.parse(list.checkInfo);
     const cardChunks: CardChunk[] = [];
     const cards: any = this.allCards.value;
     const expansions = this.expansions.value;
 
-    console.log('works til here')
     // for each card in a list
     list.cardKeys.forEach((key, i) => {
       const keyParts = key.split('-')

@@ -68,7 +68,7 @@ export class CardTableComponent implements OnInit, OnChanges {
     if (this.displayColumns.length === 8) {
       this.displayColumns.pop();
     }
-    if (this.isMaster) {
+    if (this.isMaster()) {
       this.displayColumns.push('Copies');
     } else {
       this.displayColumns.push('Have');
