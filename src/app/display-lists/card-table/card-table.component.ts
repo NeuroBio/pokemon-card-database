@@ -40,8 +40,8 @@ export class CardTableComponent implements OnInit, OnChanges {
   expanded: CardChunk;
 
   filterObject  = {
-    dex: '', title: '', expansion: '',
-    gen: '', release: '', print: '', copies: null
+    dex: '', title: '', expansion: '', gen: '',
+    release: '', print: '', copies: null, haveCard: ''
   };
   filterForm: FormGroup;
   filterSubscription: Subscription;
@@ -145,13 +145,15 @@ export class CardTableComponent implements OnInit, OnChanges {
         // filter on print
         && (!searchString.print || card.printNumber === searchString.print)
         // filter on copies
-        && (searchString.copies === null || card.owned.length === searchString.copies);
+        && (searchString.copies === null || card.owned.length === searchString.copies)
+        // filter on have
+        && (!searchString.haveCard || card.haveCard() === searchString.haveCard);
       return include;
     };
     return myFilterPredicate;
   }
 
   isMaster() {
-    return this.listName === 'Masterlist'
+    return this.listName === 'Masterlist';
   }
 }

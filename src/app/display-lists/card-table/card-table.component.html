@@ -44,9 +44,19 @@
         </mat-form-field>
     
         <!-- Copies filter -->
-        <mat-form-field floatLabel="always" class="filter" appearance="fill">
-            <mat-label>{{ isMaster() ? 'Copies (#)' : 'Have' }}</mat-label>
+        <mat-form-field floatLabel="always" class="filter" appearance="fill" *ngIf="isMaster()">
+            <mat-label>Copies (#)</mat-label>
             <input matInput type="number" min="0" formControlName="copies">
+        </mat-form-field>
+
+        <!-- Have Filter -->
+        <mat-form-field floatLabel="always" class="filter" appearance="fill" *ngIf="!isMaster()">
+            <mat-label>Have</mat-label>
+            <mat-select formControlName="haveCard">
+                <mat-option value="None">None</mat-option>
+                <mat-option value="Placeholder">Placeholder</mat-option>
+                <mat-option value="Have">Have</mat-option>
+            </mat-select>
         </mat-form-field>
 
         <button mat-raised-button color="prime"
