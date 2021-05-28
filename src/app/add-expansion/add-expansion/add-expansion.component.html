@@ -98,7 +98,7 @@
 
                     <!-- Content -->
                     <tr *ngFor="let card of expansionForm.get('cards').value">
-                        <td>{{ card.printNumber + 1 }}</td>
+                        <td>{{ card.printNumber }}</td>
                         <td>
                             {{ card.cardTitle }}<span *ngIf="card.dexNumber">
                             ({{ card.dexNumber}})</span>
