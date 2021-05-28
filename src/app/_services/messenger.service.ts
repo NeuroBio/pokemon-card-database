@@ -8,7 +8,7 @@ export class MessengerService {
 
   constructor(private snackbar: MatSnackBar) { }
 
-  send(message: string) {
-    this.snackbar.open(message, '', { duration: 3000 });
+  send(message: string): void {
+    this.snackbar.open(message, undefined, { duration: 1000 });
   }
 }

@@ -43,14 +43,14 @@ export class CardService {
     );
   }
 
-  deleteCard(expansion: string, print: number, uid: string): Observable<void> {
+  deleteCard(expansion: string, print: number, uid: string): Observable<any> {
     return this.af.doc<any>(`pokemon-cards/${expansion}-${print}`)
     .valueChanges().pipe(
       take(1),
       switchMap(cardBox => {
         cardBox.cards = JSON.parse(cardBox.cards);
         if (Object.keys(cardBox.cards).length === 1) {
-          return this.af.doc(`pokemon-cards/${expansion}-${print}`).delete();
+          return this.af.collection<any>(`pokemon-cards`).doc(`${expansion}-${print}`).delete();
         } else {
           delete cardBox.cards[uid];
           cardBox.cards = JSON.stringify(cardBox.cards);

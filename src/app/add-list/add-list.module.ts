@@ -13,11 +13,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { CardPreviewModule } from '../card-preview/card-preview.module';
+import { PickCardComponent } from './pick-card/pick-card.component';
 
 
 @NgModule({
   declarations: [
-    AddListComponent
+    AddListComponent,
+    PickCardComponent
   ],
   imports: [
     CommonModule,

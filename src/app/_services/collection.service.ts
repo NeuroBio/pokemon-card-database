@@ -13,6 +13,7 @@ import { SetExpansion } from '../_objects/expansion';
 export class CollectionService {
 
   allCards = new BehaviorSubject<CardStorage[]>([]);
+  masterList = new BehaviorSubject<CardChunk[]>([]);
   expansions = new BehaviorSubject<Object>([]);
   checkLists = new BehaviorSubject<Checklist[]>(undefined);
 
@@ -57,9 +58,13 @@ export class CollectionService {
       .pipe(tap(lists => this.checkLists.next(lists)));
   }
 
-  getMaster(): CardChunk[] {
+  getMaster(unchanged: boolean): CardChunk[] {
+    if (unchanged) {
+      return this.masterList.value;
+    }
+
+    const cards: any[] = this.allCards.value;
     const cardChunks: CardChunk[] = [];
-    const cards: any = this.allCards.value;
     // loop through all cards
     cards.forEach(card => {
 
@@ -75,6 +80,7 @@ export class CollectionService {
         cardChunks[cardChunks.length-1].owned.push(rawCards[uid]))
     });
 
+    this.masterList.next(cardChunks);
     return cardChunks;
   }
 
