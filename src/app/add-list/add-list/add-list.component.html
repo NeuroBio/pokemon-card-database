@@ -21,7 +21,7 @@
     
                 <!-- Add Cards -->
                 <form [formGroup]="cardForm" id="card-form">
-                    <h3>{{ drag ? 'Add Cards to List' : 'Prepopulation Options'}}</h3>
+                    <h3>{{ drag ? 'Add Cards to List' : 'Prepopulation Options' }}</h3>
 
                     <div *ngIf="drag">
                         <!-- expansion Name -->
@@ -65,7 +65,7 @@
                         </button>
 
                         <button mat-raised-button color="prime"
-                        (click)="drag = !drag">
+                        (click)="swapState()">
                             <mat-icon>{{ drag ? 'check' : 'arrow_back_ios' }}</mat-icon>
                             {{ drag ? 'Finalize' : 'Back' }}
                         </button>

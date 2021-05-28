@@ -1,9 +1,10 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSelect } from '@angular/material/select';
 import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, timeout } from 'rxjs/operators';
 import { CheckInfo, Checklist, PopulateMethod } from 'src/app/_objects/checklist';
 import { Card } from 'src/app/_objects/expansion';
 import { CheckListService } from 'src/app/_services/check-list.service';
@@ -17,6 +18,8 @@ import { SelectCardComponent } from '../select-card/select-card.component';
   styleUrls: ['./add-list.component.scss']
 })
 export class AddListComponent implements OnInit, OnDestroy {
+
+  @ViewChildren(MatSelect) select: QueryList<MatSelect>;
 
   listForm: FormGroup;
   cardForm: FormGroup;
@@ -121,6 +124,17 @@ export class AddListComponent implements OnInit, OnDestroy {
       })
     } else {
       this.populateMethods[index] = new PopulateMethod(method);
+      console.log(this.populateMethods[index])
+    }
+  }
+
+  swapState() {
+    this.drag = !this.drag;
+
+    if(!this.drag) {
+      setTimeout(() => {
+        this.select.forEach((x, i) => x.options.find(op => 
+          op.value === this.getMethodValue(i)).select()); }, 10);
     }
   }
 
