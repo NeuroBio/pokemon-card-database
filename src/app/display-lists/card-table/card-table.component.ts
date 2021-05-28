@@ -5,6 +5,7 @@ import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { CardChunk } from 'src/app/_objects/card-chunk';
+import { CheckInfo } from 'src/app/_objects/checklist';
 import { StaticData } from 'src/app/_objects/pokemon-list';
 
 @Component({
@@ -26,11 +27,12 @@ export class CardTableComponent implements OnInit, OnChanges {
 
   @Input() displayCards: CardChunk[] = [];
   @Input() allowEdit: boolean = false;
+  @Input() isMaster: boolean = true;
 
   cards = new MatTableDataSource<CardChunk>();
   displayColumns = [
     'DropDown', 'Dex' ,'Name', 'Expansion', 'Gen',
-    'Release', 'Print', 'Copies'
+    'Release', 'Print'
   ];
   
   expanded: CardChunk;
@@ -55,6 +57,22 @@ export class CardTableComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     this.cards.data = this.displayCards;
+    this.swapListType();
+  }
+
+  swapListType() {
+    if (this.displayColumns.length === 8) {
+      this.displayColumns.pop();
+    }
+    if (this.isMaster) {
+      this.displayColumns.push('Copies');
+    } else {
+      this.displayColumns.push('Have');
+    }
+  }
+
+  editChecklistCard(card: CardChunk): void {
+
   }
 
   // Sorting functions
@@ -74,6 +92,7 @@ export class CardTableComponent implements OnInit, OnChanges {
         case 'Release': return this.compare(a.release, b.release, isAsc);
         case 'Print': return this.compare(a.printNumber, b.printNumber, isAsc);
         case 'Copies': return this.compare(a.owned.length, b.owned.length, isAsc);
+        case 'Have': return this.compareHave(a.checkInfo, b.checkInfo, isAsc);
         default: return 0;
       }
     });
@@ -81,6 +100,11 @@ export class CardTableComponent implements OnInit, OnChanges {
 
   compare(a: number | string, b: number | string, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
+  // TODO: test whether this actually works
+  compareHave(a: CheckInfo, b: CheckInfo, isAsc: boolean) {
+    return (!a ? -1 : a.placeholder && !b || !a.placeholder  && (!b || b.placeholder) ? 1 : -1) * (isAsc ? 1 : -1);
   }
 
   // Filter functions

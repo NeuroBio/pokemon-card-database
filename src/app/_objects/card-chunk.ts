@@ -72,12 +72,12 @@ export class CardChunk extends Card {
     haveCard() {
         if (this.checkInfo) {
             if (!this.checkInfo.uid) {
-                return false;
+                return 'None';
             } else {
-                return !this.checkInfo.placeholder;
+                return this.checkInfo.placeholder ? 'Placeholder' : 'Check';
             }
         } else {
-            return this.owned.length > 0;
+            return 'None';
         }
     }
     

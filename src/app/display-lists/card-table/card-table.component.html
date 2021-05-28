@@ -45,7 +45,7 @@
     
         <!-- Copies filter -->
         <mat-form-field floatLabel="always" class="filter" appearance="fill">
-            <mat-label>Copies (#)</mat-label>
+            <mat-label>{{ isMaster ? 'Copies (#)' : 'Have' }}</mat-label>
             <input matInput type="number" min="0" formControlName="copies">
         </mat-form-field>
 
@@ -114,7 +114,16 @@
         <!-- Copies -->
         <ng-container [matColumnDef]="displayColumns[7]">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ displayColumns[7] }}</th>
-            <td mat-cell *matCellDef="let card"> {{ card.conditionCount() }} </td>
+            <td mat-cell *matCellDef="let card">
+                <div class="swap-cell">
+                    {{ isMaster ? card.conditionCount() : card.haveCard() }}
+                    <button mat-icon-button color="prime"
+                    *ngIf="!isMaster && allowEdit" class="drop-button"
+                    (click)="editChecklistCard(card)">
+                        <mat-icon class="drop-icon">edit</mat-icon>
+                    </button>    
+                </div>
+            </td>
         </ng-container>
     
         <!-- Individual Cards -->

@@ -106,3 +106,13 @@ table {
     height: 0px;
     overflow: hidden;
 }
+
+.swap-cell {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.drop-icon {
+    font-size: 12pt;
+}
