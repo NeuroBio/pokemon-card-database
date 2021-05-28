@@ -58,25 +58,45 @@ export class CollectionService {
   }
 
   getMaster(): CardChunk[] {
-    return this.convertToCardChunks(this.allCards.value);
-  }
-
-  getCheckList(listName: string): CardChunk[] {
-    const list = this.checkLists.value.find(list => list.name === listName);
-    console.log(list)
-    return [];
-  }
-
-  private convertToCardChunks(cards: any[]): CardChunk[] {
     const cardChunks: CardChunk[] = [];
-    cards.forEach(card => {     
+    const cards: any = this.allCards.value;
+    // loop through all cards
+    cards.forEach(card => {
+
+      // create card chunk based on print/expansion
       cardChunks.push(new CardChunk(
         card.printNumber,
         this.expansions.value[card.expansionName])
       );
+
+      // load in the desired cards
       const rawCards = JSON.parse(card.cards);
       Object.keys(rawCards).forEach(uid =>
         cardChunks[cardChunks.length-1].owned.push(rawCards[uid]))
+    });
+
+    return cardChunks;
+  }
+
+  getCheckList(listName: string): CardChunk[] {
+    const list = this.checkLists.value.find(list => list.name === listName);
+    const cardChunks: CardChunk[] = [];
+    const cards: any = this.allCards.value;
+    const expansions = this.expansions.value;
+
+    // for each card in a list
+    list.cardKeys.forEach((key, i) => {
+      const keyParts = key.split('-')
+
+      // get the card type to start the cardchunk
+      const newChunk = new CardChunk(+keyParts[1], expansions[keyParts[0]], list.checkInfo[i])
+
+      // if there is a card instance, get it and load it into the new chard chunk
+      if (list.checkInfo[i].uid) {
+        const cardType = cards[list.checkInfo[i].key];
+        newChunk.owned.push(JSON.parse(cardType.cards)[list.checkInfo[i].uid]);
+      }
+      cardChunks.push(newChunk);
     });
 
     return cardChunks;

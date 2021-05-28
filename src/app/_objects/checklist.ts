@@ -13,10 +13,11 @@ export class Checklist {
 export class CheckInfo {
     placeholder: boolean;
     uid: string;
-    key?: string;
+    key: string;
 
-    constructor(placeholder: boolean, uid: string, key?: string) {
+    constructor(placeholder: boolean, uid: string, key: string) {
         this.placeholder = placeholder;
         this.uid = uid;
+        this.key = key;
     }
 }
