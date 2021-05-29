@@ -50,7 +50,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   isLoggedIn() {
-    return this.auth.loggedIn();
+    return this.auth.isLoggedIn;
   }
 
 }

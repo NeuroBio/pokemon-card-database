@@ -1,20 +1,25 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import firebase from 'firebase/app';
-
+import { firebase } from '@firebase/app';
+import '@firebase/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private authState = null;
-  private isLoggedIn = false;
+  private authState;
+  isLoggedIn = false;
 
   constructor(private auth: AngularFireAuth) { }
 
   load() {
-    this.auth.authState.subscribe(auth => this.authState = auth);
+    this.auth.authState.subscribe(auth => {
+      this.authState = auth
+      if (auth) {
+        this.isLoggedIn = true;
+      }
+    });
   }
 
   logout() {
@@ -30,7 +35,7 @@ export class AuthService {
   private oAuthLogin(provider: any) {
     return this.auth.signInWithPopup(provider)
       .then(cred => {
-        console.log(cred);
+        this.authState = cred;
         this.isLoggedIn = true});
   }
 
