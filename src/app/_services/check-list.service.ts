@@ -17,7 +17,7 @@ export class CheckListService {
       .doc(`${list.name}`).set(Object.assign({}, list));
   }
 
-  delete(listName: string): Promise<void> {
+  deleteList(listName: string): Promise<void> {
     return this.af.doc(`check-lists/${listName}`).delete();
   }
 

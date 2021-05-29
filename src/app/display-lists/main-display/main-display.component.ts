@@ -1,8 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { ConfirmComponent } from 'src/app/confirm/confirm/confirm.component';
 import { CardChunk } from 'src/app/_objects/card-chunk';
+import { CheckListService } from 'src/app/_services/check-list.service';
 import { CollectionService } from 'src/app/_services/collection.service';
+import { MessengerService } from 'src/app/_services/messenger.service';
 
 @Component({
   selector: 'app-main-display',
@@ -24,7 +29,10 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private collectionserv: CollectionService
+    private collectionserv: CollectionService,
+    private checklistserv: CheckListService,
+    private messenger: MessengerService,
+    private dialog: MatDialog
     ) { }
 
   ngOnInit(): void {
@@ -62,6 +70,26 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     } else {
       this.activeList = this.collectionserv.getCheckList(this.whichList.value);
     }
+  }
+
+  editList() {
+
+  }
+
+  deleteList() {
+    this.dialog.open(ConfirmComponent, {
+      width: '80vw',
+      maxWidth: '650px',
+      data: `Are you sure you want to delete the ${this.whichList.value} checklist?`
+    }).afterClosed().pipe(take(1)).subscribe(confirm => {
+      if (confirm) {
+        return this.checklistserv.deleteList(this.whichList.value)
+        .then(() => {
+          this.messenger.send('Successfully deleted list.');
+          this.whichList.patchValue('Masterlist')
+        });
+      }
+    });
   }
 
 }

@@ -20,6 +20,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MainDisplayComponent } from './main-display/main-display.component';
 import { AddCardModule } from '../add-card/add-card.module';
 import { CardPreviewModule } from '../card-preview/card-preview.module';
+import { ConfirmModule } from '../confirm/confirm.module';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { CardPreviewModule } from '../card-preview/card-preview.module';
 
     AddCardModule,
     CardPreviewModule,
+    ConfirmModule,
 
     MatButtonModule,
     MatCardModule,
