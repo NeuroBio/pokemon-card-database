@@ -31,6 +31,8 @@ import { AddCardModule } from './add-card/add-card.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AddListModule } from './add-list/add-list.module';
+import { MatIconModule } from '@angular/material/icon';
+import { HttpClientModule } from '@angular/common/http';
 
 export function CollectionFactory(provider: CollectionService) {
   return () => provider.load();
@@ -46,6 +48,7 @@ export function AuthFactory(provider: AuthService) {
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
@@ -59,6 +62,7 @@ export function AuthFactory(provider: AuthService) {
 
     MatButtonModule,
     MatDialogModule,
+    MatIconModule,
     MatSnackBarModule,
 
     AppRoutingModule,

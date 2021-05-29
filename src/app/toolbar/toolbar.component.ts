@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 import { AddCardComponent } from '../add-card/add-card/add-card.component';
 import { AddExpansionComponent } from '../add-expansion/add-expansion/add-expansion.component';
 import { AddListComponent } from '../add-list/add-list/add-list.component';
@@ -13,9 +15,15 @@ import { AuthService } from '../_services/auth.service';
 export class ToolbarComponent implements OnInit {
 
   constructor(
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer,
     private dialog: MatDialog,
     private auth: AuthService
-    ) { }
+  ) {
+      this.matIconRegistry.addSvgIcon(
+        'google-logo',
+        this.domSanitizer.bypassSecurityTrustResourceUrl('assets/images/google.svg'));
+    }
 
   ngOnInit(): void {
   }

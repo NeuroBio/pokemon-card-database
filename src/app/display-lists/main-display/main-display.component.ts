@@ -6,6 +6,7 @@ import { take } from 'rxjs/operators';
 import { AddListComponent } from 'src/app/add-list/add-list/add-list.component';
 import { ConfirmComponent } from 'src/app/confirm/confirm/confirm.component';
 import { CardChunk } from 'src/app/_objects/card-chunk';
+import { AuthService } from 'src/app/_services/auth.service';
 import { CheckListService } from 'src/app/_services/check-list.service';
 import { CollectionService } from 'src/app/_services/collection.service';
 import { MessengerService } from 'src/app/_services/messenger.service';
@@ -32,6 +33,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private collectionserv: CollectionService,
     private checklistserv: CheckListService,
+    private auth: AuthService,
     private messenger: MessengerService,
     private dialog: MatDialog
     ) { }
@@ -95,6 +97,10 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  isLoggedIn() {
+    return this.auth.isLoggedIn;
   }
 
 }

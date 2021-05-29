@@ -5,6 +5,7 @@
             {{ whichList.value }}
             <button mat-icon-button
             [attr.aria-label]="allowEdit ? 'stop-editing-cards' : 'start-editing-cards'"
+            [disabled]="!isLoggedIn()"
             (click)="lockSwitch()">
                 <mat-icon>{{ allowEdit ? 'lock_open' : 'lock' }}</mat-icon>
             </button>    

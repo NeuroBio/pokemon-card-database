@@ -23,7 +23,8 @@
 
         <button mat-raised-button color="second" class="main-actions"
         (click)="changelogin()">
-            {{ isLoggedIn()  ? 'Log Out' : 'Login' }}
+        <mat-icon id="google-logo" svgIcon="google-logo" *ngIf="!isLoggedIn()"></mat-icon>
+            {{ isLoggedIn()  ? 'Log Out' : 'Login With Google' }}
         </button>
     </div>
 </header>
