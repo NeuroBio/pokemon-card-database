@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { forkJoin, Observable, of } from 'rxjs';
-import { finalize, switchMap, take, tap } from 'rxjs/operators';
+import { finalize, switchMap, take } from 'rxjs/operators';
 import { CardInstance, CardStorage } from '../_objects/card-instance';
 
 @Injectable({
@@ -29,21 +29,16 @@ export class CardService {
           cardBox.cards = JSON.parse(cardBox.cards);  
         }
 
-        console.log('starting:', newCard)
-
 
         // upload image if there are any to upload
         return forkJoin(images.map((image, i) => {
           if (image) {
-            console.log('try image')
             const path = `card-images/${newCard.uid}-${i == 0 ? 'front' : 'back'}`;
             return this.as.upload(path, image)
               .snapshotChanges().pipe(finalize(() => {})).toPromise()
               .then(() => {
-                console.log('uploaded')
                 return this.as.ref(path).getDownloadURL().toPromise()
             }).then(url => {
-              console.log(url)
               newCard[i == 0 ? 'front' : 'back'] = url
             });
           }
@@ -78,15 +73,27 @@ export class CardService {
       take(1),
       switchMap(cardBox => {
         cardBox.cards = JSON.parse(cardBox.cards);
-        if (Object.keys(cardBox.cards).length === 1) {
-          return this.af.collection<any>(`pokemon-cards`).doc(`${expansion}-${print}`).delete();
-        } else {
-          delete cardBox.cards[uid];
-          cardBox.cards = JSON.stringify(cardBox.cards);
-          return this.af.collection<any>(`pokemon-cards`)
-            .doc(`${expansion}-${print}`).set(Object.assign({}, cardBox));
-  
-        }
+        return forkJoin([
+          `card-images/${uid}-back`,
+          `card-images/${uid}-front`
+        ].map((url, i) => {
+          if (cardBox.cards[uid][i == 0 ? 'front' : 'back']) {
+            return this.as.ref(url).delete()
+            .pipe(finalize(() => {})).toPromise();
+          }
+          return of ();
+        })).pipe(
+          switchMap(() => {
+            if (Object.keys(cardBox.cards).length === 1) {
+              return this.af.collection<any>(`pokemon-cards`).doc(`${expansion}-${print}`).delete();
+            } else {
+              delete cardBox.cards[uid];
+              cardBox.cards = JSON.stringify(cardBox.cards);
+              return this.af.collection<any>(`pokemon-cards`)
+                .doc(`${expansion}-${print}`).set(Object.assign({}, cardBox));
+            }
+          })
+        )
       })
     );
   }
