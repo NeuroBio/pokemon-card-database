@@ -39,6 +39,7 @@ export function CollectionFactory(provider: CollectionService) {
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+
     DisplayListsModule,
     AddCardModule,
     AddExpansionModule,

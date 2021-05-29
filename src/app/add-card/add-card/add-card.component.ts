@@ -35,10 +35,9 @@ export class AddCardComponent implements OnInit, OnDestroy {
   expansionSubscription: Subscription;
   printSubscription: Subscription;
 
-  maxHeight = 600;
-  maxWidth = 600;
+  maxHeight = 500;
+  maxWidth = 500;
   images: any = {};
-
 
   constructor(
     private fb: FormBuilder,
@@ -57,7 +56,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
 
     this.flaws = this.createFlawArray();
     if (this.data) {
-      this.cardForm = this.createEditForm(this.data);      
+      this.cardForm = this.createEditForm(this.data);  
     } else {
       this.cardForm = this.createAddForm();
     }
@@ -132,12 +131,21 @@ export class AddCardComponent implements OnInit, OnDestroy {
     this.flaws.removeAt(index);
   }
 
-  inputReset(input: any, where: string) {
-    input.value = '';
-    this.cardForm.controls[where].patchValue('');
+  onFile(event: any, where: string): Promise<void> {
+    return this.resizer.resizeandPreviewImage(event, this.maxHeight, this.maxWidth)
+      .then(result => {
+        this.images[where] = result;
+        this.cardForm.controls[where].patchValue(result.urlString);
+      });
   }
 
-  setForms(exp: string) {
+  inputReset(input: any, where: string): void {
+    input.value = '';
+    this.cardForm.controls[where].patchValue('');
+    delete this.images[where];
+  }
+
+  setForms(exp: string): void {
     switch (exp) {
       case 'Base Set':
         this.expectedForms = ['1st', 'shadowless', 'unlimited', 'UK 2000'];
@@ -163,14 +171,23 @@ export class AddCardComponent implements OnInit, OnDestroy {
     }
   }
 
-  submit() {
+  submit(): Subscription {
     const newCard = this.cardForm.getRawValue();
 
     if (!newCard.uid) {
       newCard.uid = uuid.v4();
     }
 
-    return this.cardserv.uploadCard(newCard)
+    const images: Blob[] = new Array(2).fill(undefined);
+    if (this.images.front) {
+      images[0]= this.images.front.imageBlob;
+    }
+
+    if (this.images.back) {
+      images[1]= this.images.back.imageBlob;
+    }
+
+    return this.cardserv.uploadCard(newCard, images)
       .pipe(take(1)).subscribe(() => {
         if (this.data) {
           this.messenger.send('Card edited.')
@@ -181,11 +198,11 @@ export class AddCardComponent implements OnInit, OnDestroy {
     });
   }
 
-  close() {
+  close(): void {
     this.dialogRef.close();
   }
 
-  delete() {
+  delete(): void {
     const cardType: Card = this.expansions[this.data.expansionName].cards[this.data.printNumber-1];
     // check whether to delete
     this.dialog.open(ConfirmComponent, {
@@ -204,15 +221,6 @@ export class AddCardComponent implements OnInit, OnDestroy {
             });
         }
       })
-  }
-
-  onFile(event: any, where: string) {
-    console.log('try')
-    return this.resizer.resizeandPreviewImage(event, this.maxHeight, this.maxWidth)
-      .then(result => {
-        this.images[where] = result;
-        this.cardForm.controls[where].patchValue(result.urlString);
-      });
   }
 
 }
