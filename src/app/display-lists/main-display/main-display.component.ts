@@ -3,6 +3,7 @@ import { FormBuilder, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { AddListComponent } from 'src/app/add-list/add-list/add-list.component';
 import { ConfirmComponent } from 'src/app/confirm/confirm/confirm.component';
 import { CardChunk } from 'src/app/_objects/card-chunk';
 import { CheckListService } from 'src/app/_services/check-list.service';
@@ -73,7 +74,11 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
   }
 
   editList() {
-
+    this.dialog.open(AddListComponent, {
+      width: '80vw',
+      maxWidth: '650px',
+      data: this.collectionserv.getRawCheckList(this.whichList.value)
+    });
   }
 
   deleteList() {

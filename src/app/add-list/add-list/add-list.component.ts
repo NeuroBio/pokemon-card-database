@@ -62,6 +62,10 @@ export class AddListComponent implements OnInit, OnDestroy {
         const exp = this.cardForm.controls.expansion.value;
         this.activeCard = this.collectionserv.getActiveCard(exp, print);
     });
+
+    if (this.data) {
+      this.loadOldData()
+    }
   }
 
   ngOnDestroy(): void {
@@ -99,7 +103,6 @@ export class AddListComponent implements OnInit, OnDestroy {
       preview: this.activeCard,
       exp: this.expansions[cardinfo.expansion],
       path: `${cardinfo.expansion}-${cardinfo.print}`,
-      instance: ''
     });
     this.populateMethods.push({});
     this.cardForm.patchValue({ print: this.cardForm.get('print').value + 1 });
@@ -147,16 +150,21 @@ export class AddListComponent implements OnInit, OnDestroy {
 
   submit() {
     const checklist = new Checklist(this.listForm.value.name, this.cards.map(card => card.path));
-    // prepopulation
+
+    // prepopulation with card instances
     if (this.cardForm.get('prepopulate').value) {
       this.populateMethods.forEach((method, i) => {
-        if (!method.method || method.method === 'best') {
+        // skip is ignored.
+        if (!method.method || method.method === 'best') { // default or manually set to best
           const cards = this.collectionserv.getChunk(checklist.cardKeys[i]);
-          const bestCard = this.collectionserv.getBestCard(cards);
-          if (bestCard) { // a suitable card ws found
-            checklist.checkInfo[i] = new CheckInfo(false, bestCard.uid, checklist.cardKeys[i]);
+          
+          if (cards) { // only continue is an instance of this card type exists
+            const bestCard = this.collectionserv.getBestCard(cards);
+            if (bestCard) { // only add if a suitable card was found
+              checklist.checkInfo[i] = new CheckInfo(false, bestCard.uid, checklist.cardKeys[i]);
+            }              
           }
-        } else if (method.method === 'useCard') {
+        } else if (method.method === 'useCard') { // grab existing data and reformat
           checklist.checkInfo[i] = new CheckInfo(
             method.key !== checklist.cardKeys[i], method.uid, method.key);
         }
@@ -168,6 +176,26 @@ export class AddListComponent implements OnInit, OnDestroy {
         this.messenger.send('Checklist uploaded.');
         this.dialogRef.close();
       });
+  }
+
+  loadOldData() {
+    this.listForm.patchValue({ name: this.data.name });
+    this.cards = this.data.cardKeys.map(key => {
+      const keyParts = key.split('-');
+      return {
+      preview: this.collectionserv.getActiveCard(keyParts[0], keyParts[1]),
+      exp: this.expansions[keyParts[0]],
+      path: key,
+      };
+    });
+    this.populateMethods = this.data.checkInfo.map(info => {
+      if (info.uid) {
+        const keyParts = info.key.split('-');
+        return new PopulateMethod('useCard', keyParts[0], keyParts[1], info.uid);  
+      } else {
+        return {};
+      }
+    });
   }
 
 }

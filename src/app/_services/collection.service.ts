@@ -12,9 +12,9 @@ import { SetExpansion } from '../_objects/expansion';
 })
 export class CollectionService {
 
-  allCards = new BehaviorSubject<Object>([]);
+  allCards = new BehaviorSubject<any>([]);
   expansions = new BehaviorSubject<Object>([]);
-  checkLists = new BehaviorSubject<Checklist[]>(undefined);
+  checkLists = new BehaviorSubject<any[]>(undefined);
   masterList = new BehaviorSubject<CardChunk[]>([]);
 
   private bestForm = {'1st': 0, 'shadowless': 1, 'UK 2000': 2, 'unlimited': 3, 'reverse': 4, 'standard': 5};
@@ -99,11 +99,16 @@ export class CollectionService {
     return cardChunks;
   }
 
+  getRawCheckList(listName: string): Checklist {
+    const list = Object.assign({}, this.checkLists.value.find(list => list.name === listName));
+    list.checkInfo = JSON.parse(list.checkInfo)
+    return list as Checklist
+  }
+
   getCheckList(listName: string): CardChunk[] {
-    const list: any =  Object.assign({}, this.checkLists.value.find(list => list.name === listName));
-    list.checkInfo = JSON.parse(list.checkInfo);
+    const list =  this.getRawCheckList(listName);
     const cardChunks: CardChunk[] = [];
-    const cards: any = this.allCards.value;
+    const cards = this.allCards.value;
     const expansions = this.expansions.value;
 
     // for each card in a list
