@@ -132,6 +132,11 @@ export class AddCardComponent implements OnInit, OnDestroy {
     this.flaws.removeAt(index);
   }
 
+  inputReset(input: any, where: string) {
+    input.value = '';
+    this.cardForm.controls[where].patchValue('');
+  }
+
   setForms(exp: string) {
     switch (exp) {
       case 'Base Set':

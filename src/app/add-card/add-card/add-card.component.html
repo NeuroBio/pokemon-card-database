@@ -1,183 +1,221 @@
 <form [formGroup]="cardForm">
 
-    <mat-card class="tight-card" id="card-info-section">
-
-        <!-- Header -->
-        <h2>
-            Card Info
-
-            <button mat-icon-button aria-label="close-dialog-box" color="tert"
-            (click)="close()">
-                <mat-icon>clear</mat-icon>
-            </button>
-        </h2>
-        <br>
-    
-        <div class="add-margin">
-            <!-- Pick Card -->
-            <div>
-                <!-- Expansion -->
-                <mat-form-field class="push">
-                    <mat-label>Expansion</mat-label>
-                    <mat-select formControlName="expansionName" cdkFocusInitial>
-                        <mat-option *ngFor="let expansion of expansionNames"
-                        [value]="expansion">
-                            {{ expansion }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-        
-                <!-- Print Number -->
-                <mat-form-field id="print-input">
-                    <mat-label>Print</mat-label>
-                    <input matInput formControlName="printNumber" type="number" min="1">
-                </mat-form-field>
-            </div>
-        
-            
-            <!-- Card Specifics -->
-            <div>
-                <!-- Card Form -->
-                <mat-form-field class="push">
-                    <mat-label>Form</mat-label>
-                    <input matInput formControlName="form" type="text"
-                    [matAutocomplete]="auto">
-                    <mat-autocomplete #auto="matAutocomplete">
-                        <mat-option *ngFor="let form of expectedForms" [value]="form">
-                            {{ form }}
-                        </mat-option>
-                    </mat-autocomplete>
-                </mat-form-field>
-        
-                <mat-form-field id="condition-input">
-                    <mat-label>Condition</mat-label>
-                    <mat-select formControlName="condition">
-                        <mat-option *ngFor="let condition of conditions" [value]="condition">
-                            {{ condition }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-
-            </div>
-
-            <!-- Images -->
-            <div>
-                <input type="file" (change)="onFile($event, 'front')">
-                <input type="file" (change)="onFile($event, 'back')">    
-            </div>
-
-            <mat-card class="sub-card">
-                <!-- Preview Card -->
-                <app-individual-card
-                [instance]="this.cardForm.value"
-                [showAll]="true"
-                ></app-individual-card>
-            </mat-card>
-        </div>
-    </mat-card>
-
-    <br>
-    
-
-    <!-- Flaws -->
-    <mat-card formArrayName="flaws" class="tight-card" id="flaw-section"
-    [ngClass]="flaws.controls[0] ? 'open' : ''">
-        <!-- header /w add button -->
-        <h2>
-            Flaws
-            <button mat-raised-button color="prime"
-            (click)="addFlaw()">
-            <mat-icon>add</mat-icon>
-                Add Flaw
-            </button>
-        </h2>
-        <br *ngIf="flaws.controls[0]">
-
-        <!-- Flaw form -->
-        <mat-card *ngFor="let flaw of flaws.controls, let i=index"
-        [formGroupName]="i" class="tight-card tab sub-card">
-
-
-            <h3>
-                Flaw {{ i + 1 }}
-
-                <button mat-raised-button color="warn"
-                class="delete-flaw" attr.aria-label="Delete-Flaw-' + i"
-                (click)="removeFlaw(i)">
-                    <mat-icon>clear</mat-icon>
-                </button>
-            </h3>
-    
-            <div class="breathing-room">
-                <div>
-                    <!-- severity -->
-                    <mat-form-field class="push">
-                        <mat-label>Severity</mat-label>
-                        <mat-select formControlName="severity">
-                            <mat-option *ngFor="let severity of flawInfo.severities" [value]="severity">
-                                {{ severity }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-    
-                    <!-- Type -->
-                    <mat-form-field>
-                        <mat-label>Type</mat-label>
-                        <mat-select formControlName="type">
-                            <mat-option *ngFor="let type of flawInfo.types" [value]="type">
-                                {{ type }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-    
-                </div>
-                <br>
-                
-                <div id="flaw-location">
-                    <!-- Where -->
-                    <mat-form-field class="push">
-                        <mat-label>Location</mat-label>
-                        <mat-select formControlName="where">
-                            <mat-option *ngFor="let where of flawInfo.wheres" [value]="where">
-                                {{ where }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-    
-                    <!-- Landmark -->
-                    <mat-form-field>
-                        <mat-label>Landmark</mat-label>
-                        <mat-select formControlName="landmark">
-                            <mat-option *ngFor="let landmark of flawInfo.landmarks" [value]="landmark">
-                                {{ landmark }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </div>
+    <div class="side-by-side">
+        <!-- Preview Card -->
+        <mat-card class="sub-card" id="preview-new-card">
+            <app-individual-card
+            [instance]="this.cardForm.value"
+            [showAll]="true"
+            ></app-individual-card>
         </mat-card>
-    
-    </mat-card>
 
 
+        <div>
+            <mat-card class="tight-card" id="card-info-section">
 
-    <div class="button-box">
-        <!-- Submit Card Form -->
-        <button mat-raised-button color="prime"
-        [disabled]="!cardForm.valid || activeCard === null"
-        (click)="submit()">
-            <mat-icon>cloud_upload</mat-icon>
-            Add Card to Database
-        </button>
+                <!-- Header -->
+                <h2>
+                    Card Info
+                    <button mat-icon-button aria-label="close-dialog-box" color="tert"
+                    (click)="close()">
+                        <mat-icon>clear</mat-icon>
+                    </button>
+                </h2>
+                <br>
+            
+                <div class="add-margin">
+                    <!-- Pick Card -->
+                    <div>
+                        <!-- Expansion -->
+                        <mat-form-field class="push">
+                            <mat-label>Expansion</mat-label>
+                            <mat-select formControlName="expansionName" cdkFocusInitial>
+                                <mat-option *ngFor="let expansion of expansionNames"
+                                [value]="expansion">
+                                    {{ expansion }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                
+                        <!-- Print Number -->
+                        <mat-form-field id="print-input">
+                            <mat-label>Print</mat-label>
+                            <input matInput formControlName="printNumber" type="number" min="1">
+                        </mat-form-field>
+                    </div>
+                
+                    
+                    <!-- Card Specifics -->
+                    <div>
+                        <!-- Card Form -->
+                        <mat-form-field class="push">
+                            <mat-label>Form</mat-label>
+                            <input matInput formControlName="form" type="text"
+                            [matAutocomplete]="auto">
+                            <mat-autocomplete #auto="matAutocomplete">
+                                <mat-option *ngFor="let form of expectedForms" [value]="form">
+                                    {{ form }}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                
+                        <mat-form-field id="condition-input">
+                            <mat-label>Condition</mat-label>
+                            <mat-select formControlName="condition">
+                                <mat-option *ngFor="let condition of conditions" [value]="condition">
+                                    {{ condition }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+        
+                    </div>
+        
+                    <!-- Images -->
+                    <div id="card-image-uploaders">
+                        <!-- Front Image -->
+                        <div>
+                            <button mat-raised-button color="primary"
+                            *ngIf="!cardForm.get('front').value"
+                            (click)="frontInput.click()">
+                                <mat-icon>photo</mat-icon>
+                                Card Front
+                            </button>
+            
+                            <button mat-raised-button color="warn"
+                            *ngIf="cardForm.get('front').value"
+                            (click)="inputReset(frontInput, 'front')">
+                                <mat-icon>clear</mat-icon>
+                                Clear Front
+                            </button>
+        
+                            <input type="file" (change)="onFile($event, 'front')"
+                                style="display:none;" #frontInput>
+                        </div>
+        
+                        <!-- Back Iamge -->
+                        <div>
+                            <button mat-raised-button color="primary"
+                            *ngIf="!cardForm.get('back').value"
+                            (click)="backInput.click()">
+                                <mat-icon>photo</mat-icon>
+                                Card Back
+                            </button>
+            
+                            <button mat-raised-button color="warn"
+                            *ngIf="cardForm.get('back').value"
+                            (click)="inputReset(backInput, 'back')">
+                                <mat-icon>clear</mat-icon>
+                                Clear Back
+                            </button>
+        
+                            <input type="file" (change)="onFile($event, 'back')"
+                                style="display:none;" #backInput>
+                        </div>
+                    </div>
+                </div>
+            </mat-card>
+        
+            <br>
+            
+        
+            <!-- Flaws -->
+            <mat-card formArrayName="flaws" class="tight-card" id="flaw-section"
+            [ngClass]="flaws.controls[0] ? 'open' : ''">
+                <!-- header /w add button -->
+                <h2>
+                    Flaws
+                    <button mat-raised-button color="prime"
+                    (click)="addFlaw()">
+                    <mat-icon>add</mat-icon>
+                        Add Flaw
+                    </button>
+                </h2>
+                <br *ngIf="flaws.controls[0]">
+        
+                <!-- Flaw form -->
+                <mat-card *ngFor="let flaw of flaws.controls, let i=index"
+                [formGroupName]="i" class="tight-card tab sub-card">
+        
+        
+                    <h3>
+                        Flaw {{ i + 1 }}
+        
+                        <button mat-raised-button color="warn"
+                        class="delete-flaw" attr.aria-label="Delete-Flaw-' + i"
+                        (click)="removeFlaw(i)">
+                            <mat-icon>clear</mat-icon>
+                        </button>
+                    </h3>
+            
+                    <div class="breathing-room">
+                        <div>
+                            <!-- severity -->
+                            <mat-form-field class="push">
+                                <mat-label>Severity</mat-label>
+                                <mat-select formControlName="severity">
+                                    <mat-option *ngFor="let severity of flawInfo.severities" [value]="severity">
+                                        {{ severity }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+            
+                            <!-- Type -->
+                            <mat-form-field>
+                                <mat-label>Type</mat-label>
+                                <mat-select formControlName="type">
+                                    <mat-option *ngFor="let type of flawInfo.types" [value]="type">
+                                        {{ type }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+            
+                        </div>
+                        <br>
+                        
+                        <div id="flaw-location">
+                            <!-- Where -->
+                            <mat-form-field class="push">
+                                <mat-label>Location</mat-label>
+                                <mat-select formControlName="where">
+                                    <mat-option *ngFor="let where of flawInfo.wheres" [value]="where">
+                                        {{ where }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+            
+                            <!-- Landmark -->
+                            <mat-form-field>
+                                <mat-label>Landmark</mat-label>
+                                <mat-select formControlName="landmark">
+                                    <mat-option *ngFor="let landmark of flawInfo.landmarks" [value]="landmark">
+                                        {{ landmark }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-card>
+            </mat-card>
 
-
-        <!-- Delete card -->
-        <button mat-raised-button color="warn"
-        *ngIf="data"
-        (click)="delete()">
-            <mat-icon>delete_outline</mat-icon>
-            Delete Card
-        </button>
+            <div class="button-box">
+                <!-- Submit Card Form -->
+                <button mat-raised-button color="prime"
+                [disabled]="!cardForm.valid || activeCard === null"
+                (click)="submit()">
+                    <mat-icon>cloud_upload</mat-icon>
+                    Upload Card
+                </button>
+        
+        
+                <!-- Delete card -->
+                <button mat-raised-button color="warn"
+                *ngIf="data"
+                (click)="delete()">
+                    <mat-icon>delete_outline</mat-icon>
+                    Delete Card
+                </button>
+            </div>
+        </div>
     </div>
 
 </form>

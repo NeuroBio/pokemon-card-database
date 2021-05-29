@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddCardComponent } from 'src/app/add-card/add-card/add-card.component';
 import { CardInstance } from 'src/app/_objects/card-instance';
@@ -31,7 +31,7 @@ export class IndividualCardComponent implements OnChanges {
   edit(): void {
     this.dialog.open(AddCardComponent, {
       width: '80vw',
-      maxWidth: '650px',
+      maxWidth: '1050px',
       data: this.instance
     });
   }
