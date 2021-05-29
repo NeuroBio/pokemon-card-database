@@ -44,7 +44,6 @@ export class CardService {
           }
           return of ().toPromise();
         })).pipe(switchMap(() => {
-          console.log('urls fetched and applied:', newCard)
           cardBox.cards[newCard.uid] = newCard;
           cardBox.cards = JSON.stringify(cardBox.cards);
           return this.af.collection<any>(`pokemon-cards`)
