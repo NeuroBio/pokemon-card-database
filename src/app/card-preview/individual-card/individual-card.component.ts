@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddCardComponent } from 'src/app/add-card/add-card/add-card.component';
 import { CardInstance } from 'src/app/_objects/card-instance';
@@ -10,31 +10,22 @@ import { CollectionService } from 'src/app/_services/collection.service';
   templateUrl: './individual-card.component.html',
   styleUrls: ['./individual-card.component.scss']
 })
-export class IndividualCardComponent implements OnInit {
+export class IndividualCardComponent implements OnChanges {
 
   @Input() instance: CardInstance = new CardInstance(0, 'False Hoods', 'Spectacular', 'M', []);
   @Input() allowEdit: boolean = false;
-  @Input() mainKey: string = '';
+  @Input() showAll: boolean = false;
 
   exp: SetExpansion;
   cardType: Card;
-
 
   constructor(
     private collectionserv: CollectionService,
     private dialog: MatDialog) { }
 
-  ngOnInit(): void { 
+  ngOnChanges(): void {
     this.exp = this.collectionserv.expansions.value[this.instance.expansionName];
-    this.cardType = this.exp.cards[this.instance.printNumber-1];
-  }
-
-  isPlaceholder() {
-    const cardKey = `${this.instance.expansionName}-${this.instance.printNumber}`;
-    if (this.mainKey && this.mainKey !== cardKey) {
-      return true;
-    }
-    return false;
+    this.cardType = this.exp ? this.exp.cards[this.instance.printNumber-1] : undefined;
   }
 
   edit(): void {

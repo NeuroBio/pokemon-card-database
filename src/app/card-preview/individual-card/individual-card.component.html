@@ -1,25 +1,32 @@
  <div class="card-instance">
      <div *ngIf="instance">
+
         <!-- images of the card -->
         <div class="image-holder">
             <div *ngIf="instance.front">
-                <img src="instance.front">
+                <img [src]="instance.front">
             </div>
             <div *ngIf="instance.back">
-                <img src="instance.back">
+                <img [src]="instance.back">
             </div>    
         </div>
 
-        <!-- Card state -->
-        <span *ngIf="isPlaceholder()">
+        <!-- Card type nd state -->
+        <span *ngIf="showAll && exp && cardType">
             {{ exp.name }} {{ cardType.cardTitle }} ({{ instance.printNumber }}/{{ exp.numCards }})
         </span>
         {{ instance.form }} {{ instance.condition }}
         <br>
+
+        <!-- Start Flaws -->
         Flaws:
+        <!-- List Flaws -->
         <div class="tab" *ngFor="let flaw of instance.flaws">
+            <span></span>
             - {{ flaw.severity }} {{ flaw.type }} {{ flaw.where }}  {{ flaw.landmark }}
         </div>
+
+        <!-- No Flaws -->
         <div *ngIf="instance.flaws.length === 0" class="tab">
             - None
         </div>

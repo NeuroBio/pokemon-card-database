@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { PickCardComponent } from 'src/app/add-list/pick-card/pick-card.component';
 import { CardChunk } from 'src/app/_objects/card-chunk';
+import { CardInstance } from 'src/app/_objects/card-instance';
 import { CheckInfo } from 'src/app/_objects/checklist';
 import { StaticData } from 'src/app/_objects/pokemon-list';
 
@@ -155,5 +156,10 @@ export class CardTableComponent implements OnInit, OnChanges {
 
   isMaster() {
     return this.listName === 'Masterlist';
+  }
+
+  showAll(card: CardChunk, instance: CardInstance) {
+    return `${card.expansionName}-${card.printNumber}`
+      !== `${instance.expansionName}-${instance.printNumber}`;
   }
 }

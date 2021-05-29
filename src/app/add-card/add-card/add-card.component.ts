@@ -9,6 +9,7 @@ import { Card } from 'src/app/_objects/expansion';
 import { CardService } from 'src/app/_services/card.service';
 import { CollectionService } from 'src/app/_services/collection.service';
 import { MessengerService } from 'src/app/_services/messenger.service';
+import { ResizeService } from 'src/app/_services/resize.service';
 import * as uuid from 'uuid';
 
 @Component({
@@ -34,12 +35,17 @@ export class AddCardComponent implements OnInit, OnDestroy {
   expansionSubscription: Subscription;
   printSubscription: Subscription;
 
+  maxHeight = 600;
+  maxWidth = 600;
+  images: any = {};
+
 
   constructor(
     private fb: FormBuilder,
     private cardserv: CardService,
     private messenger: MessengerService,
     private collectionserv: CollectionService,
+    private resizer: ResizeService,
     private dialog: MatDialog,
     private dialogRef: MatDialogRef<AddCardComponent>,
     @Inject(MAT_DIALOG_DATA) public data: CardInstance
@@ -193,6 +199,15 @@ export class AddCardComponent implements OnInit, OnDestroy {
             });
         }
       })
+  }
+
+  onFile(event: any, where: string) {
+    console.log('try')
+    return this.resizer.resizeandPreviewImage(event, this.maxHeight, this.maxWidth)
+      .then(result => {
+        this.images[where] = result;
+        this.cardForm.controls[where].patchValue(result.urlString);
+      });
   }
 
 }

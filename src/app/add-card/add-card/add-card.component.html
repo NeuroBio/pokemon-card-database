@@ -32,12 +32,6 @@
                     <mat-label>Print</mat-label>
                     <input matInput formControlName="printNumber" type="number" min="1">
                 </mat-form-field>
-
-                <!-- Card preview -->
-                <app-card-preview
-                [activeCard]="activeCard"
-                ></app-card-preview>
-        
             </div>
         
             
@@ -63,7 +57,22 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
+
             </div>
+
+            <!-- Images -->
+            <div>
+                <input type="file" (change)="onFile($event, 'front')">
+                <input type="file" (change)="onFile($event, 'back')">    
+            </div>
+
+            <mat-card class="sub-card">
+                <!-- Preview Card -->
+                <app-individual-card
+                [instance]="this.cardForm.value"
+                [showAll]="true"
+                ></app-individual-card>
+            </mat-card>
         </div>
     </mat-card>
 

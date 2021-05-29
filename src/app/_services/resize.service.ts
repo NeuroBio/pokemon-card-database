@@ -5,16 +5,24 @@ import { Injectable } from '@angular/core';
 })
 export class ResizeService {
 
-  resizeImage(file: any, maxheight: number, maxwidth: number, Blob: boolean) {
-    return this.resizer(file, maxheight, maxwidth)
-    .then(urlString => {
-        if(Blob) {
-            return this.b64toBlob(urlString);
-        } else {
-            return urlString;
-        }
+  resizeandPreviewImage (event: any, maxHeight: number, maxWidth: number) {
+    return this.resizer(event.target.files[0], maxHeight, maxWidth)
+    .then((urlString: string) => {
+      const imageBlob = this.b64toBlob(urlString);
+      return { urlString, imageBlob };
     });
   }
+
+  // resizeImage(file: any, maxheight: number, maxwidth: number, Blob: boolean) {
+  //   return this.resizer(file, maxheight, maxwidth)
+  //   .then(urlString => {
+  //       if (Blob) {
+  //           return this.b64toBlob(urlString);
+  //       } else {
+  //           return urlString;
+  //       }
+  //   });
+  // }
 
   private resizer(file: any, maxH: number, maxW: number) {
     return new Promise((resolve) => {
@@ -132,5 +140,17 @@ export class ResizeService {
     return blob;
     //https://stackoverflow.com/questions/12168909/blob-from-dataurl
   }
+
+  // filetob64(event: any) {
+  //   return new Promise((resolve: any) => {
+  //     const File = event.target.files[0];
+  //     // TODO: eventually figure out why I can't use filereader as a this level variable
+  //     let reader = new FileReader();
+  //     reader.onload = function () {
+  //       return resolve(reader.result);
+  //     };
+  //     return reader.readAsDataURL(File);
+  //   });
+  // }
 
 }
