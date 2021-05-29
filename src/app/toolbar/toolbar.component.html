@@ -21,8 +21,9 @@
             </button>
         </div>
 
-        <button mat-raised-button color="second" class="main-actions">
-            {{ true ? 'Log in' : 'Log Out' }}
+        <button mat-raised-button color="second" class="main-actions"
+        (click)="changelogin()">
+            {{ isLoggedIn()  ? 'Log Out' : 'Login' }}
         </button>
     </div>
 </header>

@@ -5,6 +5,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // packages
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+
+import { AngularFireFunctionsModule } from '@angular/fire/functions';
+import { AngularFireStorageModule }   from '@angular/fire/storage';
 
 // declarations
 import { AppComponent } from './app.component';
@@ -18,6 +22,7 @@ import { DisplayListsModule } from './display-lists/display-lists.module';
 
 // factories
 import { CollectionService } from './_services/collection.service';
+import { AuthService } from './_services/auth.service';
 
 
 // Material imports
@@ -30,6 +35,10 @@ import { AddListModule } from './add-list/add-list.module';
 export function CollectionFactory(provider: CollectionService) {
   return () => provider.load();
 }
+
+export function AuthFactory(provider: AuthService) {
+  return () => provider.load();
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,6 +48,9 @@ export function CollectionFactory(provider: CollectionService) {
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    AngularFireAuthModule,
+    AngularFireStorageModule, // imports firebase/storage only needed for storage features
+    AngularFireFunctionsModule, //cloud functions
 
     DisplayListsModule,
     AddCardModule,
@@ -56,6 +68,10 @@ export function CollectionFactory(provider: CollectionService) {
     CollectionService,
     { provide: APP_INITIALIZER, useFactory: CollectionFactory,
       deps: [CollectionService], multi: true },
+
+    AuthService,
+    { provide: APP_INITIALIZER, useFactory: AuthFactory,
+      deps: [AuthService], multi: true }
   ],
   bootstrap: [AppComponent]
 })
