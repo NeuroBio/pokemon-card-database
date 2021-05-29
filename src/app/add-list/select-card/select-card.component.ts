@@ -16,7 +16,7 @@ export class SelectCardComponent implements OnInit, OnDestroy {
 
   expansions: {};
   expansionNames: string[];
-  expansionSubscription: Subscription;
+  activeSubscription: Subscription;
   activeCard: Card;
 
   constructor(
@@ -31,15 +31,15 @@ export class SelectCardComponent implements OnInit, OnDestroy {
     this.expansionNames = Object.keys(this.expansions);
     this.activeCard = this.collectionserv.getActiveCard('Base Set', 1);
 
-    this.expansionSubscription = this.cardForm.controls.expansion.valueChanges
-      .subscribe(exp => { 
-        const print = this.cardForm.controls.print.value;
-        this.activeCard = this.collectionserv.getActiveCard(exp, print);
+    this.activeSubscription = this.cardForm.valueChanges
+      .subscribe(() => {
+        const value = this.cardForm.value;
+        this.activeCard = this.collectionserv.getActiveCard(value.expansion, value.print);
     });
   }
 
   ngOnDestroy() {
-    this.expansionSubscription.unsubscribe();
+    this.activeSubscription.unsubscribe();
   }
 
   createForm() {
