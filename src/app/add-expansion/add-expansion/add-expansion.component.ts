@@ -57,7 +57,6 @@ export class AddExpansionComponent implements OnInit {
 
   parseCSV(contents: string) {
     const properties = contents.replace(/\r?\n|\r/g, ',').split(',');
-    console.log(properties.length)
     if (properties[properties.length-1] === '') {
       properties.pop();
     }
