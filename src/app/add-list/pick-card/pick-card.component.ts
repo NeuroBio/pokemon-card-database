@@ -69,9 +69,13 @@ export class PickCardComponent implements OnInit, OnDestroy {
     const placeholder = key !== this.data.key;
     const newCheckInfo = new CheckInfo(placeholder, activeCard.uid, key);
     return this.checklistserv.changeCard(newCheckInfo, this.data.listName, this.data.index)
-      .pipe(take(1)).subscribe(() => {
-        this.messenger.send(`Card in ${this.data.listName} updated.`);
-        this.dialogRef.close();
+      .pipe(take(1)).subscribe(res => {
+        if (res) {
+          this.messenger.send(`Card in ${this.data.listName} updated.`);
+          this.dialogRef.close();  
+        } else {
+          this.messenger.send('Only the Admin may update a checklist.')
+        }
       });
   }
 

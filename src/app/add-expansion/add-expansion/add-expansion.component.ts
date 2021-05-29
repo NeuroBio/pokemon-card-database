@@ -112,9 +112,13 @@ export class AddExpansionComponent implements OnInit {
 
   submit() {
     return this.expansionserv.addExpansion(this.expansionForm.value)
-      .then(() => {
-        this.messenger.send('Expansion uploaded.');
-        this.dialogRef.close();
+      .then(res => {
+        if (res) {
+          this.messenger.send('Expansion uploaded.');
+          this.dialogRef.close();  
+        } else {
+          this.messenger.send('Only the Admin may add or edit expansions.');
+        }
     });
   }
 

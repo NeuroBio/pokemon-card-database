@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { forkJoin, Observable, of } from 'rxjs';
-import { finalize, switchMap, take } from 'rxjs/operators';
+import { catchError, finalize, map, switchMap, take } from 'rxjs/operators';
 import { CardInstance, CardStorage } from '../_objects/card-instance';
 
 @Injectable({
@@ -15,7 +15,7 @@ export class CardService {
     private as: AngularFireStorage
     ) { }
 
-  uploadCard(newCard:CardInstance, images: Blob[]): Observable<any> {
+  uploadCard(newCard:CardInstance, images: Blob[]): Observable<boolean> {
     // get card storage
     return this.af.doc<any>(`pokemon-cards/${newCard.expansionName}-${newCard.printNumber}`)
     .valueChanges().pipe(
@@ -47,26 +47,15 @@ export class CardService {
           cardBox.cards[newCard.uid] = newCard;
           cardBox.cards = JSON.stringify(cardBox.cards);
           return this.af.collection<any>(`pokemon-cards`)
-            .doc(`${newCard.expansionName}-${newCard.printNumber}`).set(Object.assign({}, cardBox));
-        }) );
-      }));
+            .doc(`${newCard.expansionName}-${newCard.printNumber}`)
+            .set(Object.assign({}, cardBox));
+        }) ).pipe(map(() => true))
+      }),
+      catchError(() => of(false))
+      );
   }
 
-  // editCard(editCard: CardInstance): Observable<void> {
-  //   return this.af.doc<any>(`pokemon-cards/${editCard.expansionName}-${editCard.printNumber}`)
-  //   .valueChanges().pipe(
-  //     take(1),
-  //     switchMap(cardBox => {
-  //       cardBox.cards = JSON.parse(cardBox.cards);
-  //       cardBox.cards[editCard.uid] = editCard;
-  //       cardBox.cards = JSON.stringify(cardBox.cards);
-  //       return this.af.collection<any>(`pokemon-cards`)
-  //         .doc(`${editCard.expansionName}-${editCard.printNumber}`).set(Object.assign({}, cardBox));
-  //     })
-  //   );
-  // }
-
-  deleteCard(expansion: string, print: number, uid: string): Observable<any> {
+  deleteCard(expansion: string, print: number, uid: string): Observable<boolean> {
     return this.af.doc<any>(`pokemon-cards/${expansion}-${print}`)
     .valueChanges().pipe(
       take(1),
@@ -84,16 +73,18 @@ export class CardService {
         })).pipe(
           switchMap(() => {
             if (Object.keys(cardBox.cards).length === 1) {
-              return this.af.collection<any>(`pokemon-cards`).doc(`${expansion}-${print}`).delete();
+              return this.af.collection<any>(`pokemon-cards`)
+                .doc(`${expansion}-${print}`).delete().then(() => true);
             } else {
               delete cardBox.cards[uid];
               cardBox.cards = JSON.stringify(cardBox.cards);
               return this.af.collection<any>(`pokemon-cards`)
-                .doc(`${expansion}-${print}`).set(Object.assign({}, cardBox));
+                .doc(`${expansion}-${print}`).set(Object.assign({}, cardBox)).then(() => true);
             }
           })
         )
-      })
+      }),
+      catchError(() => of(false))
     );
   }
 }

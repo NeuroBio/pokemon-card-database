@@ -172,9 +172,13 @@ export class AddListComponent implements OnInit, OnDestroy {
     }
 
     return this.checklistserv.uploadList(checklist)
-      .then(() => {
-        this.messenger.send('Checklist uploaded.');
-        this.dialogRef.close();
+      .then(res => {
+        if (res) {
+          this.messenger.send('Checklist uploaded.');
+          this.dialogRef.close();  
+        } else {
+          this.messenger.send('Only the Admin may add oredit checklists.');
+        }
       });
   }
 

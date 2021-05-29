@@ -91,9 +91,13 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     }).afterClosed().pipe(take(1)).subscribe(confirm => {
       if (confirm) {
         return this.checklistserv.deleteList(this.whichList.value)
-        .then(() => {
-          this.messenger.send('Successfully deleted list.');
-          this.whichList.patchValue('Masterlist')
+        .then(res => {
+          if (res) {
+            this.messenger.send('Successfully deleted list.');
+            this.whichList.patchValue('Masterlist')  
+          } else {
+            this.messenger.send('Only the Admin may delete checklists.');
+          }
         });
       }
     });

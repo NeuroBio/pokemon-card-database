@@ -188,13 +188,17 @@ export class AddCardComponent implements OnInit, OnDestroy {
     }
 
     return this.cardserv.uploadCard(newCard, images)
-      .pipe(take(1)).subscribe(() => {
-        if (this.data) {
-          this.messenger.send('Card edited.')
+      .pipe(take(1)).subscribe(res => {
+        if (res) {
+          if (this.data) {
+            this.messenger.send('Card edited.')
+          } else {
+            this.messenger.send('Card uploaded.');
+          }
+          this.dialogRef.close();  
         } else {
-          this.messenger.send('Card uploaded.');
+          this.messenger.send('Only the Admin may add or edit cards.');
         }
-        this.dialogRef.close();
     });
   }
 
@@ -215,9 +219,13 @@ export class AddCardComponent implements OnInit, OnDestroy {
             this.data.expansionName,
             this.data.printNumber,
             this.data.uid).pipe(take(1))
-            .subscribe(() => {
-              this.messenger.send('Card deleted.');
-              this.dialogRef.close();
+            .subscribe(res => {
+              if (res) {
+                this.messenger.send('Card deleted.');
+                this.dialogRef.close();  
+              } else {
+                this.messenger.send('Only the Admin may delete cards.');
+              }
             });
         }
       })

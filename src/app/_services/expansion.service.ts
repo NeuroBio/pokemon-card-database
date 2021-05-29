@@ -8,11 +8,13 @@ export class ExpansionService {
 
   constructor(private af: AngularFirestore) { }
 
-  addExpansion(newExpansion: any) {
+  addExpansion(newExpansion: any): Promise<boolean> {
     // TODO: test if this is truely unnecessary
-    // newExpansion.cards = JSON.stringify(newExpansion.cards); 
+    // Test Results: Yes, it is necessary.
+    newExpansion.cards = JSON.stringify(newExpansion.cards); 
     return this.af.collection<any>('expansions')
       .doc(`${newExpansion.name.split(' ').join('-')}`)
-      .set(Object.assign({}, newExpansion));
+      .set(Object.assign({}, newExpansion))
+      .then(() => true).catch(() => false);
   }
 }
