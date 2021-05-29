@@ -11,6 +11,9 @@
         </div>
 
         <!-- Card state -->
+        <span *ngIf="isPlaceholder()">
+            {{ exp.name }} {{ cardType.cardTitle }} ({{ instance.printNumber }}/{{ exp.numCards }})
+        </span>
         {{ instance.form }} {{ instance.condition }}
         <br>
         Flaws:
