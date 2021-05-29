@@ -140,7 +140,9 @@
         <ng-container matColumnDef="expandedDetail">
             <td mat-cell *matCellDef="let card" [attr.colspan]="displayColumns.length" class="expanded">
                 <div [@detailExpand]="expanded === card ? 'expanded' : 'collapsed'">
-                    <div *ngFor="let instance of card.owned">
+                    <div *ngFor="let instance of card.owned; let last = last"
+                    [ngClass]="last ? '' : 'card-instance'"
+                    >
                        <app-individual-card
                         [instance]="instance"
                         [allowEdit]="allowEdit"

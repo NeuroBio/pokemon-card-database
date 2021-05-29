@@ -31,11 +31,12 @@ h2 {
     background-color: $palette6;
 }
 
-#card-choices {
+.card-choices {
     position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid $borders-grey;
 }
 
 app-individual-card {

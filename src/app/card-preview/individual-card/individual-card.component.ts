@@ -15,6 +15,7 @@ export class IndividualCardComponent implements OnChanges {
   @Input() instance: CardInstance = new CardInstance(0, 'False Hoods', 'Spectacular', 'M', []);
   @Input() allowEdit: boolean = false;
   @Input() showAll: boolean = false;
+  @Input() creating: boolean = false;
 
   exp: SetExpansion;
   cardType: Card;

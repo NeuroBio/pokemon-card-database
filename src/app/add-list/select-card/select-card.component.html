@@ -41,7 +41,7 @@
             
             <mat-divider></mat-divider><br>
 
-            <div *ngFor="let instance of getInstances(); let i = index" id="card-choices">
+            <div *ngFor="let instance of getInstances(); let i = index" class="card-choices">
                 <app-individual-card
                 [instance]="instance"
                 ></app-individual-card>

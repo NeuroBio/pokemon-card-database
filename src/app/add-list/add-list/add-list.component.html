@@ -89,20 +89,22 @@
 
                         <!-- Main content -->
                         <div>
-                            <div id="population-methods">
-                                <div class="center-align">
-                                    {{ card.exp.name }}:
-                                    {{ card.preview.cardTitle }}
-                                    {{ card.preview.printNumber }}/{{ card.exp.numCards }}
-                                    {{ card.preview.rarity }}
+                            <div class="separate-content grow">
+                                <div class="center-align separate-content grow">
+                                        <b>
+                                            {{ card.exp.name }}:
+                                            {{ card.preview.cardTitle }}
+                                            {{ card.preview.printNumber }}/{{ card.exp.numCards }}
+                                            {{ card.preview.rarity }}    
+                                        </b>
+
+                                     <!-- remove card -->
+                                    <button mat-icon-button *ngIf="drag"
+                                        aria-label="Remove-Card" color="tert" class="action-button"
+                                        (click)="removeCard(i)">
+                                            <mat-icon>clear</mat-icon>
+                                    </button>
                                 </div>
-                                <!-- remove card -->
-                                <button mat-icon-button *ngIf="drag"
-                                aria-label="Remove-Card" color="tert" class="action-button"
-                                (click)="removeCard(i)">
-                                    <mat-icon>clear</mat-icon>
-        
-                                </button>
     
                                 <!-- Pick method to prepopulate list -->
                                 <mat-form-field *ngIf="!drag">
@@ -122,7 +124,7 @@
                             </div>
 
                             <!-- Chosen card if a card is chosen -->
-                            <div *ngIf="populateMethods[i].method === 'useCard' && !drag" id="add-a-top-line">
+                            <div *ngIf="populateMethods[i].method === 'useCard' && !drag">
                                 Using: 
                                 <app-individual-card
                                 [instance]="getCard(populateMethods[i])"

@@ -1,6 +1,10 @@
  <div class="card-instance">
      <div *ngIf="instance">
 
+        <h2 *ngIf="creating">
+            Card Preview:
+        </h2>
+
         <!-- images of the card -->
         <div class="image-holder">
             <div *ngIf="instance.front">

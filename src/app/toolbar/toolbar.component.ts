@@ -19,7 +19,7 @@ export class ToolbarComponent implements OnInit {
   addCard() {
     this.dialog.open(AddCardComponent, {
       width: '80vw',
-      maxWidth: '650px'
+      maxWidth: '1050px'
     });
   }
 
