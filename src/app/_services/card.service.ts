@@ -42,7 +42,7 @@ export class CardService {
               newCard[i == 0 ? 'front' : 'back'] = url
             });
           }
-          return of ('what?')
+          return of ().toPromise();
         })).pipe(switchMap(() => {
           console.log('urls fetched and applied:', newCard)
           cardBox.cards[newCard.uid] = newCard;
@@ -81,7 +81,7 @@ export class CardService {
             return this.as.ref(url).delete()
             .pipe(finalize(() => {})).toPromise();
           }
-          return of ();
+          return of().toPromise();
         })).pipe(
           switchMap(() => {
             if (Object.keys(cardBox.cards).length === 1) {
