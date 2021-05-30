@@ -28,7 +28,7 @@ export class SelectCardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cardForm = this.createForm();
     this.expansions = this.collectionserv.expansions.value;
-    this.expansionNames = Object.keys(this.expansions);
+    this.expansionNames = this.collectionserv.getExpansionNames();
     this.activeCard = this.collectionserv.getActiveCard('Base Set', 1);
 
     this.activeSubscription = this.cardForm.valueChanges

@@ -46,7 +46,7 @@ export class AddListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.expansions = this.collectionserv.expansions.value;
-    this.expansionNames = Object.keys(this.expansions);
+    this.expansionNames = this.collectionserv.getExpansionNames();
     this.listForm = this.createListForm();
     this.cardForm = this.createCardForm();
     this.activeCard = this.collectionserv.getActiveCard('Base Set', 1);

@@ -52,7 +52,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.expansions = this.collectionserv.expansions.value;
-    this.expansionNames = Object.keys(this.expansions);
+    this.expansionNames = this.collectionserv.getExpansionNames();
 
     this.flaws = this.createFlawArray();
     if (this.data) {

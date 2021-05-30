@@ -183,4 +183,16 @@ export class CollectionService {
     return bestCard;
   }
 
+  getExpansionNames(): string[] {
+    const exp = this.expansions.value;
+    return Object.keys(exp).sort((a,b) => 
+    // lower gens higher
+    exp[a].gen < exp[b].gen ? -1 : 
+    exp[a].gen > exp[b].gen ? 1 :
+
+    //same gen, check release order
+    exp[a].release < exp[b].release ? -1 : 1
+    );
+  }
+
 }
