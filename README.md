@@ -4,7 +4,7 @@
 https://carddatabase-6dfef.web.app/
 
 ## Overview
-This is a personal project to organize my pokemon cards and show off my skills in angular in a compact app.  Previsouly, I was used a series fo google sheets to keep track of my card collection.  This was problematice for several reasons:
+This is a personal project to organize my pokemon cards and show off my skills in angular in a compact app.  Previously, I used a series of Google sheets to keep track of my card collection.  This was problematic for several reasons:
 
 1) Cards had to be tracked in multiple places; if I got a new card in my series, I would have to manually add it to my series checklist, my binder collection list, and my master list.
 2) Adding images for thousands of cards to google sheets was not going to be feasible.
