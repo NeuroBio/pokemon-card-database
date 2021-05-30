@@ -42,12 +42,13 @@ export class FlawInfo {
         'surface damage', 'staining', 'warping', 'water damage'
     ];
     wheres = [
-        'entire surface', 'top', 'bottom', 'left-side', 'right-side', 
+        'entire surface', 'top', 'bottom', 'left-side', 'right-side',
+        'center', 'tip',
         'top-center', 'top-right', 'right-center', 'bottom-right',
         'bottom-center', 'bottom-left', 'left-center', 'top-left'
     ];
     landmarks = [
-        'edge', 'corner', 'illustration', 'holo', 'text-box',
+        'edge', 'corner', 'illustration', 'holo', 'text-box', 'all corners',
         'entire border', 'front', 'back', 'top back', 'bottom back'
     ];
     severities = ['negligible', 'mild', 'moderate', 'severe'];
