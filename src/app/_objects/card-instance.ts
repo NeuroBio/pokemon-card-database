@@ -38,7 +38,7 @@ export class Flaw {
 
 export class FlawInfo {
     types = [
-        'crease', 'dent', 'scratch', 'whitening', 'burn',
+        'crease', 'dent', 'scratch', 'whitening', 'burn', 'scuffing',
         'surface damage', 'staining', 'warping', 'water damage'
     ];
     wheres = [
