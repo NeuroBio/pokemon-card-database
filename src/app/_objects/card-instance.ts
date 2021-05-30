@@ -39,12 +39,12 @@ export class Flaw {
 export class FlawInfo {
     types = [
         'crease', 'dent', 'scratch', 'whitening', 'burn',
-        'surface damage', 'staining'
+        'surface damage', 'staining', 'warping', 'water damage'
     ];
     wheres = [
+        'entire surface', 'top', 'bottom', 'left-side', 'right-side', 
         'top-center', 'top-right', 'right-center', 'bottom-right',
-        'bottom-center', 'bottom-left', 'left-center', 'top-left',
-        'top', 'bottom', 'left-side', 'right-side', 'entire surface'
+        'bottom-center', 'bottom-left', 'left-center', 'top-left'
     ];
     landmarks = [
         'edge', 'corner', 'illustration', 'holo', 'text-box',
