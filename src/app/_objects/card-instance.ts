@@ -37,12 +37,19 @@ export class Flaw {
 }
 
 export class FlawInfo {
-    types = ['crease', 'dent', 'scratch', 'whitening', 'burn', 'surface damage'];
+    types = [
+        'crease', 'dent', 'scratch', 'whitening', 'burn',
+        'surface damage', 'staining'
+    ];
     wheres = [
         'top-center', 'top-right', 'right-center', 'bottom-right',
-        'bottom-center', 'bottom-left', 'left-center', 'top-left'
+        'bottom-center', 'bottom-left', 'left-center', 'top-left',
+        'top', 'bottom', 'left-side', 'right-side', 'entire surface'
     ];
-    landmarks = ['edge', 'corner', 'illustration', 'holo', 'text-box'];
+    landmarks = [
+        'edge', 'corner', 'illustration', 'holo', 'text-box',
+        'entire border', 'front', 'back', 'top back', 'bottom back'
+    ];
     severities = ['negligible', 'mild', 'moderate', 'severe'];
 }
 

@@ -88,7 +88,7 @@
         <!-- Dex -->
         <ng-container [matColumnDef]="displayColumns[1]">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ displayColumns[1] }}</th>
-            <td mat-cell *matCellDef="let card"> {{ card.dexNumber }} </td>
+            <td mat-cell *matCellDef="let card"> {{ card.dexNumber + 1 }} </td>
         </ng-container>
     
         <!-- Name -->

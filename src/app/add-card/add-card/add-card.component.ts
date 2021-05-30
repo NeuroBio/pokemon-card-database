@@ -108,6 +108,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
       front: data.front,
       back: data.back,
       flaws: this.flaws,
+      uid: data.uid
     });
   }
 
@@ -173,6 +174,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
 
   submit(): Subscription {
     const newCard = this.cardForm.getRawValue();
+    console.log(newCard.uid)
 
     if (!newCard.uid) {
       newCard.uid = uuid.v4();
