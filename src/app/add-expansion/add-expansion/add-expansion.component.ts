@@ -92,8 +92,9 @@ export class AddExpansionComponent implements OnInit {
     if (type !== 'pokemon') {
       return null;
     }
+    console.log(name === this.static.NationalDex[121])
 
-    const nameParts = name.split(' ');
+    const nameParts = name.split(' (?=([^\.]))');
     // standard
     let ind = this.static.NationalDex.findIndex(name => name === nameParts[0]);
     if (ind === -1) {
