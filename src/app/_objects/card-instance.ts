@@ -49,7 +49,7 @@ export class FlawInfo {
     ];
     landmarks = [
         'edge', 'corner', 'illustration', 'holo', 'text-box', 'all corners',
-        'entire border', 'front', 'back', 'top back', 'bottom back'
+        'entire border', 'front', 'back', 'top back', 'bottom back', 'entire card'
     ];
     severities = ['negligible', 'mild', 'moderate', 'severe'];
 }
