@@ -47,8 +47,8 @@ export class CollectionService {
           return cardObject;
         }),
         tap(cards => {
-        this.allCards.next(cards)
-        this.changed = true;
+          this.changed = true;
+          this.allCards.next(cards)
       }));
   }
 

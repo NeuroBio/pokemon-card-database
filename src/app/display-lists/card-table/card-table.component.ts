@@ -47,6 +47,15 @@ export class CardTableComponent implements OnInit, OnChanges {
   filterForm: FormGroup;
   filterSubscription: Subscription;
 
+  sortingData = { 
+    Dex: 'asc',
+    Name: '',
+    Expansion: '',
+    Gen: 'asc',
+    Release: '',
+    Print: '',
+    Copies: '',
+  };
   static = new StaticData();
 
   constructor(
@@ -62,6 +71,13 @@ export class CardTableComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     this.cards.data = this.displayCards;
+
+    Object.keys(this.sortingData).forEach(active => {
+      if (this.sortingData[active]) {
+        this.sortData({ active, direction: this.sortingData[active] } as Sort);
+      }
+    });
+    
     this.swapListType();
   }
 
@@ -89,6 +105,7 @@ export class CardTableComponent implements OnInit, OnChanges {
 
   // Sorting functions
   sortData(sort: Sort) {
+    this.sortingData[sort.active] = sort.direction;
     const data = this.cards.data.slice();
     if (!sort.active || sort.direction === '') {
       return;
