@@ -43,7 +43,7 @@
 
              <!-- Edit button -->
             <a mat-icon-button color="prime" *ngIf="allowEdit"
-            class="edit-button" [routerLink]="['card/edit/' + instance.uid]">
+            class="edit-button" [routerLink]="[makeRoute()]">
                 <mat-icon>edit</mat-icon>
             </a>
 

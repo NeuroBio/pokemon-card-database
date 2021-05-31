@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { CheckInfo, Checklist, PopulateMethod } from 'src/app/_objects/checklist';
@@ -43,9 +43,13 @@ export class AddListComponent implements OnInit, OnDestroy {
     private checklistserv: CheckListService,
     private messenger: MessengerService,
     private router: Router,
+    private route: ActivatedRoute,
     private dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.route.data.subscribe(data => {
+      this.editData = data.checklist;
+    });
     this.expansions = this.collectionserv.expansions.value;
     this.expansionNames = this.collectionserv.getExpansionNames();
     this.listForm = this.createListForm();

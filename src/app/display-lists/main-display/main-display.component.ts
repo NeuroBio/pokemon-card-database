@@ -76,14 +76,6 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     }
   }
 
-  // editList() {
-  //   this.dialog.open(AddListComponent, {
-  //     width: '80vw',
-  //     maxWidth: '650px',
-  //     data: this.collectionserv.getRawCheckList(this.whichList.value)
-  //   });
-  // }
-
   deleteList() {
     this.dialog.open(ConfirmComponent, {
       width: '80vw',

@@ -26,4 +26,8 @@ export class IndividualCardComponent implements OnChanges {
     this.cardType = this.exp ? this.exp.cards[this.instance.printNumber-1] : undefined;
   }
 
+  makeRoute() {
+    return `card/edit/${this.exp.name}-${this.cardType.printNumber}_${this.instance.uid}`
+  }
+
 }

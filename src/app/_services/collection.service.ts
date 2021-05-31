@@ -147,7 +147,7 @@ export class CollectionService {
     return chunk ? Object.values(chunk) : null;
   }
 
-  getCard(key: string, uid: string) {
+  getCard(key: string, uid: string): CardInstance {
     return this.allCards.value[key][uid];
   }
 

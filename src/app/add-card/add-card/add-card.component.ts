@@ -1,7 +1,7 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { ConfirmComponent } from 'src/app/confirm/confirm/confirm.component';
@@ -48,10 +48,12 @@ export class AddCardComponent implements OnInit, OnDestroy {
     private collectionserv: CollectionService,
     private resizer: ResizeService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
     ) { }
 
   ngOnInit(): void {
+    this.route.data.subscribe(data => this.editData = data.card);
     this.expansions = this.collectionserv.expansions.value;
     this.expansionNames = this.collectionserv.getExpansionNames();
 
