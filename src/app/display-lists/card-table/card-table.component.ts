@@ -96,6 +96,7 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
 
   editChecklistSlot(card: CardChunk, index: number) {
     this.dialog.open(PickCardComponent, {
+    width: '80vw',
     data: {
       key: `${card.expansionName}-${card.printNumber}`,
       listName: this.listName,

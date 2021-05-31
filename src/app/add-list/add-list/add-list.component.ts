@@ -127,7 +127,6 @@ export class AddListComponent implements OnInit, OnDestroy {
       const method = this.populateMethods[index];
       this.dialog.open(PickCardComponent, {
         width: '80vw',
-        maxWidth: '650px',
         data: {
           key: `${this.cards[index].path}`,
           activeCardKey: method.uid ? `${method.key}` : undefined,
@@ -194,7 +193,7 @@ export class AddListComponent implements OnInit, OnDestroy {
           this.messenger.send('Checklist uploaded.');
           this.close();  
         } else {
-          this.messenger.send('Only the Admin may add oredit checklists.');
+          this.messenger.send('Only the Admin may add or edit checklists.');
         }
       });
   }

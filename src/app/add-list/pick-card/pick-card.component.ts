@@ -123,7 +123,7 @@ export class PickCardComponent implements OnInit, OnDestroy {
     const placeholder = key !== this.data.key;
     const newCheckInfo = new CheckInfo(placeholder, activeCard.uid, key);
     return this.checklistserv.changeCard(newCheckInfo, this.data.listName, this.data.index)
-      .pipe(take(1)).subscribe(res => {
+      .then(res => {
         if (res) {
           this.messenger.send(`Card in ${this.data.listName} updated.`);
           this.close();  

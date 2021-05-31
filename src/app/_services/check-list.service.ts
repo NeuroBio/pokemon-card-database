@@ -3,13 +3,17 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { CheckInfo } from '../_objects/checklist';
+import { CollectionService } from './collection.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CheckListService {
 
-  constructor(private af: AngularFirestore) { }
+  constructor(
+    private af: AngularFirestore,
+    private collectionserv: CollectionService
+    ) { }
 
   uploadList(list: any): Promise<boolean> {
     list.checkInfo = JSON.stringify(list.checkInfo);
@@ -23,18 +27,39 @@ export class CheckListService {
       .then(() => true).catch(() => false);
   }
 
-  changeCard(newCheckInfo: CheckInfo, listName: string, index: number): Observable<boolean> {
-    return this.af.collection<any>('check-lists').doc(`${listName}`)
-    .valueChanges().pipe(
-      switchMap(list => {
-        list.checkInfo = JSON.parse(list.checkInfo);
-        list.checkInfo[index] = newCheckInfo;
-        list.checkInfo = JSON.stringify(list.checkInfo);
-        return this.af.collection('check-lists').doc(`${listName}`)
-          .set(Object.assign({}, list)).then(() => true);
-      }),
-      catchError(() => of(false))
-    );
+  changeCard(newCheckInfo: CheckInfo, listName: string, index: number): Promise<boolean> {
+    const list: any = this.collectionserv.getRawCheckList(listName);
+
+    // return this.af.collection<any>('check-lists').doc(`${listName}`)
+    // .valueChanges().pipe(
+    //   switchMap(list => {
+    //     list.checkInfo = JSON.parse(list.checkInfo);
+    list.checkInfo[index] = newCheckInfo;
+    list.checkInfo = JSON.stringify(list.checkInfo);
+    return this.af.collection('check-lists').doc(`${listName}`)
+      .set(Object.assign({}, list)).then(() => true)
+      .catch(() => false);
+      // }),
+      // catchError(() => of(false))
+    // );
+  }
+
+  updateList(listName: string): Promise<boolean> {
+    const list = this.collectionserv.getRawCheckList(listName);
+    list.checkInfo.map((info, i) => {
+      if (!info) {
+        const card = list.cardKeys[i];
+        const checkChunk = this.collectionserv.getChunk(card);
+        if (checkChunk) {
+          const best = this.collectionserv.getBestCard(checkChunk);
+          if (best) {
+            return new CheckInfo(false, best.uid, card);
+          }
+        }
+      }
+      return info;
+    });
+    return this.uploadList(list);
   }
 
 }

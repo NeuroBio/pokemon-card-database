@@ -12,12 +12,18 @@
         </div>
 
         <div *ngIf="allowEdit && whichList.value !== 'Masterlist'">
-            <a mat-icon-button aria-label="edit-list" color="prime"
+            
+            <button mat-icon-button aria-label="update-checklist-cards" color="prime"
+            (click)="updateChecklist()">
+                <mat-icon>autorenew</mat-icon>
+            </button>
+
+            <a mat-icon-button aria-label="edit-checklist" color="prime"
             [routerLink]="['checklist/edit/' + this.whichList.value]">
                 <mat-icon>edit</mat-icon>
             </a>
     
-            <button mat-icon-button aria-label="delete-list" color="tert"
+            <button mat-icon-button aria-label="delete-checklist" color="tert"
             (click)="deleteList()">
                 <mat-icon>delete</mat-icon>
             </button>

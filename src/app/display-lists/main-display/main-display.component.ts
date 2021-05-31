@@ -1,10 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { AddListComponent } from 'src/app/add-list/add-list/add-list.component';
 import { ConfirmComponent } from 'src/app/confirm/confirm/confirm.component';
 import { CardChunk } from 'src/app/_objects/card-chunk';
 import { AuthService } from 'src/app/_services/auth.service';
@@ -28,7 +26,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
   listSubscription: Subscription;
   activeListSubscription: Subscription;
 
-  allowEdit = false;
+  allowEdit = true;
 
   constructor(
     private fb: FormBuilder,
@@ -94,6 +92,10 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  updateChecklist() {
+    this.checklistserv.updateList(this.whichList.value);
   }
 
   isLoggedIn() {

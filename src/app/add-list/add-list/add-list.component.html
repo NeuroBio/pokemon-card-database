@@ -112,7 +112,7 @@
                                 </div>
     
                                 <!-- Pick method to prepopulate list -->
-                                <mat-form-field *ngIf="!drag">
+                                <mat-form-field *ngIf="!drag" id="population-method">
                                     <mat-label>Population Method</mat-label>
                                     <mat-select [disabled]="!cardForm.get('prepopulate').value" #defaultChoice>
                                         <mat-option value="best" (click)="populateOption('best', i)">
