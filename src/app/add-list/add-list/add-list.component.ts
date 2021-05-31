@@ -1,10 +1,11 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, Inject, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { take, timeout } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { CheckInfo, Checklist, PopulateMethod } from 'src/app/_objects/checklist';
 import { Card } from 'src/app/_objects/expansion';
 import { CheckListService } from 'src/app/_services/check-list.service';
@@ -21,6 +22,7 @@ export class AddListComponent implements OnInit, OnDestroy {
 
   @ViewChildren(MatSelect) select: QueryList<MatSelect>;
 
+  editData: any;
   listForm: FormGroup;
   cardForm: FormGroup;
   cards: any[] = [];
@@ -40,9 +42,8 @@ export class AddListComponent implements OnInit, OnDestroy {
     private collectionserv: CollectionService,
     private checklistserv: CheckListService,
     private messenger: MessengerService,
-    private dialog: MatDialog,
-    private dialogRef: MatDialogRef<AddListComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
+    private router: Router,
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.expansions = this.collectionserv.expansions.value;
@@ -63,7 +64,7 @@ export class AddListComponent implements OnInit, OnDestroy {
         this.activeCard = this.collectionserv.getActiveCard(exp, print);
     });
 
-    if (this.data) {
+    if (this.editData) {
       this.loadOldData()
     }
   }
@@ -88,7 +89,7 @@ export class AddListComponent implements OnInit, OnDestroy {
   }
 
   close() {
-    this.dialogRef.close();
+    this.router.navigate(['']);
   }
 
   // Drag and drop
@@ -175,7 +176,7 @@ export class AddListComponent implements OnInit, OnDestroy {
       .then(res => {
         if (res) {
           this.messenger.send('Checklist uploaded.');
-          this.dialogRef.close();  
+          this.close();  
         } else {
           this.messenger.send('Only the Admin may add oredit checklists.');
         }
@@ -183,8 +184,8 @@ export class AddListComponent implements OnInit, OnDestroy {
   }
 
   loadOldData() {
-    this.listForm.patchValue({ name: this.data.name });
-    this.cards = this.data.cardKeys.map(key => {
+    this.listForm.patchValue({ name: this.editData.name });
+    this.cards = this.editData.cardKeys.map(key => {
       const keyParts = key.split('-');
       return {
       preview: this.collectionserv.getActiveCard(keyParts[0], keyParts[1]),
@@ -192,7 +193,7 @@ export class AddListComponent implements OnInit, OnDestroy {
       path: key,
       };
     });
-    this.populateMethods = this.data.checkInfo.map(info => {
+    this.populateMethods = this.editData.checkInfo.map(info => {
       if (info.uid) {
         const keyParts = info.key.split('-');
         return new PopulateMethod('useCard', keyParts[0], keyParts[1], info.uid);  

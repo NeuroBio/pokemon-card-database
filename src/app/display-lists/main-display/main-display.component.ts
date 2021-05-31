@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { AddListComponent } from 'src/app/add-list/add-list/add-list.component';
@@ -27,7 +28,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
   listSubscription: Subscription;
   activeListSubscription: Subscription;
 
-  allowEdit = false;
+  allowEdit = true;
 
   constructor(
     private fb: FormBuilder,
@@ -75,13 +76,13 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     }
   }
 
-  editList() {
-    this.dialog.open(AddListComponent, {
-      width: '80vw',
-      maxWidth: '650px',
-      data: this.collectionserv.getRawCheckList(this.whichList.value)
-    });
-  }
+  // editList() {
+  //   this.dialog.open(AddListComponent, {
+  //     width: '80vw',
+  //     maxWidth: '650px',
+  //     data: this.collectionserv.getRawCheckList(this.whichList.value)
+  //   });
+  // }
 
   deleteList() {
     this.dialog.open(ConfirmComponent, {
