@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
@@ -17,16 +17,14 @@ import { StaticData } from 'src/app/_objects/pokemon-list';
   styleUrls: ['./card-table.component.scss'],
   animations: [
     trigger('detailExpand', [
-      state('collapsed',
-      style({
-        height: '0px',
-        padding: '0px',
-      })),
+      state('collapsed, void', style({ height: '0px' })),
+      state('expanded', style({ height: '*' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+      transition('expanded <=> void', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'))
     ]),
   ]
 })
-export class CardTableComponent implements OnInit, OnChanges {
+export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() displayCards: CardChunk[] = [];
   @Input() allowEdit: boolean = false;
@@ -81,6 +79,10 @@ export class CardTableComponent implements OnInit, OnChanges {
     this.swapListType();
   }
 
+  ngOnDestroy() {
+    this.filterSubscription.unsubscribe();
+  }
+
   swapListType() {
     if (this.displayColumns.length === 8) {
       this.displayColumns.pop();
@@ -101,6 +103,15 @@ export class CardTableComponent implements OnInit, OnChanges {
         listName: this.listName,
         index
     } });
+  }
+
+  isMaster() {
+    return this.listName === 'Masterlist';
+  }
+
+  showAll(card: CardChunk, instance: CardInstance) {
+    return `${card.expansionName}-${card.printNumber}`
+      !== `${instance.expansionName}-${instance.printNumber}`;
   }
 
   // Sorting functions
@@ -131,7 +142,7 @@ export class CardTableComponent implements OnInit, OnChanges {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
-  // TODO: test whether this actually works
+
   compareHave(a: CheckInfo, b: CheckInfo, isAsc: boolean) {
     return (!a ? -1 : a.placeholder && !b || !a.placeholder  && (!b || b.placeholder) ? 1 : -1) * (isAsc ? 1 : -1);
   }
@@ -171,12 +182,4 @@ export class CardTableComponent implements OnInit, OnChanges {
     return myFilterPredicate;
   }
 
-  isMaster() {
-    return this.listName === 'Masterlist';
-  }
-
-  showAll(card: CardChunk, instance: CardInstance) {
-    return `${card.expansionName}-${card.printNumber}`
-      !== `${instance.expansionName}-${instance.printNumber}`;
-  }
 }
