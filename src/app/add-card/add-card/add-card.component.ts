@@ -78,6 +78,10 @@ export class AddCardComponent implements OnInit, OnDestroy {
     });
   }
 
+  test() {
+    console.log('gh')
+  }
+
   ngOnDestroy() {
     this.expansionSubscription.unsubscribe();
     this.printSubscription.unsubscribe();

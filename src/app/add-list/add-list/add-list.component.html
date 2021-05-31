@@ -1,13 +1,17 @@
+<div class="back-stripe">
+    <button mat-flat-button (click)="close()" class="outer">
+        <button mat-icon-button color="prime" class="inner">
+            <mat-icon>chevron_left</mat-icon>
+        </button>
+        Back
+    </button>
+</div>
+
 <form [formGroup]="listForm" id="list-form">
     <!-- Header -->
     <mat-card class="tight-card">
         <h2>
             Create List
-    
-            <button mat-icon-button aria-label="close-dialog-box" color="tert"
-            (click)="close()">
-                <mat-icon>clear</mat-icon>
-            </button>
         </h2>
     
         <div class="side-by-side breathing-room">

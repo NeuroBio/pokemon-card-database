@@ -1,3 +1,12 @@
+<div class="back-stripe">
+    <button mat-flat-button (click)="close()" class="outer">
+        <button mat-icon-button color="prime" class="inner">
+            <mat-icon>chevron_left</mat-icon>
+        </button>
+        Back
+    </button>
+</div>
+
 <form [formGroup]="cardForm">
 
     <div class="side-by-side">
@@ -17,10 +26,6 @@
                 <!-- Header -->
                 <h2>
                     Card Info
-                    <button mat-icon-button aria-label="close-dialog-box" color="tert"
-                    (click)="close()">
-                        <mat-icon>clear</mat-icon>
-                    </button>
                 </h2>
                 <br>
             

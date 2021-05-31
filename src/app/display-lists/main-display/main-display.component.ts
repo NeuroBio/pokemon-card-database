@@ -28,7 +28,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
   listSubscription: Subscription;
   activeListSubscription: Subscription;
 
-  allowEdit = true;
+  allowEdit = false;
 
   constructor(
     private fb: FormBuilder,
