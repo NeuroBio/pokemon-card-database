@@ -7,3 +7,9 @@
     min-height: 100vh;
     width: 100%;
 }
+
+#page-extender {
+    display: flex;
+    flex-flow: column;
+    background-color: $palette7;
+}

@@ -8,7 +8,7 @@
             [disabled]="!isLoggedIn()"
             (click)="lockSwitch()">
                 <mat-icon>{{ allowEdit ? 'lock_open' : 'lock' }}</mat-icon>
-            </button>    
+            </button>
         </div>
 
         <div *ngIf="allowEdit && whichList.value !== 'Masterlist'">

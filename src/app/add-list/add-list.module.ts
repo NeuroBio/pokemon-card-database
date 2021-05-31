@@ -32,7 +32,6 @@ import { SelectCardComponent } from './select-card/select-card.component';
   ],
   imports: [
     CommonModule,
-    AddListRoutingModule,
     ReactiveFormsModule,
 
     CardPreviewModule,
@@ -45,7 +44,8 @@ import { SelectCardComponent } from './select-card/select-card.component';
     MatInputModule,
     MatSelectModule,
     MatSlideToggleModule,
-    DragDropModule
+    DragDropModule,
+    AddListRoutingModule
     
   ]
 })

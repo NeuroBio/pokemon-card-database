@@ -18,7 +18,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { MainDisplayComponent } from './main-display/main-display.component';
-import { AddCardModule } from '../add-card/add-card.module';
 import { CardPreviewModule } from '../card-preview/card-preview.module';
 import { ConfirmModule } from '../confirm/confirm.module';
 
@@ -32,7 +31,6 @@ import { ConfirmModule } from '../confirm/confirm.module';
     CommonModule,
     ReactiveFormsModule,
 
-    AddCardModule,
     CardPreviewModule,
     ConfirmModule,
 

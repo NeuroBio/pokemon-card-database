@@ -42,11 +42,11 @@
             </div>
 
              <!-- Edit button -->
-            <button mat-icon-button color="prime" *ngIf="allowEdit"
+            <a mat-icon-button color="prime" *ngIf="allowEdit"
             class="edit-button"
-            (click)="edit()">
+            routerLink="card/edit">
                 <mat-icon>edit</mat-icon>
-            </button>
+            </a>
 
         </div>
 

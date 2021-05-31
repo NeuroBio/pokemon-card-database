@@ -17,8 +17,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { environment } from 'src/environments/environment';
 
 // custom modules
-// import { AddExpansionModule } from './add-expansion/add-expansion.module';
-import { DisplayListsModule } from './display-lists/display-lists.module';
+// import { DisplayListsModule } from './display-lists/display-lists.module';
 
 // factories
 import { CollectionService } from './_services/collection.service';
@@ -27,10 +26,8 @@ import { AuthService } from './_services/auth.service';
 
 // Material imports
 import { MatButtonModule } from '@angular/material/button';
-import { AddCardModule } from './add-card/add-card.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { AddListModule } from './add-list/add-list.module';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -55,10 +52,7 @@ export function AuthFactory(provider: AuthService) {
     AngularFireStorageModule, // imports firebase/storage only needed for storage features
     AngularFireFunctionsModule, //cloud functions
 
-    DisplayListsModule,
-    AddCardModule,
-    // AddExpansionModule,
-    AddListModule,
+    // DisplayListsModule,
 
     MatButtonModule,
     MatDialogModule,

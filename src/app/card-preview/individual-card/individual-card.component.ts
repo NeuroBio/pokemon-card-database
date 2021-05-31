@@ -1,6 +1,4 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { AddCardComponent } from 'src/app/add-card/add-card/add-card.component';
 import { CardInstance } from 'src/app/_objects/card-instance';
 import { Card, SetExpansion } from 'src/app/_objects/expansion';
 import { CollectionService } from 'src/app/_services/collection.service';
@@ -21,20 +19,11 @@ export class IndividualCardComponent implements OnChanges {
   cardType: Card;
 
   constructor(
-    private collectionserv: CollectionService,
-    private dialog: MatDialog) { }
+    private collectionserv: CollectionService) { }
 
   ngOnChanges(): void {
     this.exp = this.collectionserv.expansions.value[this.instance.expansionName];
     this.cardType = this.exp ? this.exp.cards[this.instance.printNumber-1] : undefined;
-  }
-
-  edit(): void {
-    this.dialog.open(AddCardComponent, {
-      width: '80vw',
-      maxWidth: '1050px',
-      data: this.instance
-    });
   }
 
 }

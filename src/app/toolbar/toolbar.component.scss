@@ -1,18 +1,21 @@
 @import '../Variables.scss';
 
 header {
-    max-width: $max-width;
+
     background-color: $palette7;
 }
 
 h1 {
-    font-family: "pokemon";
-    color: $pokemon-yellow;
-    font-size: 25pt;
-    -webkit-text-stroke: 2.2px $pokemon-blue;
-    letter-spacing: 0.15em;
-    padding: .1em 0em .3em .3em;
+    a {
+        font-family: "pokemon";
+        color: $pokemon-yellow;
+        font-size: 25pt;
+        -webkit-text-stroke: 2.2px $pokemon-blue;
+        letter-spacing: 0.15em;
+        padding: .1em 0em .3em .3em;
+    }
 }
+
 
 #main-site-actions {
     display: flex;

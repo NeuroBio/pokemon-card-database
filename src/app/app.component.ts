@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { StaticData } from './_objects/pokemon-list';
-import { CardInstance } from './_objects/card-instance';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
