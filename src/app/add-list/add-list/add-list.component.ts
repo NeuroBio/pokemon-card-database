@@ -11,7 +11,7 @@ import { Card } from 'src/app/_objects/expansion';
 import { CheckListService } from 'src/app/_services/check-list.service';
 import { CollectionService } from 'src/app/_services/collection.service';
 import { MessengerService } from 'src/app/_services/messenger.service';
-import { SelectCardComponent } from '../select-card/select-card.component';
+import { PickCardComponent } from '../pick-card/pick-card.component';
 
 @Component({
   selector: 'app-add-list',
@@ -29,6 +29,7 @@ export class AddListComponent implements OnInit, OnDestroy {
   drag = true;
 
   populateMethods = [];
+  previews = [];
 
   activeCard: Card;
   expansionSubscription: Subscription;
@@ -100,6 +101,7 @@ export class AddListComponent implements OnInit, OnDestroy {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.cards, event.previousIndex, event.currentIndex);
     moveItemInArray(this.populateMethods, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.previews, event.previousIndex, event.currentIndex);
   }
 
   addCard(): void {
@@ -111,23 +113,33 @@ export class AddListComponent implements OnInit, OnDestroy {
     });
     this.populateMethods.push({});
     this.cardForm.patchValue({ print: this.cardForm.get('print').value + 1 });
+    this.previews.push(undefined);
   }
 
   removeCard(index: number): void {
     this.cards.splice(index, 1);
     this.populateMethods.splice(index, 1);
+    this.previews.splice(index, 1);
   }
 
   populateOption(method: string, index: number): void {
     if (method === 'useCard') {
-      this.dialog.open(SelectCardComponent, {
+      const method = this.populateMethods[index];
+      this.dialog.open(PickCardComponent, {
         width: '80vw',
-        maxWidth: '650px'
+        maxWidth: '650px',
+        data: {
+          key: `${this.cards[index].path}`,
+          activeCardKey: method.uid ? `${method.key}` : undefined,
+          activeCardUID: method.uid ? method.uid : undefined,
+          newSubmission: true
+        }
       }).afterClosed()
         .pipe(take(1)).subscribe(cardData => {
           if (cardData) {
-            this.populateMethods[index] = new PopulateMethod(method,
+            this.populateMethods[index] = new PopulateMethod('useCard',
               cardData.expansion, cardData.print, cardData.uid);
+            this.previews[index] = this.getCard(this.populateMethods[index]);
           }
       })
     } else {
@@ -204,6 +216,9 @@ export class AddListComponent implements OnInit, OnDestroy {
       } else {
         return {};
       }
+    });
+    this.populateMethods.forEach((info, i) => {
+      this.previews[i] = this.getCard(info);
     });
   }
 

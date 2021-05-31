@@ -30,6 +30,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
 
 export function CollectionFactory(provider: CollectionService) {
   return () => provider.load();
@@ -45,6 +47,7 @@ export function AuthFactory(provider: AuthService) {
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
@@ -58,6 +61,7 @@ export function AuthFactory(provider: AuthService) {
     MatDialogModule,
     MatIconModule,
     MatSnackBarModule,
+    MatSelectModule,
 
     AppRoutingModule,
     BrowserAnimationsModule

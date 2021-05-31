@@ -20,15 +20,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { SelectCardComponent } from './select-card/select-card.component';
-
 
 
 @NgModule({
   declarations: [
     AddListComponent,
-    PickCardComponent,
-    SelectCardComponent
+    PickCardComponent
   ],
   imports: [
     CommonModule,
@@ -45,8 +42,8 @@ import { SelectCardComponent } from './select-card/select-card.component';
     MatSelectModule,
     MatSlideToggleModule,
     DragDropModule,
+
     AddListRoutingModule
-    
   ]
 })
 export class AddListModule { }

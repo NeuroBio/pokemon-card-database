@@ -94,15 +94,14 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  editChecklistCard(card: CardChunk, index: number): void {
+  editChecklistSlot(card: CardChunk, index: number) {
     this.dialog.open(PickCardComponent, {
-      width: '80vw',
-      maxWidth: '650px',
-      data: {
-        key: `${card.expansionName}-${card.printNumber}`,
-        listName: this.listName,
-        index
-    } });
+    data: {
+      key: `${card.expansionName}-${card.printNumber}`,
+      listName: this.listName,
+      index
+      }
+    });
   }
 
   isMaster() {
@@ -141,7 +140,6 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
   compare(a: number | string, b: number | string, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
-
 
   compareHave(a: CheckInfo, b: CheckInfo, isAsc: boolean) {
     return (!a ? -1 : a.placeholder && !b || !a.placeholder  && (!b || b.placeholder) ? 1 : -1) * (isAsc ? 1 : -1);

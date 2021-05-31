@@ -11,22 +11,35 @@
     
         <div class="side-by-side">
             <div id="card-picking-section">
+
+                <!-- Expansion -->
+                <mat-form-field>
+                    <mat-label>Expansion</mat-label>
+                    <mat-select formControlName="exp">
+                        <mat-option *ngFor="let exp of expansionNames" [value]="exp">
+                            {{ exp }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <!-- Available Cards -->
                 <mat-form-field>
                     <mat-label>Card</mat-label>
                     <mat-select formControlName="activeCardChunkKey">
-                        <mat-option *ngFor="let card of masterList; let i = index" (click)="setIndex(i)"
+                        <mat-option *ngFor="let card of allowed; let i = index"
                         [value]="card.expansionName + '-' + card.printNumber">
                             {{ card.expansionName }}: {{ card.cardTitle }} ({{ card.printNumber }}/{{ card.numCards }})
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-            
+
+                <!-- Which instance -->
                 <mat-form-field *ngIf="this.getValue('activeCardChunk')">
                     <mat-label>Card Instance</mat-label>
                     <mat-select formControlName="activeCard">
                         <mat-option *ngFor="let instance of this.getValue('activeCardChunk')" [value]="instance">
                             {{ instance.form }} {{ instance.condition }}
-                        </mat-option>    
+                        </mat-option>
                     </mat-select>
                 </mat-form-field>
     

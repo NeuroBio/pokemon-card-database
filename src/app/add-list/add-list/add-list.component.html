@@ -51,7 +51,7 @@
                     <!-- prepopulate List -->
                     <div *ngIf="!drag" color="prime">
                         <mat-slide-toggle formControlName="prepopulate">
-                            Auto-prepopulate
+                            Auto-populate
                         </mat-slide-toggle>
                     </div>
 
@@ -82,6 +82,7 @@
                 <h3>Cards in List:</h3>
                 <div cdkDropList class="card-list" (cdkDropListDropped)="drop($event)">
                     <div class="card-box" *ngFor="let card of cards; let i = index"
+                    [ngStyle]="drag ? { 'cursor': 'move' } : { 'cursor': 'default' }"
                     cdkDrag [cdkDragDisabled]="!drag">
 
                         <!-- Placeholder -->
@@ -108,7 +109,7 @@
     
                                 <!-- Pick method to prepopulate list -->
                                 <mat-form-field *ngIf="!drag">
-                                    <mat-label>Prepopulation Method</mat-label>
+                                    <mat-label>Population Method</mat-label>
                                     <mat-select [disabled]="!cardForm.get('prepopulate').value" #defaultChoice>
                                         <mat-option value="best" (click)="populateOption('best', i)">
                                             Find Best Card
@@ -120,14 +121,14 @@
                                             Skip
                                         </mat-option>
                                     </mat-select>
-                                </mat-form-field>    
+                                </mat-form-field>
                             </div>
 
                             <!-- Chosen card if a card is chosen -->
                             <div *ngIf="populateMethods[i].method === 'useCard' && !drag">
                                 Using: 
                                 <app-individual-card
-                                [instance]="getCard(populateMethods[i])"
+                                [instance]="previews[i]"
                                 ></app-individual-card>
                             </div>
                         </div>
