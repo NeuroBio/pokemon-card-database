@@ -12,36 +12,45 @@
             </div>
             <div *ngIf="instance.back">
                 <img [src]="instance.back">
-            </div>    
+            </div>
         </div>
 
-        <!-- Card type nd state -->
-        <span *ngIf="showAll && exp && cardType">
-            {{ exp.name }} {{ cardType.cardTitle }} ({{ instance.printNumber }}/{{ exp.numCards }})
-        </span>
-        {{ instance.form }} {{ instance.condition }}
-        <br>
 
-        <!-- Start Flaws -->
-        Flaws:
-        <!-- List Flaws -->
-        <div class="tab" *ngFor="let flaw of instance.flaws">
-            <span></span>
-            - {{ flaw.severity }} {{ flaw.type }} {{ flaw.where }}  {{ flaw.landmark }}
-        </div>
+        <div class="side-by-side">
+            <!-- Text display -->
+            <div>
+            <!-- Card type and state -->
+            <span *ngIf="showAll && exp && cardType">
+                {{ exp.name }} {{ cardType.cardTitle }} ({{ instance.printNumber }}/{{ exp.numCards }})
+            </span>
+            {{ instance.form }} {{ instance.condition }}
+            <br>
 
-        <!-- No Flaws -->
-        <div *ngIf="instance.flaws.length === 0" class="tab">
-            - None
+            <!-- Start Flaws -->
+            Flaws:
+            <!-- List Flaws -->
+            <div class="tab" *ngFor="let flaw of instance.flaws">
+                <span></span>
+                - {{ flaw.severity }} {{ flaw.type }} {{ flaw.where }}  {{ flaw.landmark }}
+            </div>
+
+            <!-- No Flaws -->
+            <div *ngIf="instance.flaws.length === 0" class="tab">
+                - None
+            </div>
+
+            </div>
+
+             <!-- Edit button -->
+            <button mat-icon-button color="prime" *ngIf="allowEdit"
+            class="edit-button"
+            (click)="edit()">
+                <mat-icon>edit</mat-icon>
+            </button>
+
         </div>
 
     </div>
 
 
-    <!-- Edit button -->
-    <button mat-icon-button color="prime" *ngIf="allowEdit"
-    class="edit-button"
-    (click)="edit()">
-        <mat-icon>edit</mat-icon>
-    </button>
  </div>
