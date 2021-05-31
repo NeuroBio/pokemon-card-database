@@ -129,7 +129,7 @@
                     {{ isMaster() ? card.conditionCount() : card.haveCard() }}
                     <a mat-icon-button color="prime"
                     *ngIf="!isMaster() && allowEdit" class="drop-button"
-                    routerLink="card/edit">
+                    [routerLink]="['card/edit/' + card.uid]">
                         <mat-icon class="drop-icon">edit</mat-icon>
                     </a>
                 </div>

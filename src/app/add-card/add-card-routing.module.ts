@@ -5,7 +5,7 @@ import { AddCardComponent } from './add-card/add-card.component';
 const routes: Routes = [
   { path: '', component: AddCardComponent,
     children: [
-      { path: 'edit', component: AddCardComponent }
+      { path: 'edit/:CardID', component: AddCardComponent }
     ]
   }
 ];

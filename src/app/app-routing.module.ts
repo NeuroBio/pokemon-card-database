@@ -18,7 +18,7 @@ const routes: Routes = [
     loadChildren: () => import('./add-list/add-list.module')
       .then(m => m.AddListModule)
   },
-  { path: '**', redirectTo: '' }
+  // { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

@@ -5,6 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { IndividualCardComponent } from './individual-card/individual-card.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -15,6 +16,8 @@ import { MatIconModule } from '@angular/material/icon';
   ],
   imports: [
     CommonModule,
+    RouterModule,
+    
     MatButtonModule,
     MatCardModule,
     MatIconModule,

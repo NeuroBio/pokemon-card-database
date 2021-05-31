@@ -5,7 +5,7 @@ import { AddListComponent } from './add-list/add-list.component';
 const routes: Routes = [
   { path: '', component: AddListComponent,
     children: [
-      { path: 'edit', component: AddListComponent}
+      { path: 'edit/:ChecklistID', component: AddListComponent}
     ]
  }
 ];

@@ -13,7 +13,7 @@
 
         <div *ngIf="allowEdit && whichList.value !== 'Masterlist'">
             <a mat-icon-button aria-label="edit-list" color="prime"
-            routerLink="checklist/edit">
+            [routerLink]="['checklist/edit' + this.whichList.value]">
                 <mat-icon>edit</mat-icon>
             </a>
     
