@@ -1,6 +1,7 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { ConfirmComponent } from 'src/app/confirm/confirm/confirm.component';
@@ -19,6 +20,7 @@ import * as uuid from 'uuid';
 })
 export class AddCardComponent implements OnInit, OnDestroy {
 
+  editData: CardInstance
   cardForm: FormGroup;
   flaws: FormArray;
 
@@ -46,8 +48,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
     private collectionserv: CollectionService,
     private resizer: ResizeService,
     private dialog: MatDialog,
-    private dialogRef: MatDialogRef<AddCardComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: CardInstance
+    private router: Router
     ) { }
 
   ngOnInit(): void {
@@ -55,8 +56,8 @@ export class AddCardComponent implements OnInit, OnDestroy {
     this.expansionNames = this.collectionserv.getExpansionNames();
 
     this.flaws = this.createFlawArray();
-    if (this.data) {
-      this.cardForm = this.createEditForm(this.data);  
+    if (this.editData) {
+      this.cardForm = this.createEditForm(this.editData);
     } else {
       this.cardForm = this.createAddForm();
     }
@@ -191,12 +192,12 @@ export class AddCardComponent implements OnInit, OnDestroy {
     return this.cardserv.uploadCard(newCard, images)
       .pipe(take(1)).subscribe(res => {
         if (res) {
-          if (this.data) {
+          if (this.editData) {
             this.messenger.send('Card edited.')
           } else {
             this.messenger.send('Card uploaded.');
           }
-          this.dialogRef.close();  
+          this.close();  
         } else {
           this.messenger.send('Only the Admin may add or edit cards.');
         }
@@ -204,26 +205,26 @@ export class AddCardComponent implements OnInit, OnDestroy {
   }
 
   close(): void {
-    this.dialogRef.close();
+    this.router.navigate(['']);
   }
 
   delete(): void {
-    const cardType: Card = this.expansions[this.data.expansionName].cards[this.data.printNumber-1];
+    const cardType: Card = this.expansions[this.editData.expansionName].cards[this.editData.printNumber-1];
     // check whether to delete
     this.dialog.open(ConfirmComponent, {
       width: '450px',
       data: `Are you sure you want to delete this copy of ${
-        cardType.cardTitle} (${cardType.printNumber}/${this.expansions[this.data.expansionName].numCards})?`
+        cardType.cardTitle} (${cardType.printNumber}/${this.expansions[this.editData.expansionName].numCards})?`
       }).afterClosed().pipe(take(1)).subscribe(confirmed => {
         if (confirmed) { // actually delete
           return this.cardserv.deleteCard(
-            this.data.expansionName,
-            this.data.printNumber,
-            this.data.uid).pipe(take(1))
+            this.editData.expansionName,
+            this.editData.printNumber,
+            this.editData.uid).pipe(take(1))
             .subscribe(res => {
               if (res) {
                 this.messenger.send('Card deleted.');
-                this.dialogRef.close();  
+                this.close();  
               } else {
                 this.messenger.send('Only the Admin may delete cards.');
               }

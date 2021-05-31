@@ -127,11 +127,11 @@
             <td mat-cell *matCellDef="let card; let i = dataIndex">
                 <div class="swap-cell">
                     {{ isMaster() ? card.conditionCount() : card.haveCard() }}
-                    <button mat-icon-button color="prime"
+                    <a mat-icon-button color="prime"
                     *ngIf="!isMaster() && allowEdit" class="drop-button"
-                    (click)="editChecklistCard(card, i)">
+                    routerLink="card/edit">
                         <mat-icon class="drop-icon">edit</mat-icon>
-                    </button>    
+                    </a>
                 </div>
             </td>
         </ng-container>

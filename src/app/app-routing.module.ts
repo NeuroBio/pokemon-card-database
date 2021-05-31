@@ -9,6 +9,10 @@ const routes: Routes = [
   { path: 'checklist',
     loadChildren: () => import('./add-list/add-list.module')
       .then(m => m.AddListModule)
+  },
+  { path: 'card',
+    loadChildren: () => import('./add-card/add-card.module')
+      .then(m => m.AddCardModule)
   }
 ];
 

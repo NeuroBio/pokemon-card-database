@@ -3,7 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { AddListComponent } from './add-list/add-list.component';
 
 const routes: Routes = [
-  { path: '', component: AddListComponent }
+  { path: '', component: AddListComponent,
+    children: [
+      { path: 'edit', component: AddListComponent}
+    ]
+ }
 ];
 
 @NgModule({
