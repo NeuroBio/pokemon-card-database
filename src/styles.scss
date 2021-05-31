@@ -59,11 +59,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     max-height: 100vh;
 }
 
-.cdk-global-overlay-wrapper {
-    overflow: auto;
-    pointer-events: auto;
-  }
-
 .button-box {
     display: flex;
     flex-flow: row-reverse;

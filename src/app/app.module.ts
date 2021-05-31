@@ -17,7 +17,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { environment } from 'src/environments/environment';
 
 // custom modules
-import { AddExpansionModule } from './add-expansion/add-expansion.module';
+// import { AddExpansionModule } from './add-expansion/add-expansion.module';
 import { DisplayListsModule } from './display-lists/display-lists.module';
 
 // factories
@@ -57,7 +57,7 @@ export function AuthFactory(provider: AuthService) {
 
     DisplayListsModule,
     AddCardModule,
-    AddExpansionModule,
+    // AddExpansionModule,
     AddListModule,
 
     MatButtonModule,

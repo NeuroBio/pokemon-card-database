@@ -1,6 +1,6 @@
-import { Component, OnInit, Optional } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Card } from 'src/app/_objects/expansion';
 import { StaticData } from 'src/app/_objects/pokemon-list';
 import { ExpansionService } from 'src/app/_services/expansion.service';
@@ -22,8 +22,8 @@ export class AddExpansionComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private expansionserv: ExpansionService,
-    private messenger: MessengerService,
-    @Optional() public dialogRef: MatDialogRef<AddExpansionComponent>) { }
+    private router: Router,
+    private messenger: MessengerService) { }
 
   ngOnInit(): void {
     this.expansionForm = this.createExpansionForm();
@@ -115,7 +115,7 @@ export class AddExpansionComponent implements OnInit {
       .then(res => {
         if (res) {
           this.messenger.send('Expansion uploaded.');
-          this.dialogRef.close();  
+          this.close();
         } else {
           this.messenger.send('Only the Admin may add or edit expansions.');
         }
@@ -123,7 +123,7 @@ export class AddExpansionComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close();
+    this.router.navigate(['']);
   }
 
 }
