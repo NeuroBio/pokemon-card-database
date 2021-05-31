@@ -4,6 +4,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, finalize, map, switchMap, take } from 'rxjs/operators';
 import { CardInstance, CardStorage } from '../_objects/card-instance';
+import { CollectionService } from './collection.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,47 +13,43 @@ export class CardService {
 
   constructor(
     private af: AngularFirestore,
-    private as: AngularFireStorage
+    private as: AngularFireStorage,
+    private collectionserv: CollectionService
     ) { }
 
   uploadCard(newCard:CardInstance, images: Blob[]): Observable<boolean> {
-    // get card storage
-    return this.af.doc<any>(`pokemon-cards/${newCard.expansionName}-${newCard.printNumber}`)
-    .valueChanges().pipe(
-      take(1),
-      switchMap(cardBox => {
+    let cardBox = this.collectionserv.allCards
+      .value[`${newCard.expansionName}-${newCard.printNumber}`];
+    // make cardstorage if none exists
+    if (!cardBox) {
+      cardBox = new CardStorage(newCard.expansionName, newCard.printNumber);
+    } else {
+      cardBox.cards = JSON.parse(cardBox.cards);  
+    }
 
-        // make cardstorage if none exists
-        if (!cardBox) {
-          cardBox = new CardStorage(newCard.expansionName, newCard.printNumber);
-        } else {
-          cardBox.cards = JSON.parse(cardBox.cards);  
-        }
-
-
-        // upload image if there are any to upload
-        return forkJoin(images.map((image, i) => {
-          if (image) {
-            const path = `card-images/${newCard.uid}-${i == 0 ? 'front' : 'back'}`;
-            return this.as.upload(path, image)
-              .snapshotChanges().pipe(finalize(() => {})).toPromise()
-              .then(() => {
-                return this.as.ref(path).getDownloadURL().toPromise()
-            }).then(url => {
-              newCard[i == 0 ? 'front' : 'back'] = url
-            });
-          }
-          return of ().toPromise();
-        })).pipe(switchMap(() => {
-          cardBox.cards[newCard.uid] = newCard;
-          cardBox.cards = JSON.stringify(cardBox.cards);
-          return this.af.collection<any>(`pokemon-cards`)
-            .doc(`${newCard.expansionName}-${newCard.printNumber}`)
-            .set(Object.assign({}, cardBox));
-        }) ).pipe(map(() => true))
+    // upload image if there are any to upload
+    return forkJoin(images.map((image, i) => {
+      if (image) {
+        const path = `card-images/${newCard.uid}-${i == 0 ? 'front' : 'back'}`;
+        return this.as.upload(path, image)
+          .snapshotChanges().pipe(finalize(() => {})).toPromise()
+          .then(() => {
+            return this.as.ref(path).getDownloadURL().toPromise();
+        }).then(url => {
+          newCard[i == 0 ? 'front' : 'back'] = url;
+        });
+      }
+      return of ().toPromise();
+    }) ).pipe(
+      switchMap(() => {
+        cardBox.cards[newCard.uid] = newCard;
+        cardBox.cards = JSON.stringify(cardBox.cards);
+        return this.af.collection<any>(`pokemon-cards`)
+          .doc(`${newCard.expansionName}-${newCard.printNumber}`)
+          .set(Object.assign({}, cardBox)).then(() => true);
       }),
       catchError(() => of(false))
-      );
+    );
   }
 
   deleteCard(expansion: string, print: number, uid: string): Observable<boolean> {

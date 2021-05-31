@@ -29,19 +29,11 @@ export class CheckListService {
 
   changeCard(newCheckInfo: CheckInfo, listName: string, index: number): Promise<boolean> {
     const list: any = this.collectionserv.getRawCheckList(listName);
-
-    // return this.af.collection<any>('check-lists').doc(`${listName}`)
-    // .valueChanges().pipe(
-    //   switchMap(list => {
-    //     list.checkInfo = JSON.parse(list.checkInfo);
     list.checkInfo[index] = newCheckInfo;
     list.checkInfo = JSON.stringify(list.checkInfo);
     return this.af.collection('check-lists').doc(`${listName}`)
       .set(Object.assign({}, list)).then(() => true)
       .catch(() => false);
-      // }),
-      // catchError(() => of(false))
-    // );
   }
 
   updateList(listName: string): Promise<boolean> {
