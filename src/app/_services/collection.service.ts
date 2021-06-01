@@ -6,6 +6,7 @@ import { CardChunk } from '../_objects/card-chunk';
 import { CardInstance } from '../_objects/card-instance';
 import { Checklist } from '../_objects/checklist';
 import { SetExpansion } from '../_objects/expansion';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +18,13 @@ export class CollectionService {
   checkLists = new BehaviorSubject<any[]>(undefined);
   masterList = new BehaviorSubject<CardChunk[]>([]);
 
-  private bestForm = {'1st': 0, 'shadowless': 1, 'UK 2000': 2, 'unlimited': 3, 'reverse': 4, 'standard': 5};
-  private bestCondition = {'M': 0, 'NM': 1, 'LP': 2, 'MP': 3, 'HP': 4};
+  private bestForm = { '1st': 0, 'shadowless': 1, 'UK 2000': 2, 'unlimited': 3, 'reverse': 4, 'standard': 5 };
+  private bestCondition = { 'M': 0, 'NM': 1, 'LP': 2, 'MP': 3, 'HP': 4 };
   private changed: boolean;
 
-  constructor(private af: AngularFirestore) { 
+  constructor(
+    private af: AngularFirestore,
+    private auth: AuthService) { 
     this.getCards().pipe(skip(1)).subscribe();
     this.getExpansions().pipe(skip(1)).subscribe();
     this.getCheckLists().pipe(skip(1)).subscribe();
@@ -106,10 +109,11 @@ export class CollectionService {
   }
 
   getCheckList(listName: string): CardChunk[] {
-    const list =  this.getRawCheckList(listName);
+    const list: any = this.getRawCheckList(listName);
     const cardChunks: CardChunk[] = [];
     const cards = this.allCards.value;
     const expansions = this.expansions.value;
+    let requireUpdate = false
 
     // for each card in a list
     list.cardKeys.forEach((key, i) => {
@@ -117,14 +121,28 @@ export class CollectionService {
 
       // get the card type to start the cardchunk
       const newChunk = new CardChunk(+keyParts[1], expansions[keyParts[0]], list.checkInfo[i])
-
       // if there is a card instance, get it and load it into the new chard chunk
       if (list.checkInfo[i].uid) {
         const cardType = cards[list.checkInfo[i].key];
-        newChunk.owned.push(cardType[list.checkInfo[i].uid]);
+        if (cardType && cardType[list.checkInfo[i].uid]) {
+          newChunk.owned.push(cardType[list.checkInfo[i].uid]);  
+        } else {
+          list.checkInfo[i] = '';
+          delete newChunk.checkInfo;
+          requireUpdate = true;
+        }
       }
       cardChunks.push(newChunk);
     });
+
+    console.log(cardChunks)
+
+    if (requireUpdate && this.auth.isLoggedIn) {
+      list.checkInfo = JSON.stringify(list.checkInfo);
+      this.af.collection<any>('check-lists')
+        .doc(`${list.name}`).set(Object.assign({}, list))
+        .then(() => true).catch(() => false);
+    }
 
     return cardChunks;
   }
