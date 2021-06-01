@@ -19,6 +19,8 @@ export class AddExpansionComponent implements OnInit {
   parseError = false;
   stringSplitter = new RegExp('(?<!\\.)\\s');
 
+  isLoading = false;
+
   constructor(
     private fb: FormBuilder,
     private expansionserv: ExpansionService,
@@ -111,8 +113,10 @@ export class AddExpansionComponent implements OnInit {
   }
 
   submit() {
+    this.isLoading = true;
     return this.expansionserv.addExpansion(this.expansionForm.value)
       .then(res => {
+        this.isLoading = false;
         if (res) {
           this.messenger.send('Expansion uploaded.');
           this.close();

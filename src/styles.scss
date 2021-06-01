@@ -66,6 +66,23 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     padding: 1em 0em;
 }
 
+.progress-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0,0,0,.1);
+    border-radius: 2em;
+
+    mat-spinner {
+        margin: 2em;
+    }
+}
+
+.mat-progress-spinner circle, .mat-spinner circle {
+    stroke: $palette1;
+}
+
 .back-stripe {
     background-color: $palette4;
     color: whitesmoke;

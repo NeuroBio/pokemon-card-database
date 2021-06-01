@@ -135,8 +135,6 @@ export class CollectionService {
       cardChunks.push(newChunk);
     });
 
-    console.log(cardChunks)
-
     if (requireUpdate && this.auth.isLoggedIn) {
       list.checkInfo = JSON.stringify(list.checkInfo);
       this.af.collection<any>('check-lists')

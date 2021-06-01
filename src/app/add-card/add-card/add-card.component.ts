@@ -36,6 +36,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
 
   expansionSubscription: Subscription;
   printSubscription: Subscription;
+  isLoading = false;
 
   maxHeight = 500;
   maxWidth = 500;
@@ -180,6 +181,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
   }
 
   submit(): Subscription {
+    this.isLoading = true;
     const newCard = this.cardForm.getRawValue();
 
     if (!newCard.uid) {
@@ -197,6 +199,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
 
     return this.cardserv.uploadCard(newCard, images)
       .pipe(take(1)).subscribe(res => {
+        this.isLoading = false;
         if (res) {
           if (this.editData) {
             this.messenger.send('Card edited.')
@@ -223,14 +226,16 @@ export class AddCardComponent implements OnInit, OnDestroy {
         cardType.cardTitle} (${cardType.printNumber}/${this.expansions[this.editData.expansionName].numCards})?`
       }).afterClosed().pipe(take(1)).subscribe(confirmed => {
         if (confirmed) { // actually delete
+          this.isLoading = true;
           return this.cardserv.deleteCard(
             this.editData.expansionName,
             this.editData.printNumber,
             this.editData.uid).pipe(take(1))
             .subscribe(res => {
+              this.isLoading = false;
               if (res) {
                 this.messenger.send('Card deleted.');
-                this.close();  
+                this.close();
               } else {
                 this.messenger.send('Only the Admin may delete cards.');
               }

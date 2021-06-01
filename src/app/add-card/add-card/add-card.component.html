@@ -206,7 +206,7 @@
             <div class="button-box">
                 <!-- Submit Card Form -->
                 <button mat-raised-button color="prime"
-                [disabled]="!cardForm.valid || activeCard === null"
+                [disabled]="!cardForm.valid || activeCard === null || isLoading"
                 (click)="submit()">
                     <mat-icon>cloud_upload</mat-icon>
                     Upload Card
@@ -216,6 +216,7 @@
                 <!-- Delete card -->
                 <button mat-raised-button color="warn"
                 *ngIf="editData"
+                [disabled]="isLoading"
                 (click)="delete()">
                     <mat-icon>delete_outline</mat-icon>
                     Delete Card
@@ -225,3 +226,7 @@
     </div>
 
 </form>
+
+<div class="progress-spinner" *ngIf="isLoading">
+    <mat-spinner [diameter]="200"></mat-spinner>
+</div>

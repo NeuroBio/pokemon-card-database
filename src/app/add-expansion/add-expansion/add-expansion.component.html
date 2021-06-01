@@ -101,7 +101,7 @@
 
     <div class="button-box">
         <button mat-raised-button color="prime"
-        [disabled]="!expansionForm.valid"
+        [disabled]="!expansionForm.valid || isLoading"
         (click)="submit()">
             <mat-icon>cloud_upload</mat-icon>
             Add Expansion to Database
@@ -109,3 +109,7 @@
     </div>
 
 </form>
+
+<div class="progress-spinner" *ngIf="isLoading">
+    <mat-spinner [diameter]="200"></mat-spinner>
+</div>

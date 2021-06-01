@@ -146,7 +146,7 @@
     <div class="button-box">
         <!-- Submission button -->
         <button mat-raised-button color="prime"
-        [disabled]="!listForm.valid || drag"
+        [disabled]="!listForm.valid || drag || isLoading"
         (click)="submit()">
             <mat-icon>cloud_upload</mat-icon>
             Add List to Database
@@ -154,3 +154,7 @@
     </div>
 
 </form>
+
+<div class="progress-spinner" *ngIf="isLoading">
+    <mat-spinner [diameter]="200"></mat-spinner>
+</div>

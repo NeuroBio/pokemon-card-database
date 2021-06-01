@@ -38,6 +38,8 @@ export class AddListComponent implements OnInit, OnDestroy {
   expansions: {};
   expansionNames: string[];
 
+  isLoading = false;
+
   constructor(
     private fb: FormBuilder,
     private collectionserv: CollectionService,
@@ -165,6 +167,7 @@ export class AddListComponent implements OnInit, OnDestroy {
   }
 
   submit() {
+    this.isLoading = true;
     const checklist = new Checklist(this.listForm.value.name, this.cards.map(card => card.path));
 
     // prepopulation with card instances
@@ -189,6 +192,7 @@ export class AddListComponent implements OnInit, OnDestroy {
 
     return this.checklistserv.uploadList(checklist)
       .then(res => {
+        this.isLoading = false;
         if (res) {
           this.messenger.send('Checklist uploaded.');
           this.close();  
