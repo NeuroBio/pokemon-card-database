@@ -14,48 +14,48 @@ import { AuthService } from './auth.service';
 export class CollectionService {
 
   allCards = new BehaviorSubject<any>([]);
-  expansions = new BehaviorSubject<Object>([]);
+  expansions = new BehaviorSubject<any>([]);
   checkLists = new BehaviorSubject<any[]>(undefined);
   masterList = new BehaviorSubject<CardChunk[]>([]);
 
-  private bestForm = { '1st': 0, 'shadowless': 1, 'UK 2000': 2, 'unlimited': 3, 'reverse': 4, 'standard': 5 };
-  private bestCondition = { 'M': 0, 'NM': 1, 'LP': 2, 'MP': 3, 'HP': 4 };
+  private bestForm = { '1st': 0, shadowless: 1, 'UK 2000': 2, unlimited: 3, reverse: 4, standard: 5 };
+  private bestCondition = { M: 0, NM: 1, LP: 2, MP: 3, HP: 4 };
   private changed: boolean;
 
   constructor(
     private af: AngularFirestore,
-    private auth: AuthService) { 
+    private auth: AuthService) {
     this.getCards().pipe(skip(1)).subscribe();
     this.getExpansions().pipe(skip(1)).subscribe();
     this.getCheckLists().pipe(skip(1)).subscribe();
   }
 
-  load() {
+  load(): Promise<boolean> {
     return new Promise((resolve) => {
       forkJoin([
         this.getCards().pipe(take(1)),
         this.getExpansions().pipe(take(1)),
         this.getCheckLists().pipe(take(1))
-      ]).subscribe(() => resolve(true))
+      ]).subscribe(() => resolve(true));
     });
   }
 
-  private getCards(): Observable<Object> {
+  private getCards(): Observable<any> {
     return this.af.collection<any>('pokemon-cards').valueChanges()
       .pipe(
         map(cards => {
-          const cardObject = {}
+          const cardObject = {};
           cards.forEach(cardType =>
             cardObject[`${cardType.expansionName}-${cardType.printNumber}`] = JSON.parse(cardType.cards));
           return cardObject;
         }),
         tap(cards => {
           this.changed = true;
-          this.allCards.next(cards)
+          this.allCards.next(cards);
       }));
   }
 
-  private getExpansions(): Observable<Object> {
+  private getExpansions(): Observable<any> {
     return this.af.collection<any>('expansions').valueChanges()
       .pipe(
         map(expansions => {
@@ -94,7 +94,7 @@ export class CollectionService {
 
       // load in the desired cards
       Object.keys(cards[key]).forEach(uid =>
-        cardChunks[cardChunks.length-1].owned.push(cards[key][uid]))
+        cardChunks[cardChunks.length - 1].owned.push(cards[key][uid]));
     });
 
     this.masterList.next(cardChunks);
@@ -103,9 +103,9 @@ export class CollectionService {
   }
 
   getRawCheckList(listName: string): Checklist {
-    const list = Object.assign({}, this.checkLists.value.find(list => list.name === listName));
-    list.checkInfo = JSON.parse(list.checkInfo)
-    return list as Checklist
+    const list = Object.assign({}, this.checkLists.value.find(li => li.name === listName));
+    list.checkInfo = JSON.parse(list.checkInfo);
+    return list as Checklist;
   }
 
   getCheckList(listName: string): CardChunk[] {
@@ -113,19 +113,19 @@ export class CollectionService {
     const cardChunks: CardChunk[] = [];
     const cards = this.allCards.value;
     const expansions = this.expansions.value;
-    let requireUpdate = false
+    let requireUpdate = false;
 
     // for each card in a list
     list.cardKeys.forEach((key, i) => {
-      const keyParts = key.split('-')
+      const keyParts = key.split('-');
 
       // get the card type to start the cardchunk
-      const newChunk = new CardChunk(+keyParts[1], expansions[keyParts[0]], list.checkInfo[i])
+      const newChunk = new CardChunk(+keyParts[1], expansions[keyParts[0]], list.checkInfo[i]);
       // if there is a card instance, get it and load it into the new chard chunk
       if (list.checkInfo[i].uid) {
         const cardType = cards[list.checkInfo[i].key];
         if (cardType && cardType[list.checkInfo[i].uid]) {
-          newChunk.owned.push(cardType[list.checkInfo[i].uid]);  
+          newChunk.owned.push(cardType[list.checkInfo[i].uid]);
         } else {
           list.checkInfo[i] = '';
           delete newChunk.checkInfo;
@@ -145,16 +145,16 @@ export class CollectionService {
     return cardChunks;
   }
 
-  getActiveCard(exp: string, print: number) {
+  getActiveCard(exp: string, print: number): any {
     if (print && exp) {
-      const card = this.expansions.value[exp].cards[print-1];
+      const card = this.expansions.value[exp].cards[print - 1];
       if (!card) {
         return null;
       } else {
         return card;
       }
     } else {
-      undefined;
+      return null;
     }
   }
 
@@ -189,7 +189,7 @@ export class CollectionService {
         bestCard = card;
         return;
       } else if (this.bestForm[card.form] === this.bestForm[bestCard.form]) { // same form
-        //check condition
+        // check condition
         if (this.bestCondition[card.condition] < this.bestCondition[bestCard.condition]) { // better condition
           bestCard = card;
         }
@@ -201,12 +201,12 @@ export class CollectionService {
 
   getExpansionNames(): string[] {
     const exp = this.expansions.value;
-    return Object.keys(exp).sort((a,b) => 
+    return Object.keys(exp).sort((a, b) =>
     // lower gens higher
-    exp[a].gen < exp[b].gen ? -1 : 
+    exp[a].gen < exp[b].gen ? -1 :
     exp[a].gen > exp[b].gen ? 1 :
 
-    //same gen, check release order
+    // same gen, check release order
     exp[a].release < exp[b].release ? -1 : 1
     );
   }

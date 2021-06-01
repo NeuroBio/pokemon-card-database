@@ -1,6 +1,6 @@
-import { CardInstance } from "./card-instance";
-import { CheckInfo } from "./checklist";
-import { Card, SetExpansion } from "./expansion";
+import { CardInstance } from './card-instance';
+import { CheckInfo } from './checklist';
+import { Card, SetExpansion } from './expansion';
 
 export class CardChunk extends Card {
 
@@ -9,20 +9,20 @@ export class CardChunk extends Card {
     generation: number;
     numCards: number;
     release: number;
-    checkInfo?: CheckInfo;    
+    checkInfo?: CheckInfo;
 
     constructor(print: number, expansion: SetExpansion, checkInfo?: CheckInfo) {
         super(
-            expansion.cards[print-1].cardTitle,
-            expansion.cards[print-1].cardType,
-            expansion.cards[print-1].dexNumber,
-            expansion.cards[print-1].printNumber,
-            expansion.cards[print-1].rarity)
+            expansion.cards[print - 1].cardTitle,
+            expansion.cards[print - 1].cardType,
+            expansion.cards[print - 1].dexNumber,
+            expansion.cards[print - 1].printNumber,
+            expansion.cards[print - 1].rarity);
         this.expansionName = expansion.name;
         this.generation = expansion.generation;
         this.numCards = expansion.numCards;
         this.release = expansion.release;
-        this.checkInfo = checkInfo
+        this.checkInfo = checkInfo;
     }
 
     conditionCount(): string {
@@ -69,7 +69,7 @@ export class CardChunk extends Card {
         this.owned.splice(index, 1);
     }
 
-    haveCard() {
+    haveCard(): string {
         if (this.checkInfo) {
             if (!this.checkInfo.uid) {
                 return 'None';
@@ -80,5 +80,5 @@ export class CardChunk extends Card {
             return 'None';
         }
     }
-    
+
 }

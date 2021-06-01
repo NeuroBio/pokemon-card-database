@@ -25,7 +25,7 @@ export class CheckInfo {
 export class PopulateMethod {
     method: string;
     key?: string;
-    uid?: string
+    uid?: string;
 
     constructor(method: string, exp?: string, print?: string, uid?: string) {
         this.method = method;

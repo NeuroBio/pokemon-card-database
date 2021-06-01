@@ -11,7 +11,7 @@ export class ExpansionService {
   addExpansion(newExpansion: any): Promise<boolean> {
     // TODO: test if this is truely unnecessary
     // Test Results: Yes, it is necessary.
-    newExpansion.cards = JSON.stringify(newExpansion.cards); 
+    newExpansion.cards = JSON.stringify(newExpansion.cards);
     return this.af.collection<any>('expansions')
       .doc(`${newExpansion.name.split(' ').join('-')}`)
       .set(Object.assign({}, newExpansion))

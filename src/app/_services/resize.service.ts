@@ -5,12 +5,13 @@ import { Injectable } from '@angular/core';
 })
 export class ResizeService {
 
-  resizeandPreviewImage (event: any, maxHeight: number, maxWidth: number) {
-    return this.resizer(event.target.files[0], maxHeight, maxWidth)
-    .then((urlString: string) => {
-      const imageBlob = this.b64toBlob(urlString);
-      return { urlString, imageBlob };
-    });
+  resizeandPreviewImage(event: any, maxHeight: number, maxWidth: number)
+    : Promise<{ urlString: string, imageBlob: Blob }> {
+      return this.resizer(event.target.files[0], maxHeight, maxWidth)
+      .then((urlString: string) => {
+        const imageBlob = this.b64toBlob(urlString);
+        return { urlString, imageBlob };
+      });
   }
 
   // resizeImage(file: any, maxheight: number, maxwidth: number, Blob: boolean) {
@@ -24,7 +25,7 @@ export class ResizeService {
   //   });
   // }
 
-  private resizer(file: any, maxH: number, maxW: number) {
+  private resizer(file: any, maxH: number, maxW: number): Promise<unknown> {
     return new Promise((resolve) => {
       const canvas = document.createElement('canvas');
       const ctx1 = canvas.getContext('2d');
@@ -32,7 +33,7 @@ export class ResizeService {
       const img = document.createElement('img');
       let URLi;
 
-      img.onload = function() {    
+      img.onload = () => {
         setTimeout(() => {
           canvas.width = img.width;
           canvas.height = img.height;
@@ -41,91 +42,92 @@ export class ResizeService {
           const iwScaled = img.width * scale;
           const ihScaled = img.height * scale;
 
-          const width_source = canvas.width;
-          const height_source = canvas.height;
+          const widthSource = canvas.width;
+          const heightSource = canvas.height;
           const width = Math.round(iwScaled);
           const height = Math.round(ihScaled);
 
-          const ratio_w = width_source / width;
-          const ratio_h = height_source / height;
-          const ratio_w_half = Math.ceil(ratio_w / 2);
-          const ratio_h_half = Math.ceil(ratio_h / 2);
+          const ratioW = widthSource / width;
+          const ratioH = heightSource / height;
+          const ratioWHalf = Math.ceil(ratioW / 2);
+          const ratioHHalf = Math.ceil(ratioH / 2);
 
-          const ctx = canvas.getContext("2d");
-          const imgold = ctx.getImageData(0, 0, width_source, height_source);
+          const ctx = canvas.getContext('2d');
+          const imgold = ctx.getImageData(0, 0, widthSource, heightSource);
           const img2 = ctx.createImageData(width, height);
           const data = imgold.data;
           const data2 = img2.data;
 
           for (let j = 0; j < height; j++) {
             for (let i = 0; i < width; i++) {
-              let x2 = (i + j * width) * 4;
-                let weight = 0;
-                let weights = 0;
-                let weights_alpha = 0;
-                let gx_r = 0;
-                let gx_g = 0;
-                let gx_b = 0;
-                let gx_a = 0;
-                let center_y = (j + 0.5) * ratio_h;
-                let yy_start = Math.floor(j * ratio_h);
-                let yy_stop = Math.ceil((j + 1) * ratio_h);
-                for (let yy = yy_start; yy < yy_stop; yy++) {
-                    const dy = Math.abs(center_y - (yy + 0.5)) / ratio_h_half;
-                    const center_x = (i + 0.5) * ratio_w;
-                    const w0 = dy * dy; //pre-calc part of w
-                    const xx_start = Math.floor(i * ratio_w);
-                    const xx_stop = Math.ceil((i + 1) * ratio_w);
-                    for (let xx = xx_start; xx < xx_stop; xx++) {
-                        const dx = Math.abs(center_x - (xx + 0.5)) / ratio_w_half;
-                        const w = Math.sqrt(w0 + dx * dx);
-                        if (w >= 1) {
-                            //pixel too far
-                            continue;
-                        }
-                        //hermite filter
-                        weight = 2 * w * w * w - 3 * w * w + 1;
-                        const pos_x = 4 * (xx + yy * width_source);
-                        //alpha
-                        gx_a += weight * data[pos_x + 3];
-                        weights_alpha += weight;
-                        //colors
-                        if (data[pos_x + 3] < 255)
-                            weight = weight * data[pos_x + 3] / 250;
-                        gx_r += weight * data[pos_x];
-                        gx_g += weight * data[pos_x + 1];
-                        gx_b += weight * data[pos_x + 2];
-                        weights += weight;
-                    }
+              const x2 = (i + j * width) * 4;
+              let weight = 0;
+              let weights = 0;
+              let weightsAlpha = 0;
+              let gxR = 0;
+              let gxG = 0;
+              let gxB = 0;
+              let gxA = 0;
+              const centerY = (j + 0.5) * ratioH;
+              const yyStart = Math.floor(j * ratioH);
+              const yyStop = Math.ceil((j + 1) * ratioH);
+              for (let yy = yyStart; yy < yyStop; yy++) {
+                const dy = Math.abs(centerY - (yy + 0.5)) / ratioHHalf;
+                const centerX = (i + 0.5) * ratioW;
+                const w0 = dy * dy; // pre-calc part of w
+                const xxStart = Math.floor(i * ratioW);
+                const xxStop = Math.ceil((i + 1) * ratioW);
+                for (let xx = xxStart; xx < xxStop; xx++) {
+                  const dx = Math.abs(centerX - (xx + 0.5)) / ratioWHalf;
+                  const w = Math.sqrt(w0 + dx * dx);
+                  if (w >= 1) {
+                    // pixel too far
+                    continue;
+                  }
+                  // hermite filter
+                  weight = 2 * w * w * w - 3 * w * w + 1;
+                  const posX = 4 * (xx + yy * widthSource);
+                  // alpha
+                  gxA += weight * data[posX + 3];
+                  weightsAlpha += weight;
+                  // colors
+                  if (data[posX + 3] < 255) {
+                    weight = weight * data[posX + 3] / 250;
+                  }
+                  gxR += weight * data[posX];
+                  gxG += weight * data[posX + 1];
+                  gxB += weight * data[posX + 2];
+                  weights += weight;
                 }
-                data2[x2] = gx_r / weights;
-                data2[x2 + 1] = gx_g / weights;
-                data2[x2 + 2] = gx_b / weights;
-                data2[x2 + 3] = gx_a / weights_alpha;
               }
+              data2[x2] = gxR / weights;
+              data2[x2 + 1] = gxG / weights;
+              data2[x2 + 2] = gxB / weights;
+              data2[x2 + 3] = gxA / weightsAlpha;
             }
-            canvas.width = width;
-            canvas.height = height;
+          }
+          canvas.width = width;
+          canvas.height = height;
 
-            //draw
-            ctx.putImageData(img2, 0, 0);
-            //https://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality
-            URLi = canvas.toDataURL();        
-            return resolve(URLi)
+          // draw
+          ctx.putImageData(img2, 0, 0);
+          // https://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality
+          URLi = canvas.toDataURL();
+          return resolve(URLi);
         }, 10);
-      }
+      };
       return img.src = URL.createObjectURL(file);
     });
 
 
-    //https://stackoverflow.com/questions/43809120/resizing-a-image-with-javascript-without-rendering-a-canvas-on-the-dom
+    // https://stackoverflow.com/questions/43809120/resizing-a-image-with-javascript-without-rendering-a-canvas-on-the-dom
   }
 
 
 
-  b64toBlob(dataURI) {
+  b64toBlob(dataURI): Blob {
     const byteString = atob(dataURI.split(',')[1]);
-    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
 
     const ab = new ArrayBuffer(byteString.length);
     const ia = new Uint8Array(ab);
@@ -133,12 +135,12 @@ export class ResizeService {
     for (let i = 0; i < byteString.length; i++) {
         ia[i] = byteString.charCodeAt(i);
     }
-    const blob = new Blob([ab], {type: mimeString});
-    blob['lastModified'] = '';
-    blob['name'] = 'resized';
-    blob['lastModifiedDate'] = '';
-    return blob;
-    //https://stackoverflow.com/questions/12168909/blob-from-dataurl
+    const blob: any = new Blob([ab], { type: mimeString });
+    blob.lastModified = '';
+    blob.name = 'resized';
+    blob.lastModifiedDate = '';
+    return blob as Blob;
+    // https://stackoverflow.com/questions/12168909/blob-from-dataurl
   }
 
   // filetob64(event: any) {

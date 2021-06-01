@@ -28,7 +28,7 @@ export class ToolbarComponent {
     }
   }
 
-  isLoggedIn() {
+  isLoggedIn(): boolean {
     return this.auth.isLoggedIn;
   }
 

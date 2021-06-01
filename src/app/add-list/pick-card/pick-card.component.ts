@@ -70,18 +70,18 @@ export class PickCardComponent implements OnInit, OnDestroy {
     });
 
     this.cardSubscription = this.cardForm.controls.activeCardChunk.valueChanges
-      .subscribe(chunk => {
-        this.cardForm.patchValue({ activeCard: this.collectionserv.getBestCard(chunk) });
+      .subscribe(cardChunk => {
+        this.cardForm.patchValue({ activeCard: this.collectionserv.getBestCard(cardChunk) });
       });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.cardSubscription.unsubscribe();
     this.chunkSubscription.unsubscribe();
     this.expSubscription.unsubscribe();
   }
 
-  createForm() {
+  createForm(): FormGroup {
     return this.fb.group({
       exp: 'Base Set',
       activeCardChunkKey: '',
@@ -90,10 +90,10 @@ export class PickCardComponent implements OnInit, OnDestroy {
     });
   }
 
-  getValue(control: string) {
+  getValue(control: string): any {
     return this.cardForm.get(control).value;
   }
-  private getAllowed(exp: string) {
+  private getAllowed(exp: string): void {
     this.allowed = this.masterList.filter(chunk => chunk.expansionName === exp);
   }
 
@@ -116,7 +116,7 @@ export class PickCardComponent implements OnInit, OnDestroy {
   }
 
   // list entry submission
-  upload() {
+  upload(): Promise<void> {
     const activeCard = this.cardForm.value.activeCard;
     const key = `${activeCard.expansionName}-${activeCard.printNumber}`;
     const placeholder = key !== this.data.key;
@@ -125,14 +125,14 @@ export class PickCardComponent implements OnInit, OnDestroy {
       .then(res => {
         if (res) {
           this.messenger.send(`Card in ${this.data.listName} updated.`);
-          this.close();  
+          this.close();
         } else {
-          this.messenger.send('Only the Admin may update a checklist.')
+          this.messenger.send('Only the Admin may update a checklist.');
         }
     });
   }
 
-  close() {
+  close(): void {
     this.dialogRef.close();
   }
 

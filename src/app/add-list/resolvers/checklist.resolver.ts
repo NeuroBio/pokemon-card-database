@@ -28,7 +28,7 @@ export class ChecklistResolver implements Resolve<Checklist> {
       return of (list);
     }
     this.router.navigate(['checklist']);
-    this.messenger.send(`Checkist ${listname} was not found.`)
+    this.messenger.send(`Checkist ${listname} was not found.`);
     return of (null);
   }
 }

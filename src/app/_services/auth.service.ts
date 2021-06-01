@@ -13,33 +13,34 @@ export class AuthService {
 
   constructor(private auth: AngularFireAuth) { }
 
-  load() {
+  load(): void {
     this.auth.authState.subscribe(auth => {
-      this.authState = auth
+      this.authState = auth;
       if (auth) {
         this.isLoggedIn = true;
       }
     });
   }
 
-  logout() {
+  logout(): void {
     this.auth.signOut();
     this.isLoggedIn = false;
   }
 
-  googleLogin() {
+  googleLogin(): Promise<void> {
     const provider = new firebase.auth.GoogleAuthProvider();
     return this.oAuthLogin(provider);
   }
 
-  private oAuthLogin(provider: any) {
+  private oAuthLogin(provider: any): Promise<void> {
     return this.auth.signInWithPopup(provider)
       .then(cred => {
         this.authState = cred;
-        this.isLoggedIn = true});
+        this.isLoggedIn = true;
+      });
   }
 
-  loggedIn() {
+  loggedIn(): boolean {
     return this.isLoggedIn;
   }
 }

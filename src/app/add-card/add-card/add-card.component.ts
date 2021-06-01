@@ -20,7 +20,7 @@ import * as uuid from 'uuid';
 })
 export class AddCardComponent implements OnInit, OnDestroy {
 
-  editData: CardInstance
+  editData: CardInstance;
   cardForm: FormGroup;
   flaws: FormArray;
 
@@ -66,7 +66,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
     }
 
     this.expansionSubscription = this.cardForm.controls.expansionName.valueChanges
-      .subscribe(exp => { 
+      .subscribe(exp => {
         const print = this.cardForm.controls.printNumber.value;
         this.activeCard = this.collectionserv.getActiveCard(exp, print);
         this.setForms(exp);
@@ -79,11 +79,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
     });
   }
 
-  test() {
-    console.log('gh')
-  }
-
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.expansionSubscription.unsubscribe();
     this.printSubscription.unsubscribe();
   }
@@ -190,11 +186,11 @@ export class AddCardComponent implements OnInit, OnDestroy {
 
     const images: Blob[] = new Array(2).fill(undefined);
     if (this.images.front) {
-      images[0]= this.images.front.imageBlob;
+      images[0] = this.images.front.imageBlob;
     }
 
     if (this.images.back) {
-      images[1]= this.images.back.imageBlob;
+      images[1] = this.images.back.imageBlob;
     }
 
     return this.cardserv.uploadCard(newCard, images)
@@ -202,11 +198,11 @@ export class AddCardComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         if (res) {
           if (this.editData) {
-            this.messenger.send('Card edited.')
+            this.messenger.send('Card edited.');
           } else {
             this.messenger.send('Card uploaded.');
           }
-          this.close();  
+          this.close();
         } else {
           this.messenger.send('Only the Admin may add or edit cards.');
         }
@@ -218,7 +214,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
   }
 
   delete(): void {
-    const cardType: Card = this.expansions[this.editData.expansionName].cards[this.editData.printNumber-1];
+    const cardType: Card = this.expansions[this.editData.expansionName].cards[this.editData.printNumber - 1];
     // check whether to delete
     this.dialog.open(ConfirmComponent, {
       width: '450px',
@@ -241,7 +237,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
               }
             });
         }
-      })
+      });
   }
 
 }

@@ -15,7 +15,7 @@ export class AddExpansionComponent implements OnInit {
 
   expansionForm: FormGroup;
   private reader = new FileReader();
-  private static = new StaticData()
+  private static = new StaticData();
   parseError = false;
   stringSplitter = new RegExp('(?<!\\.)\\s');
 
@@ -41,7 +41,7 @@ export class AddExpansionComponent implements OnInit {
     });
   }
 
-  onFileInput(fileInput: any) {
+  onFileInput(fileInput: any): void {
     if (!fileInput.target.files[0]) {
       return;
     }
@@ -50,7 +50,7 @@ export class AddExpansionComponent implements OnInit {
       try { // try to parse file
         const contents = this.reader.result as string;
         this.parseCSV(contents);
-      } catch (err) { //TODO: give viual cues to parse errors
+      } catch (err) { // TODO: give viual cues to parse errors
         this.parseError = true;
         console.error(err);
       }
@@ -58,27 +58,27 @@ export class AddExpansionComponent implements OnInit {
     return this.reader.readAsText(fileInput.target.files[0]);
   }
 
-  parseCSV(contents: string) {
+  parseCSV(contents: string): void {
     const properties = contents.replace(/\r?\n|\r/g, ',').split(',');
-    if (properties[properties.length-1] === '') {
+    if (properties[properties.length - 1] === '') {
       properties.pop();
     }
     const numCards = properties.length / 3;
     const cards = [];
-    
+
     // Check if there are three properties per card
     if (numCards % 1 !== 0) {
       throw new Error('CSV file did not have the expected numer of properties.');
     }
 
     // create cards
-    for(let i = 0; i < numCards; i++) {
+    for (let i = 0; i < numCards; i++) {
       // handle special characters
       const name = properties[0 + 3 * i]
-        .replace('(m)', '♂').replace('(f)', '♀').replace("'",'’').replace('�', 'é');
+        .replace('(m)', '♂').replace('(f)', '♀').replace('\'', '’').replace('�', 'é');
       const type = properties[1 + 3 * i].toLowerCase();
       if (!this.static.ValidTypes.includes(type)) {
-        throw new Error (`Found unexpected type in card ${i+1}: ${properties[1 + 3 * i]}`);
+        throw new Error (`Found unexpected type in card ${i + 1}: ${properties[1 + 3 * i]}`);
       }
       const rarity = properties[2 + 3 * i];
       const dex = this.getDexNumber(name, type);
@@ -97,10 +97,10 @@ export class AddExpansionComponent implements OnInit {
     }
     const nameParts = name.split(this.stringSplitter);
     // standard
-    let ind = this.static.NationalDex.findIndex(name => name === nameParts[0]);
+    let ind = this.static.NationalDex.findIndex(poke => poke === nameParts[0]);
     if (ind === -1) {
       // check of dark pokemon or pokemon ex/gx/v/ect
-      ind = this.static.NationalDex.findIndex(name => name === nameParts[1]);
+      ind = this.static.NationalDex.findIndex(poke => poke === nameParts[1]);
       if (ind === -1) {
         throw new Error(`Pokemon ${name} not in Pokedex`);
       }
@@ -108,11 +108,11 @@ export class AddExpansionComponent implements OnInit {
     return ind;
   }
 
-  clearCards() {
+  clearCards(): void {
     this.expansionForm.patchValue({ cards: '' });
   }
 
-  submit() {
+  submit(): Promise<void> {
     this.isLoading = true;
     return this.expansionserv.addExpansion(this.expansionForm.value)
       .then(res => {
@@ -126,7 +126,7 @@ export class AddExpansionComponent implements OnInit {
     });
   }
 
-  close() {
+  close(): void {
     this.router.navigate(['']);
   }
 

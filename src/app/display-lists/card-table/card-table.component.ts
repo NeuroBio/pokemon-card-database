@@ -27,15 +27,15 @@ import { StaticData } from 'src/app/_objects/pokemon-list';
 export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() displayCards: CardChunk[] = [];
-  @Input() allowEdit: boolean = false;
-  @Input() listName: string = '';
+  @Input() allowEdit = false;
+  @Input() listName = '';
 
   cards = new MatTableDataSource<CardChunk>();
   displayColumns = [
-    'DropDown', 'Dex' ,'Name', 'Expansion', 'Gen',
+    'DropDown', 'Dex', 'Name', 'Expansion', 'Gen',
     'Release', 'Print'
   ];
-  
+
   expanded: CardChunk;
 
   filterObject  = {
@@ -45,7 +45,7 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
   filterForm: FormGroup;
   filterSubscription: Subscription;
 
-  sortingData = { 
+  sortingData = {
     Dex: 'asc',
     Name: '',
     Expansion: '',
@@ -67,7 +67,7 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
     this.cards.filterPredicate = this.customFilterPredicate();
   }
 
-  ngOnChanges() {
+  ngOnChanges(): void {
     this.cards.data = this.displayCards;
 
     Object.keys(this.sortingData).forEach(active => {
@@ -75,15 +75,15 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
         this.sortData({ active, direction: this.sortingData[active] } as Sort);
       }
     });
-    
+
     this.swapListType();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.filterSubscription.unsubscribe();
   }
 
-  swapListType() {
+  swapListType(): void {
     if (this.displayColumns.length === 8) {
       this.displayColumns.pop();
     }
@@ -94,7 +94,7 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  editChecklistSlot(card: CardChunk, index: number) {
+  editChecklistSlot(card: CardChunk, index: number): void {
     this.dialog.open(PickCardComponent, {
     width: '80vw',
     data: {
@@ -105,17 +105,17 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  isMaster() {
+  isMaster(): boolean {
     return this.listName === 'Masterlist';
   }
 
-  showAll(card: CardChunk, instance: CardInstance) {
+  showAll(card: CardChunk, instance: CardInstance): boolean {
     return `${card.expansionName}-${card.printNumber}`
       !== `${instance.expansionName}-${instance.printNumber}`;
   }
 
   // Sorting functions
-  sortData(sort: Sort) {
+  sortData(sort: Sort): void {
     this.sortingData[sort.active] = sort.direction;
     const data = this.cards.data.slice();
     if (!sort.active || sort.direction === '') {
@@ -138,11 +138,11 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  compare(a: number | string, b: number | string, isAsc: boolean) {
+  compare(a: number | string, b: number | string, isAsc: boolean): number {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
-  compareHave(a: CheckInfo, b: CheckInfo, isAsc: boolean) {
+  compareHave(a: CheckInfo, b: CheckInfo, isAsc: boolean): number {
     return (!a ? -1 : a.placeholder && !b || !a.placeholder  && (!b || b.placeholder) ? 1 : -1) * (isAsc ? 1 : -1);
   }
 
@@ -155,11 +155,11 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
     this.filterForm.reset(this.filterObject);
   }
 
-  customFilterPredicate() {
+  customFilterPredicate(): (data: CardChunk, filter: string) => boolean {
     const myFilterPredicate = (card: CardChunk, filter: string) => {
       const searchString = JSON.parse(filter);
       // Filter tests
-      const include = 
+      const include =
         // filter on card title
         card.cardTitle.trim().toLowerCase().indexOf(searchString.title.toLowerCase()) !== -1
         // filter on expansion

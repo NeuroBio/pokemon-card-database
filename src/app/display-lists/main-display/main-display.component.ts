@@ -47,8 +47,8 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
 
     this.listSubscription = this.collectionserv.checkLists
       .subscribe(lists => {
-        this.checklists = lists.map(list => list.name)
-        this.checklists.splice(0, 0, 'Masterlist')
+        this.checklists = lists.map(list => list.name);
+        this.checklists.splice(0, 0, 'Masterlist');
         this.getList();
     });
 
@@ -56,17 +56,17 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
       .subscribe(() => this.getList());
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.cardSubscription.unsubscribe();
     this.listSubscription.unsubscribe();
     this.activeListSubscription.unsubscribe();
   }
 
-  lockSwitch() {
+  lockSwitch(): void {
     this.allowEdit = !this.allowEdit;
   }
 
-  getList() {
+  getList(): void {
     if (this.whichList.value === 'Masterlist') {
       this.activeList = Object.assign([], this.collectionserv.getMaster());
     } else {
@@ -74,7 +74,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteList() {
+  deleteList(): void {
     this.dialog.open(ConfirmComponent, {
       width: '80vw',
       maxWidth: '650px',
@@ -85,7 +85,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
         .then(res => {
           if (res) {
             this.messenger.send('Successfully deleted list.');
-            this.whichList.patchValue('Masterlist')  
+            this.whichList.patchValue('Masterlist');
           } else {
             this.messenger.send('Only the Admin may delete checklists.');
           }
@@ -94,7 +94,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     });
   }
 
-  updateChecklist() {
+  updateChecklist(): void {
     this.checklistserv.updateList(this.whichList.value)
       .then(res => {
         if (!res) {
@@ -103,7 +103,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
       });
   }
 
-  isLoggedIn() {
+  isLoggedIn(): boolean {
     return this.auth.isLoggedIn;
   }
 

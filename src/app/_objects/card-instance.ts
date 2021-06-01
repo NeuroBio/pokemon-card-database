@@ -8,7 +8,7 @@ export class CardInstance {
     uid: string;
     front?: string;
     back?: string;
-    flaws?: Flaw[]
+    flaws?: Flaw[];
 
     constructor(
         num: number, expansion: string, form: string,

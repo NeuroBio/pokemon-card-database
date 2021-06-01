@@ -27,7 +27,7 @@ export class CardResolver implements Resolve<CardInstance> {
       return of(card);
     }
     this.router.navigate(['checklist']);
-    this.messenger.send(`Request card was not found.`)
+    this.messenger.send(`Request card was not found.`);
     return of (null);
   }
 }

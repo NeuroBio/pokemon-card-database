@@ -17,11 +17,10 @@ export class CardService {
     private collectionserv: CollectionService
     ) { }
 
-  uploadCard(newCard:CardInstance, images: Blob[]): Observable<boolean> {
+  uploadCard(newCard: CardInstance, images: Blob[]): Observable<boolean> {
     let cardBox = this.collectionserv.allCards
       .value[`${newCard.expansionName}-${newCard.printNumber}`];
 
-      console.log(cardBox);
     // make cardstorage if none exists
     if (!cardBox) {
       cardBox = new CardStorage(newCard.expansionName, newCard.printNumber);
@@ -30,13 +29,13 @@ export class CardService {
     // upload image if there are any to upload
     return forkJoin(images.map((image, i) => {
       if (image) {
-        const path = `card-images/${newCard.uid}-${i == 0 ? 'front' : 'back'}`;
+        const path = `card-images/${newCard.uid}-${i === 0 ? 'front' : 'back'}`;
         return this.as.upload(path, image)
           .snapshotChanges().pipe(finalize(() => {})).toPromise()
           .then(() => {
             return this.as.ref(path).getDownloadURL().toPromise();
         }).then(url => {
-          newCard[i == 0 ? 'front' : 'back'] = url;
+          newCard[i === 0 ? 'front' : 'back'] = url;
         });
       }
       return of ().toPromise();
@@ -62,7 +61,7 @@ export class CardService {
           `card-images/${uid}-back`,
           `card-images/${uid}-front`
         ].map((url, i) => {
-          if (cardBox.cards[uid][i == 0 ? 'front' : 'back']) {
+          if (cardBox.cards[uid][i === 0 ? 'front' : 'back']) {
             return this.as.ref(url).delete()
             .pipe(finalize(() => {})).toPromise();
           }
@@ -79,7 +78,7 @@ export class CardService {
                 .doc(`${expansion}-${print}`).set(Object.assign({}, cardBox)).then(() => true);
             }
           })
-        )
+        );
       }),
       catchError(() => of(false))
     );

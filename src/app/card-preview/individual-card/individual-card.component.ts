@@ -11,9 +11,9 @@ import { CollectionService } from 'src/app/_services/collection.service';
 export class IndividualCardComponent implements OnChanges {
 
   @Input() instance: CardInstance = new CardInstance(0, 'False Hoods', 'Spectacular', 'M', []);
-  @Input() allowEdit: boolean = false;
-  @Input() showAll: boolean = false;
-  @Input() creating: boolean = false;
+  @Input() allowEdit = false;
+  @Input() showAll = false;
+  @Input() creating = false;
 
   exp: SetExpansion;
   cardType: Card;
@@ -23,10 +23,10 @@ export class IndividualCardComponent implements OnChanges {
 
   ngOnChanges(): void {
     this.exp = this.collectionserv.expansions.value[this.instance.expansionName];
-    this.cardType = this.exp ? this.exp.cards[this.instance.printNumber-1] : undefined;
+    this.cardType = this.exp ? this.exp.cards[this.instance.printNumber - 1] : undefined;
   }
 
-  makeRoute() {
+  makeRoute(): string {
     return `card/edit/${this.exp.name}-${this.cardType.printNumber}_${this.instance.uid}`;
   }
 

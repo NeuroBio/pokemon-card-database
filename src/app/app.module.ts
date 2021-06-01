@@ -8,7 +8,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { AngularFireFunctionsModule } from '@angular/fire/functions';
-import { AngularFireStorageModule }   from '@angular/fire/storage';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 // declarations
 import { AppComponent } from './app.component';
@@ -33,11 +33,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 
-export function CollectionFactory(provider: CollectionService) {
+export function CollectionFactory(provider: CollectionService): () => Promise<boolean> {
   return () => provider.load();
 }
 
-export function AuthFactory(provider: AuthService) {
+export function AuthFactory(provider: AuthService): () => void {
   return () => provider.load();
 }
 @NgModule({
@@ -53,7 +53,7 @@ export function AuthFactory(provider: AuthService) {
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule, // imports firebase/storage only needed for storage features
-    AngularFireFunctionsModule, //cloud functions
+    AngularFireFunctionsModule, // cloud functions
 
     // DisplayListsModule,
 
