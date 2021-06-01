@@ -27,10 +27,12 @@ In the future, I plan to make new item-specific versions of this app to help my 
 * live updating
 * sub modules and reused components
 * regex
-* routing and lazy-loaded modules
+* routing, resolvers, and lazy-loaded modules
+* card instances that are deleted but tied to a checklist are automatically removed from the checklist on next load
+* checklists can be told to seek out cards to fill empty slots on button click
+* used rxjs and rxjs operators: tap, map, switchmap, forkjoin, take, skip, of, catchError
 
 ## Planning to implement
 * unit tests with Jasmine
 * custom icon
 * web scraper to get expansion data
-* remove card instances from checklist when card instance not found
