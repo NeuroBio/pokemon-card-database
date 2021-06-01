@@ -17,12 +17,20 @@ export class CheckListService {
     list.checkInfo = JSON.stringify(list.checkInfo);
     return this.af.collection<any>('check-lists')
       .doc(`${list.name}`).set(Object.assign({}, list))
-      .then(() => true).catch(() => false);
+      .then(() => true)
+      .catch(err => {
+        console.error(err);
+        return false;
+    });
   }
 
   deleteList(listName: string): Promise<boolean> {
     return this.af.doc(`check-lists/${listName}`).delete()
-      .then(() => true).catch(() => false);
+      .then(() => true)
+      .catch(err => {
+        console.error(err);
+        return false;
+      });
   }
 
   changeCard(newCheckInfo: CheckInfo, listName: string, index: number): Promise<boolean> {
@@ -31,7 +39,10 @@ export class CheckListService {
     list.checkInfo = JSON.stringify(list.checkInfo);
     return this.af.collection('check-lists').doc(`${listName}`)
       .set(Object.assign({}, list)).then(() => true)
-      .catch(() => false);
+      .catch(err => {
+        console.error(err);
+        return false;
+      });
   }
 
   updateList(listName: string): Promise<boolean> {

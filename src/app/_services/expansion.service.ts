@@ -15,6 +15,10 @@ export class ExpansionService {
     return this.af.collection<any>('expansions')
       .doc(`${newExpansion.name.split(' ').join('-')}`)
       .set(Object.assign({}, newExpansion))
-      .then(() => true).catch(() => false);
+      .then(() => true)
+      .catch(err => {
+        console.error(err);
+        return false;
+      });
   }
 }
