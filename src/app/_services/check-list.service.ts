@@ -47,14 +47,14 @@ export class CheckListService {
 
   updateList(listName: string): Promise<boolean> {
     const list = this.collectionserv.getRawCheckList(listName);
-    list.checkInfo.map((info, i) => {
+    list.checkInfo = list.checkInfo.map((info, i) => {
       if (!info) {
-        const card = list.cardKeys[i];
-        const checkChunk = this.collectionserv.getChunk(card);
+        const key = list.cardKeys[i];
+        const checkChunk = this.collectionserv.getChunk(key);
         if (checkChunk) {
           const best = this.collectionserv.getBestCard(checkChunk);
           if (best) {
-            return new CheckInfo(false, best.uid, card);
+            return new CheckInfo(false, best.uid, key);
           }
         }
       }

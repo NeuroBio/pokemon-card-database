@@ -97,7 +97,9 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
   updateChecklist(): void {
     this.checklistserv.updateList(this.whichList.value)
       .then(res => {
-        if (!res) {
+        if (res) {
+          this.messenger.send('List updated.');
+        } else {
           this.messenger.send('Only the Admin may update checklists.');
         }
       });
