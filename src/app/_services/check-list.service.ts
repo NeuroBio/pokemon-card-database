@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable, of } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
 import { CheckInfo } from '../_objects/checklist';
 import { CollectionService } from './collection.service';
 

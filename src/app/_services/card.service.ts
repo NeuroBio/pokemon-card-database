@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { forkJoin, Observable, of } from 'rxjs';
-import { catchError, finalize, map, switchMap, take } from 'rxjs/operators';
+import { catchError, finalize, switchMap, take } from 'rxjs/operators';
 import { CardInstance, CardStorage } from '../_objects/card-instance';
 import { CollectionService } from './collection.service';
 

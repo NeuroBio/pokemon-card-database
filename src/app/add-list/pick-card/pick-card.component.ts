@@ -2,7 +2,6 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
 import { CardChunk } from 'src/app/_objects/card-chunk';
 import { CardInstance } from 'src/app/_objects/card-instance';
 import { CheckInfo } from 'src/app/_objects/checklist';
