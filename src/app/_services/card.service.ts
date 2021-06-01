@@ -20,11 +20,11 @@ export class CardService {
   uploadCard(newCard:CardInstance, images: Blob[]): Observable<boolean> {
     let cardBox = this.collectionserv.allCards
       .value[`${newCard.expansionName}-${newCard.printNumber}`];
+
+      console.log(cardBox);
     // make cardstorage if none exists
     if (!cardBox) {
       cardBox = new CardStorage(newCard.expansionName, newCard.printNumber);
-    } else {
-      cardBox.cards = JSON.parse(cardBox.cards);  
     }
 
     // upload image if there are any to upload
