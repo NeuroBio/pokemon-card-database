@@ -26,7 +26,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
   listSubscription: Subscription;
   activeListSubscription: Subscription;
 
-  allowEdit = false;
+  allowEdit: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -39,6 +39,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // control active list
+    this.allowEdit = this.collectionserv.allowEdit;
     this.collectionserv.getMaster();
     this.whichList = this.fb.control('Masterlist');
 
@@ -64,6 +65,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
 
   lockSwitch(): void {
     this.allowEdit = !this.allowEdit;
+    this.collectionserv.allowEdit = this.allowEdit;
   }
 
   getList(): void {
