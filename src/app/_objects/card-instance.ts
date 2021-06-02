@@ -42,7 +42,7 @@ export class Flaw {
 export class FlawInfo {
     types = [
         'crease', 'dent', 'scratch', 'scratching', 'whitening', 'burn', 'scuffing',
-        'surface damage', 'staining', 'warping', 'water damage', 'factory defaults'
+        'surface damage', 'staining', 'warping', 'water damage', 'factory defects'
     ];
     wheres = [
         'entire surface', 'top', 'bottom', 'left-side', 'right-side',
