@@ -19,25 +19,34 @@
         <div class="side-by-side">
             <!-- Text display -->
             <div>
-            <!-- Card type and state -->
-            <span *ngIf="showAll && exp && cardType">
-                {{ exp.name }} {{ cardType.cardTitle }} ({{ instance.printNumber }}/{{ exp.numCards }})
-            </span>
-            {{ instance.form }} {{ instance.condition }}
-            <br>
+                <!-- Card type and state -->
+                <span *ngIf="showAll && exp && cardType">
+                    {{ exp.name }} {{ cardType.cardTitle }} ({{ instance.printNumber }}/{{ exp.numCards }})
+                </span>
+                {{ instance.form }} {{ instance.condition }}
+                <br>
 
-            <!-- Start Flaws -->
-            Flaws:
-            <!-- List Flaws -->
-            <div class="tab" *ngFor="let flaw of instance.flaws">
-                <span></span>
-                - {{ flaw.severity }} {{ flaw.type }} {{ flaw.where }}  {{ flaw.landmark }}
-            </div>
+                <!-- Start Flaws -->
+                Flaws:
+                <!-- List Flaws -->
+                <div class="tab" *ngFor="let flaw of instance.flaws">
+                    <span></span>
+                    - {{ flaw.severity }} {{ flaw.type }} {{ flaw.where }}  {{ flaw.landmark }}
+                </div>
 
-            <!-- No Flaws -->
-            <div *ngIf="instance.flaws.length === 0" class="tab">
-                - None
-            </div>
+                <!-- No Flaws -->
+                <div *ngIf="instance.flaws.length === 0" class="tab">
+                    - None
+                </div>
+
+                Notes:
+                <div *ngIf="instance.notes">
+                    {{ instance.notes }}
+                </div>
+
+                <div *ngIf="!instance.notes" class="tab">
+                    - None
+                </div>
 
             </div>
 

@@ -85,3 +85,11 @@ h3 {
         margin: 1em;
     }
 }
+
+#card-notes {
+    // display: flex;
+    width: 290px;
+    textarea {
+        flex-grow: 1;
+    }
+}

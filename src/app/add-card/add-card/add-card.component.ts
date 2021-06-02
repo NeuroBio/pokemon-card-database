@@ -93,6 +93,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
       front: '',
       back: '',
       flaws: this.flaws,
+      notes: ''
     });
   }
 
@@ -112,7 +113,8 @@ export class AddCardComponent implements OnInit, OnDestroy {
       front: data.front,
       back: data.back,
       flaws: this.flaws,
-      uid: data.uid
+      uid: data.uid,
+      notes: data.notes? data.notes : ''
     });
   }
 

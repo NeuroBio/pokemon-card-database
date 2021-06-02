@@ -73,8 +73,12 @@
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
-        
                     </div>
+
+                    <mat-form-field id="card-notes">
+                        <mat-label>Notes</mat-label>
+                        <textarea matInput rows="7" cols="600" formControlName="notes"></textarea>
+                    </mat-form-field>
         
                     <!-- Images -->
                     <div id="card-image-uploaders">
@@ -98,7 +102,7 @@
                                 style="display:none;" #frontInput>
                         </div>
         
-                        <!-- Back Iamge -->
+                        <!-- Back Image -->
                         <div>
                             <button mat-raised-button color="primary"
                             *ngIf="!cardForm.get('back').value"

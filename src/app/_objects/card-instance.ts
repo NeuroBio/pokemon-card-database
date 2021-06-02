@@ -9,16 +9,19 @@ export class CardInstance {
     front?: string;
     back?: string;
     flaws?: Flaw[];
+    notes?: string;
 
     constructor(
         num: number, expansion: string, form: string,
-        condition: 'M' | 'NM' | 'LP' | 'MP' | 'HP', flaws?: Flaw[]) {
+        condition: 'M' | 'NM' | 'LP' | 'MP' | 'HP',
+        flaws?: Flaw[], notes?: string) {
             this.printNumber = num;
             this.expansionName = expansion;
             this.form = form;
             this.condition = condition;
             this.flaws = flaws;
             this.uid = uuid.v4();
+            this.notes = notes;
     }
 }
 
