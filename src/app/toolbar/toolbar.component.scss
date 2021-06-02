@@ -6,6 +6,8 @@ header {
 }
 
 h1 {
+    display: flex;
+    justify-content: space-between;
     a {
         font-family: "pokemon";
         color: $pokemon-yellow;
@@ -14,6 +16,12 @@ h1 {
         letter-spacing: 0.15em;
         padding: .1em 0em .3em .3em;
     }
+}
+
+#population-info {
+    font-size: 11pt;
+    width: 150px;
+    margin: 1em;
 }
 
 

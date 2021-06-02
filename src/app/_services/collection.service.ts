@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
-import { map, skip, take, tap } from 'rxjs/operators';
+import { map, skip, skipWhile, take, tap } from 'rxjs/operators';
 import { CardChunk } from '../_objects/card-chunk';
-import { CardInstance } from '../_objects/card-instance';
+import { CardInstance, CardStorage, Population } from '../_objects/card-instance';
 import { Checklist } from '../_objects/checklist';
 import { SetExpansion } from '../_objects/expansion';
 import { AuthService } from './auth.service';
@@ -13,10 +13,11 @@ import { AuthService } from './auth.service';
 })
 export class CollectionService {
 
-  allCards = new BehaviorSubject<any>([]);
-  expansions = new BehaviorSubject<any>([]);
+  allCards = new BehaviorSubject<any>(undefined);
+  expansions = new BehaviorSubject<any>(undefined);
   checkLists = new BehaviorSubject<any[]>(undefined);
-  masterList = new BehaviorSubject<CardChunk[]>([]);
+  masterList = new BehaviorSubject<CardChunk[]>(undefined);
+  populationCount = new BehaviorSubject<Population>(undefined);
   allowEdit = false;
 
   private bestForm = { '1st': 0, shadowless: 1, 'UK 2000': 2, unlimited: 3, reverse: 4, standard: 5 };
@@ -45,8 +46,9 @@ export class CollectionService {
     return this.af.collection<any>('pokemon-cards').valueChanges()
       .pipe(
         map(cards => {
+          this.getPopulation(cards);
           const cardObject = {};
-          cards.forEach(cardType =>
+          cards.forEach(cardType => 
             cardObject[`${cardType.expansionName}-${cardType.printNumber}`] = JSON.parse(cardType.cards));
           return cardObject;
         }),
@@ -210,6 +212,25 @@ export class CollectionService {
     // same gen, check release order
     exp[a].release < exp[b].release ? -1 : 1
     );
+  }
+
+  private getPopulation(cards): void {
+    this.expansions.pipe(
+      skipWhile(res => !res),
+      take(1)).subscribe(exp => {
+        const newPop = new Population();
+      cards.forEach((cardStorage) => {
+        const cardType = exp[cardStorage.expansionName].cards[cardStorage.printNumber - 1].cardType;
+        const numCards = Object.keys(JSON.parse(cardStorage.cards)).length;
+        if (cardType === 'special energy') {
+          newPop.specialEnergy += numCards;
+         } else {
+          newPop[cardType] += numCards;
+         }
+      });
+      this.populationCount.next(newPop);
+    });
+
   }
 
 }

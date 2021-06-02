@@ -68,3 +68,19 @@ export class CardStorage {
         this.cards = {};
     }
 }
+
+export class Population {
+    pokemon = 0;
+    trainer = 0;
+    energy = 0;
+    tcgo = 0
+    specialEnergy = 0
+
+    total() {
+        return this.pokemon + this.trainer + this.energy + this.tcgo + this.specialEnergy;
+    }
+
+    allEnergy() {
+        return this.energy + this.specialEnergy;
+    }
+}
