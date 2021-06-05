@@ -61,11 +61,6 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
     private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.displayCards.forEach(card => {
-      if (card.cardType === 'trainer') {
-        console.log(card)
-      }
-    })
     this.filterForm = this.createFilterForm();
     this.filterSubscription = this.filterForm.valueChanges
       .subscribe(value => this.cards.filter = JSON.stringify(value));
