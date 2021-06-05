@@ -61,6 +61,11 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
     private dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.displayCards.forEach(card => {
+      if (card.cardType === 'trainer') {
+        console.log(card)
+      }
+    })
     this.filterForm = this.createFilterForm();
     this.filterSubscription = this.filterForm.valueChanges
       .subscribe(value => this.cards.filter = JSON.stringify(value));
@@ -125,7 +130,7 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
     this.cards.data = data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
-        case 'Dex': return this.compare(a.dexNumber, b.dexNumber, isAsc);
+        case 'Dex': return this.compareDex(a.dexNumber, b.dexNumber, isAsc);
         case 'Name': return this.compare(a.cardTitle, b.cardTitle, isAsc);
         case 'Gen': return this.compare(a.generation, b.generation, isAsc);
         case 'Expansion': return this.compare(a.expansionName, b.expansionName, isAsc);
@@ -139,11 +144,15 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   compare(a: number | string, b: number | string, isAsc: boolean): number {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+    return (a === b ? 0 : a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
+  compareDex(a: number | string, b: number | string, isAsc: boolean): number {
+    return (a === null || a === b ? 0 : a > b ? 1 : -1) * (isAsc ? 1 : -1);
   }
 
   compareHave(a: CheckInfo, b: CheckInfo, isAsc: boolean): number {
-    return (!a ? -1 : a.placeholder && !b || !a.placeholder  && (!b || b.placeholder) ? 1 : -1) * (isAsc ? 1 : -1);
+    return (a === b ? 0 : !a ? -1 : a.placeholder && !b || !a.placeholder  && (!b || b.placeholder) ? 1 : -1) * (isAsc ? 1 : -1);
   }
 
   // Filter functions
