@@ -97,15 +97,13 @@ export class AddExpansionComponent implements OnInit {
     }
     const nameParts = name.split(this.stringSplitter);
     // standard
-    let ind = this.static.NationalDex.findIndex(poke => poke === nameParts[0]);
-    if (ind === -1) {
-      // check of dark pokemon or pokemon ex/gx/v/ect
-      ind = this.static.NationalDex.findIndex(poke => poke === nameParts[1]);
-      if (ind === -1) {
-        throw new Error(`Pokemon ${name} not in Pokedex`);
+    for(let i = 0; i < nameParts.length; i++) {
+      let ind = this.static.NationalDex.findIndex(poke => poke === nameParts[i]);
+      if (ind !== -1) {
+        return ind;
       }
     }
-    return ind;
+    throw new Error(`Pokemon ${name} not in Pokedex`);
   }
 
   clearCards(): void {
