@@ -17,7 +17,7 @@ export class AddExpansionComponent implements OnInit {
   private reader = new FileReader();
   private static = new StaticData();
   parseError = false;
-  stringSplitter = new RegExp('(?<!\\.)\\s');
+  stringSplitter = new RegExp('(?<![\\.:])\\s');
 
   isLoading = false;
 
@@ -75,7 +75,7 @@ export class AddExpansionComponent implements OnInit {
     for (let i = 0; i < numCards; i++) {
       // handle special characters
       const name = properties[0 + 3 * i]
-        .replace('(m)', '♂').replace('(f)', '♀').replace('\'', '’').replace('�', 'é');
+        .replace('(m)', '♂').replace('(f)', '♀').replace('\'', '’').replace(new RegExp('�', 'g'), 'é');
       const type = properties[1 + 3 * i].toLowerCase();
       if (!this.static.ValidTypes.includes(type)) {
         throw new Error (`Found unexpected type in card ${i + 1}: ${properties[1 + 3 * i]}`);
