@@ -206,8 +206,8 @@ export class CollectionService {
     const exp = this.expansions.value;
     return Object.keys(exp).sort((a, b) =>
     // lower gens higher
-    exp[a].gen < exp[b].gen ? -1 :
-    exp[a].gen > exp[b].gen ? 1 :
+    exp[a].generation < exp[b].generation ? -1 :
+    exp[a].generation > exp[b].generation ? 1 :
 
     // same gen, check release order
     exp[a].release < exp[b].release ? -1 : 1
@@ -224,7 +224,9 @@ export class CollectionService {
         const numCards = Object.keys(JSON.parse(cardStorage.cards)).length;
         if (cardType === 'special energy') {
           newPop.specialEnergy += numCards;
-         } else {
+        } else if (cardType === 'special pokemon') {
+          newPop.pokemon != numCards;
+        } else {
           newPop[cardType] += numCards;
          }
       });
