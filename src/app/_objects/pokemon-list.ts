@@ -7,6 +7,7 @@ export class StaticData {
         'trainer',
         'energy',
         'special energy',
+        'special pokemon',
         'tcgo'
     ];
     NationalDex = [
