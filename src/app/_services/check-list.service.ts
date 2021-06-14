@@ -38,8 +38,7 @@ export class CheckListService {
     if (newCheckInfo) {
       list.checkInfo[index] = newCheckInfo;
     } else {
-      console.log('spliced')
-      list.checkInfo.splice(index, 1);
+      list.checkInfo[index] = "";
     }
 
     list.checkInfo = JSON.stringify(list.checkInfo);
