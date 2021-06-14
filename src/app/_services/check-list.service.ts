@@ -35,7 +35,13 @@ export class CheckListService {
 
   changeCard(newCheckInfo: CheckInfo, listName: string, index: number): Promise<boolean> {
     const list: any = this.collectionserv.getRawCheckList(listName);
-    list.checkInfo[index] = newCheckInfo;
+    if (newCheckInfo) {
+      list.checkInfo[index] = newCheckInfo;
+    } else {
+      console.log('spliced')
+      list.checkInfo.splice(index, 1);
+    }
+
     list.checkInfo = JSON.stringify(list.checkInfo);
     return this.af.collection('check-lists').doc(`${listName}`)
       .set(Object.assign({}, list)).then(() => true)

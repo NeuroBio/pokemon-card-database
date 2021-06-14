@@ -151,6 +151,7 @@
                     [ngClass]="last ? '' : 'card-instance'"
                     >
                        <app-individual-card
+                       *ngIf="expanded === card"
                         [instance]="instance"
                         [allowEdit]="allowEdit"
                         [showAll]="showAll(card, instance)"
