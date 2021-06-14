@@ -17,7 +17,7 @@ export class AddExpansionComponent implements OnInit {
   private reader = new FileReader();
   private static = new StaticData();
   parseError = false;
-  stringSplitter = new RegExp('(?<![\\.:])\\s');
+  stringSplitter = new RegExp('(?<![\\.:]|.*Tapu)\\s');
 
   isLoading = false;
 
@@ -96,6 +96,7 @@ export class AddExpansionComponent implements OnInit {
       return null;
     }
     const nameParts = name.split(this.stringSplitter);
+    console.log(nameParts)
     // standard
     for(let i = 0; i < nameParts.length; i++) {
       let ind = this.static.NationalDex.findIndex(poke => poke === nameParts[i]);
