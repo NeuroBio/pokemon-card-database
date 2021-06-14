@@ -53,7 +53,7 @@
         <mat-form-field floatLabel="always" class="filter" appearance="fill" *ngIf="!isMaster()">
             <mat-label>Have</mat-label>
             <mat-select formControlName="haveCard">
-                <mat-option value="None">None</mat-option>
+                <mat-option value="None">Don't Have</mat-option>
                 <mat-option value="Placeholder">Placeholder</mat-option>
                 <mat-option value="Have">Have</mat-option>
             </mat-select>
@@ -132,7 +132,7 @@
                         {{ card.conditionCount() }}
                     </span>
                     <mat-icon *ngIf="!isMaster()">
-                        {{ card.haveCard() }}
+                        {{ card.haveCardIcon() }}
                     </mat-icon>
                     <button mat-icon-button color="prime"
                     *ngIf="!isMaster() && allowEdit" class="drop-button"

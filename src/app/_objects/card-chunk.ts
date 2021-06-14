@@ -69,7 +69,7 @@ export class CardChunk extends Card {
         this.owned.splice(index, 1);
     }
 
-    haveCard(): string {
+    haveCardIcon(): string {
         if (this.checkInfo) {
             if (!this.checkInfo.uid) {
                 return 'radio_button_unchecked';
@@ -78,6 +78,18 @@ export class CardChunk extends Card {
             }
         } else {
             return 'radio_button_unchecked';
+        }
+    }
+
+    haveCard(): string {
+        if (this.checkInfo) {
+            if (!this.checkInfo.uid) {
+                return 'None';
+            } else {
+                return this.checkInfo.placeholder ? 'Placeholder' : 'Have';
+            }
+        } else {
+            return 'None';
         }
     }
 

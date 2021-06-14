@@ -18,7 +18,7 @@ export class CollectionService {
   checkLists = new BehaviorSubject<any[]>(undefined);
   masterList = new BehaviorSubject<CardChunk[]>(undefined);
   populationCount = new BehaviorSubject<Population>(undefined);
-  allowEdit = true;
+  allowEdit = false;
 
   private bestForm = { '1st': 0, shadowless: 1, 'UK 2000': 2, unlimited: 3, reverse: 4, standard: 5 };
   private bestCondition = { M: 0, NM: 1, LP: 2, MP: 3, HP: 4 };
