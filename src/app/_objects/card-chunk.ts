@@ -72,12 +72,12 @@ export class CardChunk extends Card {
     haveCard(): string {
         if (this.checkInfo) {
             if (!this.checkInfo.uid) {
-                return 'None';
+                return 'radio_button_unchecked';
             } else {
-                return this.checkInfo.placeholder ? 'Placeholder' : 'Check';
+                return this.checkInfo.placeholder ? 'radio_button_checked' : 'check_circle_outline';
             }
         } else {
-            return 'None';
+            return 'radio_button_unchecked';
         }
     }
 

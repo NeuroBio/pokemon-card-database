@@ -128,7 +128,12 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ displayColumns[7] }}</th>
             <td mat-cell *matCellDef="let card; let i = dataIndex">
                 <div class="swap-cell">
-                    {{ isMaster() ? card.conditionCount() : card.haveCard() }}
+                    <span *ngIf="isMaster()">
+                        {{ card.conditionCount() }}
+                    </span>
+                    <mat-icon *ngIf="!isMaster()">
+                        {{ card.haveCard() }}
+                    </mat-icon>
                     <button mat-icon-button color="prime"
                     *ngIf="!isMaster() && allowEdit" class="drop-button"
                     (click)="editChecklistSlot(card, i)">
@@ -156,7 +161,7 @@
         </ng-container>
     
         <tr mat-header-row *matHeaderRowDef="displayColumns" class="header-row"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayColumns;" class="main-rows"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayColumns;" [ngClass]="rowClass(row)"></tr>
     
         <tr mat-row *matRowDef="let card; columns: ['expandedDetail']" class="drop-down"></tr>
     </table>

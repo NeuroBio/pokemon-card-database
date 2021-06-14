@@ -114,6 +114,15 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
       !== `${instance.expansionName}-${instance.printNumber}`;
   }
 
+  rowClass(card: CardChunk): string {
+    if (card.owned.length === 0) {
+      return 'main-rows-none'
+    }
+    return card.checkInfo && card.checkInfo.placeholder
+    ? 'main-rows-placeholder'
+    : 'main-rows';
+  }
+
   // Sorting functions
   sortData(sort: Sort): void {
     this.sortingData[sort.active] = sort.direction;

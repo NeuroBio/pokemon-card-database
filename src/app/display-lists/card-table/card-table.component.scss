@@ -66,6 +66,10 @@ table {
     width: 75px;
 }
 
+.mat-column-Have {
+    width: 75px;
+}
+
 .drop-button {
     display: flex;
     height: 20pt !important;
@@ -80,6 +84,21 @@ table {
 }
 
 .main-rows {
+    background-color: $palette2;
+}
+
+.main-rows-none {
+    .mat-cell {
+        color: $disabled-text;
+    }
+    background-color: $disabled-background;
+}
+
+.main-rows-placeholder {
+    background-color: $placeholder-background !important;
+}
+
+.main-rows-placeholder {
     background-color: $palette2;
 }
 
