@@ -22,6 +22,7 @@ export class PickCardComponent implements OnInit, OnDestroy {
   expansions: any;
   masterList: CardChunk[];
   allowed: CardChunk[];
+  edit = false;
 
   cardSubscription: Subscription;
   chunkSubscription: Subscription;
@@ -46,6 +47,7 @@ export class PickCardComponent implements OnInit, OnDestroy {
     // load in past data
     const chunk: CardInstance[] = this.collectionserv.getChunk(this.data.key);
     if (chunk) {
+      this.edit = true;
       const keyParts = this.data.key.split('-');
       this.cardForm.patchValue({
         exp: keyParts[0],
@@ -72,7 +74,7 @@ export class PickCardComponent implements OnInit, OnDestroy {
     this.cardSubscription = this.cardForm.controls.activeCardChunk.valueChanges
       .subscribe(cardChunk => {
         this.cardForm.patchValue({ activeCard: this.collectionserv.getBestCard(cardChunk) });
-      });
+    });
   }
 
   ngOnDestroy(): void {
@@ -116,11 +118,14 @@ export class PickCardComponent implements OnInit, OnDestroy {
   }
 
   // list entry submission
-  upload(): Promise<void> {
-    const activeCard = this.cardForm.value.activeCard;
-    const key = `${activeCard.expansionName}-${activeCard.printNumber}`;
-    const placeholder = key !== this.data.key;
-    const newCheckInfo = new CheckInfo(placeholder, activeCard.uid, key);
+  upload(del: boolean = false): Promise<void> {
+    let newCheckInfo: CheckInfo;
+    if (!del) {
+      const activeCard = this.cardForm.value.activeCard;
+      const key = `${activeCard.expansionName}-${activeCard.printNumber}`;
+      const placeholder = key !== this.data.key;
+      newCheckInfo = new CheckInfo(placeholder, activeCard.uid, key);
+    }
     return this.checklistserv.changeCard(newCheckInfo, this.data.listName, this.data.index)
       .then(res => {
         if (res) {

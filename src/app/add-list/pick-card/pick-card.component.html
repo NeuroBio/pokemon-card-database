@@ -59,9 +59,15 @@
     <div class="button-box">
         <button mat-raised-button color="prime"
         [disabled]="!this.getValue('activeCard')"
-        (click)="submit()">
+        (click)="upload(true)">
             <mat-icon>check</mat-icon>
             Submit Changes
+        </button>
+
+        <button mat-raised-button color="warn" *ngIf="edit"
+        (click)="submit()">
+            <mat-icon>delete_outline</mat-icon>
+            Remove Card
         </button>
     </div>
 </form>

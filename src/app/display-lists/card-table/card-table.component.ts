@@ -95,10 +95,11 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   editChecklistSlot(card: CardChunk, index: number): void {
+    const key = card.checkInfo ? card.checkInfo.key : `${card.expansionName}-${card.printNumber}`;
     this.dialog.open(PickCardComponent, {
     width: '80vw',
     data: {
-      key: `${card.expansionName}-${card.printNumber}`,
+      key: key,
       listName: this.listName,
       index
       }
