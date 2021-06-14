@@ -18,7 +18,7 @@ export class CollectionService {
   checkLists = new BehaviorSubject<any[]>(undefined);
   masterList = new BehaviorSubject<CardChunk[]>(undefined);
   populationCount = new BehaviorSubject<Population>(undefined);
-  allowEdit = false;
+  allowEdit = true;
 
   private bestForm = { '1st': 0, shadowless: 1, 'UK 2000': 2, unlimited: 3, reverse: 4, standard: 5 };
   private bestCondition = { M: 0, NM: 1, LP: 2, MP: 3, HP: 4 };
@@ -174,7 +174,7 @@ export class CollectionService {
     // get the best card based on 1) form and 2) condition
     let bestCard: CardInstance;
     const isRareHolo = this.expansions.value[cards[0].expansionName]
-      .cards[cards[0].printNumber].rarity === 'rare-holo';
+      .cards[cards[0].printNumber - 1].rarity === 'rare-holo';
 
     cards.forEach(card => {
       if (!bestCard) { // add first card

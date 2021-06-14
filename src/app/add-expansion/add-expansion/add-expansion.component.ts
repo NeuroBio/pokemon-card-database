@@ -96,7 +96,7 @@ export class AddExpansionComponent implements OnInit {
       return null;
     }
     const nameParts = name.split(this.stringSplitter);
-    console.log(nameParts)
+
     // standard
     for(let i = 0; i < nameParts.length; i++) {
       let ind = this.static.NationalDex.findIndex(poke => poke === nameParts[i]);

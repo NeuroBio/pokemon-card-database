@@ -62,7 +62,7 @@
                     <div class="button-box-2">
                         <button mat-raised-button color="prime"
                         *ngIf="drag"
-                        [disabled]="!drag"
+                        [disabled]="!drag || !activeCard"
                         (click)="addCard()">
                             <mat-icon>add</mat-icon>
                             Add Card

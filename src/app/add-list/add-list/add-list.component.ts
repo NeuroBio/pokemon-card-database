@@ -222,7 +222,7 @@ export class AddListComponent implements OnInit, OnDestroy {
       }
     });
     this.populateMethods.forEach((info, i) => {
-      this.previews[i] = this.getCard(info);
+      this.previews[i] = info.key ? this.getCard(info) : undefined;
     });
   }
 
