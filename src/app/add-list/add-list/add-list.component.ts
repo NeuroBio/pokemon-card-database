@@ -31,6 +31,7 @@ export class AddListComponent implements OnInit, OnDestroy {
 
   populateMethods = [];
   previews = [];
+  expanded: number;
 
   activeCard: Card;
   expansionSubscription: Subscription;

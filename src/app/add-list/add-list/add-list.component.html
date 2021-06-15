@@ -130,8 +130,13 @@
 
                             <!-- Chosen card if a card is chosen -->
                             <div *ngIf="populateMethods[i].method === 'useCard' && !drag">
-                                Using: 
+                                <button mat-button color="prime"
+                                (click)="expanded === i ? expanded = undefined : expanded = i">
+                                    <mat-icon>{{ expanded === i ? 'visibility_off' : 'visibility' }}</mat-icon>
+                                    {{ expanded === i ? 'Hide Card' : 'View Card' }}
+                                </button>
                                 <app-individual-card
+                                *ngIf="expanded === i"
                                 [instance]="previews[i]"
                                 ></app-individual-card>
                             </div>
