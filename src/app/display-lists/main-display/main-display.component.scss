@@ -15,10 +15,10 @@ h2 {
     justify-content: space-between;
     margin: .5em;
     font-size: 20pt;
+}
 
-    button {
-        margin: 0em .5em;
-    }
+#list-title {
+    margin-right: 1em;
 }
 
 #list-picker {
@@ -47,3 +47,10 @@ h2 {
 .mat-option {
     color: $palette6;
 }
+
+::ng-deep .tooltip {
+    color: black !important;
+    background-color: $palette2;
+    font-size: 12pt;
+    white-space: pre-line;
+  }

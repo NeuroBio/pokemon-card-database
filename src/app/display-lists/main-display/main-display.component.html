@@ -2,7 +2,17 @@
 <div id="title-select">
     <h2>
         <div class="center-align">
-            {{ whichList.value }}
+            <span id="list-title">
+                {{ whichList.value }}
+            </span>
+            <mat-icon *ngIf="whichList.value !== 'Masterlist'"
+            mat-icon-button
+            [matTooltip]="toolTipText()" matTooltipClass="tooltip">
+                info
+            </mat-icon>
+            <button mat-icon-button>
+                <mat-icon>import_contacts</mat-icon>
+            </button>
             <button mat-icon-button
             [attr.aria-label]="allowEdit ? 'stop-editing-cards' : 'start-editing-cards'"
             [disabled]="!isLoggedIn()"

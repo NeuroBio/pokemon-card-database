@@ -25,6 +25,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
   whichList: FormControl;
   listSubscription: Subscription;
   activeListSubscription: Subscription;
+  owned = 0;
 
   allowEdit: boolean;
 
@@ -76,6 +77,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
       this.activeList = Object.assign([], this.collectionserv.getMaster());
     } else {
       this.activeList = Object.assign([], this.collectionserv.getCheckList(this.whichList.value));
+      this.owned = this.getOwned();
     }
   }
 
@@ -112,6 +114,21 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
 
   isLoggedIn(): boolean {
     return this.auth.isLoggedIn;
+  }
+
+  toolTipText(): string {
+    return `${this.owned}/${this.activeList.length} cards owned
+    ${Math.round((this.owned/this.activeList.length)*100)/100}% complete`;
+  }
+
+  getOwned(): number {
+    let owned = 0;
+    this.activeList.forEach(chunk => {
+      if (chunk.haveCard() === 'Have') {
+        owned += 1;
+      }
+    });
+    return owned;
   }
 
 }
