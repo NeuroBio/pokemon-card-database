@@ -18,6 +18,8 @@ export class CollectionService {
   checkLists = new BehaviorSubject<any[]>(undefined);
   masterList = new BehaviorSubject<CardChunk[]>(undefined);
   populationCount = new BehaviorSubject<Population>(undefined);
+  
+  activeList = 'Masterlist'
   allowEdit = false;
 
   private bestForm = { '1st': 0, shadowless: 1, 'UK 2000': 2, unlimited: 3, reverse: 4, standard: 5 };

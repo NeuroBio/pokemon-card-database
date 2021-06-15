@@ -41,7 +41,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     // control active list
     this.allowEdit = this.collectionserv.allowEdit;
     this.collectionserv.getMaster();
-    this.whichList = this.fb.control('Masterlist');
+    this.whichList = this.fb.control(this.collectionserv.activeList);
 
     this.cardSubscription = this.collectionserv.allCards
       .subscribe(() => this.getList());
@@ -49,12 +49,15 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     this.listSubscription = this.collectionserv.checkLists
       .subscribe(lists => {
         this.checklists = lists.map(list => list.name);
-        this.checklists.splice(0, 0, 'Masterlist');
+        this.checklists.splice(0, 0, this.collectionserv.activeList);
         this.getList();
     });
 
     this.activeListSubscription = this.whichList.valueChanges
-      .subscribe(() => this.getList());
+      .subscribe(which => {
+        this.collectionserv.activeList = which; 
+        this.getList();
+      });
   }
 
   ngOnDestroy(): void {
