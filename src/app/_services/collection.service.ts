@@ -108,13 +108,21 @@ export class CollectionService {
   }
 
   getRawCheckList(listName: string): Checklist {
-    const list = Object.assign({}, this.checkLists.value.find(li => li.name === listName));
-    list.checkInfo = JSON.parse(list.checkInfo);
-    return list as Checklist;
+    try {
+      const list = Object.assign({}, this.checkLists.value.find(li => li.name === listName));
+      list.checkInfo = JSON.parse(list.checkInfo);
+      return list as Checklist;  
+    } catch {
+      // list does not exist
+      return;
+    }
   }
 
   getCheckList(listName: string): CardChunk[] {
     const list: any = this.getRawCheckList(listName);
+    if (!list) { // list does not exist
+      return;
+    }
     const cardChunks: CardChunk[] = [];
     const cards = this.allCards.value;
     const expansions = this.expansions.value;

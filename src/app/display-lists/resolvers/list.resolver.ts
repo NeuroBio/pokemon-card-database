@@ -23,15 +23,17 @@ export class ListResolver implements Resolve<CardChunk[]> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<CardChunk[]> {
     const listname = route.paramMap.get('ChecklistID');
     let list: CardChunk[];
+    
     if (listname === 'Masterlist') {
       list = this.collectionserv.getMaster()
     } else {
       list = this.collectionserv.getCheckList(listname);
     }
+
     if (list) {
       return of (list);
     }
-    this.router.navigate(['checklist']);
+    this.router.navigate(['Masterlist']);
     this.messenger.send(`List ${listname} was not found.`);
     return of (null);
   }

@@ -50,9 +50,11 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     this.whichList = this.fb.control(this.route.snapshot.paramMap.get('ChecklistID'));
     this.getchecklistNames()
 
+    // card contents updated
     this.cardSubscription = this.collectionserv.allCards
       .pipe(skip(1)).subscribe(() => this.getList() );
 
+    // List contents updated
     this.listSubscription = this.collectionserv.checkLists
       .pipe(skip(1)).subscribe(lists => {
         this.checklists = lists.map(list => list.name);
@@ -60,11 +62,11 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
         this.getList();
     });
 
+    // Change list
     this.activeListSubscription = this.whichList.valueChanges
       .subscribe(which => {
         this.collectionserv.activeList = which;
-        this.router.navigate[`./${which}`]
-        this.getList();
+        this.router.navigate([which]);
       });
   }
 

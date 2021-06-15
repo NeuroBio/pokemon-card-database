@@ -44,4 +44,8 @@ export class ToolbarComponent implements OnInit{
     return this.auth.isLoggedIn;
   }
 
+  getActiveList(): string {
+    return this.collectionserv.activeList;
+  }
+
 }
