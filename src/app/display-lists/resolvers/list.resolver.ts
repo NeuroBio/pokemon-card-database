@@ -5,30 +5,34 @@ import {
   ActivatedRouteSnapshot
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { Checklist } from 'src/app/_objects/checklist';
+import { CardChunk } from 'src/app/_objects/card-chunk';
 import { CollectionService } from 'src/app/_services/collection.service';
 import { MessengerService } from 'src/app/_services/messenger.service';
 
 @Injectable({
   providedIn: 'root'
 })
-
-export class ChecklistResolver implements Resolve<Checklist> {
+export class ListResolver implements Resolve<CardChunk[]> {
 
   constructor(
     private collectionserv: CollectionService,
     private router: Router,
     private messenger: MessengerService
-    ) { }
+  ) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Checklist> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<CardChunk[]> {
     const listname = route.paramMap.get('ChecklistID');
-    const list = this.collectionserv.getRawCheckList(listname);
+    let list: CardChunk[];
+    if (listname === 'Masterlist') {
+      list = this.collectionserv.getMaster()
+    } else {
+      list = this.collectionserv.getCheckList(listname);
+    }
     if (list) {
       return of (list);
     }
     this.router.navigate(['checklist']);
-    this.messenger.send(`Checklist ${listname} was not found.`);
+    this.messenger.send(`List ${listname} was not found.`);
     return of (null);
   }
 }

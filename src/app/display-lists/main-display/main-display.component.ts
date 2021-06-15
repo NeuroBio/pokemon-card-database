@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { skip, take } from 'rxjs/operators';
 import { ConfirmComponent } from 'src/app/confirm/confirm/confirm.component';
 import { CardChunk } from 'src/app/_objects/card-chunk';
 import { AuthService } from 'src/app/_services/auth.service';
@@ -35,20 +36,25 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     private checklistserv: CheckListService,
     private auth: AuthService,
     private messenger: MessengerService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute
     ) { }
 
   ngOnInit(): void {
     // control active list
+    this.route.data.subscribe(data => {
+      this.activeList = data.checklist;
+    });
     this.allowEdit = this.collectionserv.allowEdit;
-    this.collectionserv.getMaster();
-    this.whichList = this.fb.control(this.collectionserv.activeList);
+    this.whichList = this.fb.control(this.route.snapshot.paramMap.get('ChecklistID'));
+    this.getchecklistNames()
 
     this.cardSubscription = this.collectionserv.allCards
-      .subscribe(() => this.getList());
+      .pipe(skip(1)).subscribe(() => this.getList() );
 
     this.listSubscription = this.collectionserv.checkLists
-      .subscribe(lists => {
+      .pipe(skip(1)).subscribe(lists => {
         this.checklists = lists.map(list => list.name);
         this.checklists.splice(0, 0, this.collectionserv.activeList);
         this.getList();
@@ -56,7 +62,8 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
 
     this.activeListSubscription = this.whichList.valueChanges
       .subscribe(which => {
-        this.collectionserv.activeList = which; 
+        this.collectionserv.activeList = which;
+        this.router.navigate[`./${which}`]
         this.getList();
       });
   }
@@ -110,6 +117,11 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
           this.messenger.send('Only the Admin may update checklists.');
         }
       });
+  }
+
+  getchecklistNames() {
+    this.checklists = ['Masterlist'].concat(
+      this.collectionserv.checkLists.value.map(list => list.name));
   }
 
   isLoggedIn(): boolean {
