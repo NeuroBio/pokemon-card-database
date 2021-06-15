@@ -19,6 +19,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ConfirmModule } from '../confirm/confirm.module';
 import { CardPreviewModule } from '../card-preview/card-preview.module';
+import { GoBackModule } from '../go-back/go-back.module';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { CardPreviewModule } from '../card-preview/card-preview.module';
 
     ConfirmModule,
     CardPreviewModule,
+    GoBackModule,
 
     MatAutocompleteModule,
     MatButtonModule,

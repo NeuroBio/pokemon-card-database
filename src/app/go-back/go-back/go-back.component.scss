@@ -1,0 +1,22 @@
+@import '../../Variables.scss';
+
+.back-stripe {
+    background-color: $palette4;
+    color: whitesmoke;
+    font-size: 14pt;
+    justify-content: flex-start;
+    .outer {
+        color: whitesmoke;
+        background-color: $palette4;
+        flex-grow: 0;
+        display: inline-flex;
+        cursor: pointer;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 0 1em 0 0;
+
+        .inner {
+            margin: .5em .3em 1em .5em;
+        }
+    }
+}

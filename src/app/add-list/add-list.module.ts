@@ -21,6 +21,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { GoBackModule } from '../go-back/go-back.module';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     ReactiveFormsModule,
 
     CardPreviewModule,
+    GoBackModule,
 
     MatButtonModule,
     MatCardModule,

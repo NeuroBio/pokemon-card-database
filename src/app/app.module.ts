@@ -43,7 +43,7 @@ export function AuthFactory(provider: AuthService): () => void {
 @NgModule({
   declarations: [
     AppComponent,
-    ToolbarComponent,
+    ToolbarComponent
   ],
   imports: [
     BrowserModule,

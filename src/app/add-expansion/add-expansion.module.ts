@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { GoBackModule } from '../go-back/go-back.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+
+    GoBackModule,
 
     MatButtonModule,
     MatCardModule,
