@@ -25,11 +25,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { BinderViewComponent } from './binder-view/binder-view.component';
 
 @NgModule({
   declarations: [
     CardTableComponent,
-    MainDisplayComponent
+    MainDisplayComponent,
+    BinderViewComponent
   ],
   imports: [
     CommonModule,

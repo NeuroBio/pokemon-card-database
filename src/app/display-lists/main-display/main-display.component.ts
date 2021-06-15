@@ -42,13 +42,14 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit(): void {
-    // control active list
+    // control active list and list info
     this.route.data.subscribe(data => {
       this.activeList = data.checklist;
     });
     this.allowEdit = this.collectionserv.allowEdit;
     this.whichList = this.fb.control(this.route.snapshot.paramMap.get('ChecklistID'));
-    this.getchecklistNames()
+    this.getchecklistNames();
+    this.owned = this.getOwned();
 
     // card contents updated
     this.cardSubscription = this.collectionserv.allCards
@@ -82,6 +83,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
   }
 
   getList(): void {
+    console.log('get')
     if (this.whichList.value === 'Masterlist') {
       this.activeList = Object.assign([], this.collectionserv.getMaster());
     } else {
@@ -132,7 +134,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
 
   toolTipText(): string {
     return `${this.owned}/${this.activeList.length} cards owned
-    ${Math.round((this.owned/this.activeList.length)*100)/100}% complete`;
+    ${Math.round((this.owned/this.activeList.length*100)*100)/100}% complete`;
   }
 
   getOwned(): number {

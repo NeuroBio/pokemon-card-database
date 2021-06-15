@@ -10,9 +10,10 @@
             [matTooltip]="toolTipText()" matTooltipClass="tooltip">
                 info
             </mat-icon>
-            <button mat-icon-button>
+            <a mat-icon-button *ngIf="whichList.value !== 'Masterlist'"
+            [routerLink]="['binder']"> 
                 <mat-icon>import_contacts</mat-icon>
-            </button>
+            </a>
             <button mat-icon-button
             [attr.aria-label]="allowEdit ? 'stop-editing-cards' : 'start-editing-cards'"
             [disabled]="!isLoggedIn()"
@@ -29,7 +30,7 @@
             </button>
 
             <a mat-icon-button aria-label="edit-checklist" color="prime"
-            [routerLink]="['checklist/edit/' + this.whichList.value]">
+            [routerLink]="['../checklist/edit/' + this.whichList.value]">
                 <mat-icon>edit</mat-icon>
             </a>
     
