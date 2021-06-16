@@ -8,7 +8,7 @@ import '@firebase/auth';
 })
 export class AuthService {
 
-  private authState;
+  private authState; // do NOT delete this
   isLoggedIn = false;
 
   constructor(private auth: AngularFireAuth) { }

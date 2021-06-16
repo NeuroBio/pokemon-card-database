@@ -15,6 +15,7 @@ export class CheckListService {
 
   uploadList(list: any): Promise<boolean> {
     list.checkInfo = JSON.stringify(list.checkInfo);
+    list.updatedAt = +Date.now();
     return this.af.collection<any>('check-lists')
       .doc(`${list.name}`).set(Object.assign({}, list))
       .then(() => true)
@@ -42,6 +43,7 @@ export class CheckListService {
     }
 
     list.checkInfo = JSON.stringify(list.checkInfo);
+    list.lastUpdated = +Date.now();
     return this.af.collection('check-lists').doc(`${listName}`)
       .set(Object.assign({}, list)).then(() => true)
       .catch(err => {

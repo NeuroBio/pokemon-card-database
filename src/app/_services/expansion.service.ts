@@ -1,20 +1,24 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { CollectionService } from './collection.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExpansionService {
 
-  constructor(private af: AngularFirestore) { }
+  constructor(
+    private af: AngularFirestore,
+    private collectionserv: CollectionService) { }
 
   addExpansion(newExpansion: any): Promise<boolean> {
-    // TODO: test if this is truely unnecessary
-    // Test Results: Yes, it is necessary.
-    newExpansion.cards = JSON.stringify(newExpansion.cards);
-    return this.af.collection<any>('expansions')
-      .doc(`${newExpansion.name.split(' ').join('-')}`)
-      .set(Object.assign({}, newExpansion))
+    const exps = this.collectionserv.expansions.value;
+    exps[newExpansion.name] = newExpansion;
+    const expData = { 
+      data: JSON.stringify(exps),
+      lastUpdated: +Date.now()
+    }
+    return this.af.collection<any>('expansions').doc('expansions').set(expData)
       .then(() => true)
       .catch(err => {
         console.error(err);

@@ -50,6 +50,7 @@ export function AuthFactory(provider: AuthService): () => void {
     ReactiveFormsModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule.enablePersistence(),
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule, // imports firebase/storage only needed for storage features

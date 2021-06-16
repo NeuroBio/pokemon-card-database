@@ -83,7 +83,6 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
   }
 
   getList(): void {
-    console.log('get')
     if (this.whichList.value === 'Masterlist') {
       this.activeList = Object.assign([], this.collectionserv.getMaster());
     } else {

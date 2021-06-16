@@ -95,6 +95,7 @@ export class PickCardComponent implements OnInit, OnDestroy {
   getValue(control: string): any {
     return this.cardForm.get(control).value;
   }
+  
   private getAllowed(exp: string): void {
     this.allowed = this.masterList.filter(chunk => chunk.expansionName === exp);
   }

@@ -61,6 +61,7 @@ export class CardStorage {
     cards: {};
     expansionName: string;
     printNumber: number;
+    lastUpdated: number;
 
     constructor(expansion: string, print: number) {
         this.expansionName = expansion;

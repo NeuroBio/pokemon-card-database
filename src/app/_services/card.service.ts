@@ -45,6 +45,7 @@ export class CardService {
           })).pipe(switchMap(() => {
             cardBox.cards[newCard.uid] = newCard;
             cardBox.cards = JSON.stringify(cardBox.cards);
+            cardBox.lastUpdated = +Date.now();
             return this.af.collection<any>(`pokemon-cards`)
               .doc(`${newCard.expansionName}-${newCard.printNumber}`)
               .set(Object.assign({}, cardBox));
@@ -80,6 +81,7 @@ export class CardService {
             } else {
               delete cardBox.cards[uid];
               cardBox.cards = JSON.stringify(cardBox.cards);
+              cardBox.lastUpdated = +Date.now();
               return this.af.collection<any>(`pokemon-cards`)
                 .doc(`${expansion}-${print}`).set(Object.assign({}, cardBox)).then(() => true);
             }
