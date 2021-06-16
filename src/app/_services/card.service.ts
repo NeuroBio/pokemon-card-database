@@ -27,6 +27,7 @@ export class CardService {
             cardBox = new CardStorage(newCard.expansionName, newCard.printNumber);
           } else {
             cardBox.cards = JSON.parse(cardBox.cards);
+            delete cardBox.deleted;
           }
 
           // upload image if there are any to upload
@@ -76,15 +77,15 @@ export class CardService {
         })).pipe(
           switchMap(() => {
             if (Object.keys(cardBox.cards).length === 1) {
-              return this.af.collection<any>(`pokemon-cards`)
-                .doc(`${expansion}-${print}`).delete().then(() => true);
-            } else {
-              delete cardBox.cards[uid];
-              cardBox.cards = JSON.stringify(cardBox.cards);
-              cardBox.lastUpdated = +Date.now();
-              return this.af.collection<any>(`pokemon-cards`)
-                .doc(`${expansion}-${print}`).set(Object.assign({}, cardBox)).then(() => true);
+              cardBox.deleted = +Date.now();
+              // return this.af.collection<any>(`pokemon-cards`)
+              //   .doc(`${expansion}-${print}`).delete().then(() => true);
             }
+            delete cardBox.cards[uid];
+            cardBox.cards = JSON.stringify(cardBox.cards);
+            cardBox.lastUpdated = +Date.now();
+            return this.af.collection<any>(`pokemon-cards`)
+              .doc(`${expansion}-${print}`).set(Object.assign({}, cardBox)).then(() => true);
           })
         );
       }),

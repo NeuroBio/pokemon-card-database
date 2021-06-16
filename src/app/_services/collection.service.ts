@@ -35,7 +35,8 @@ export class CollectionService {
     private af: AngularFirestore,
     private auth: AuthService) {
       // ensure that master is updated as needed when cards change
-      this.allCards.subscribe(() => this.changed = true);
+      this.allCards.subscribe(() => 
+        this.changed = true);
     //
   }
 
@@ -89,20 +90,23 @@ export class CollectionService {
         tap(cards => {
           const pop = this.populationCount.value;
           const master = this.allCards.value;
-          cards.forEach(card => {
+          cards.forEach(cardBox => {
             // get info for updating population
             let newLength = 0;
-            const oldLength = master[`${card.expansionName}-${card.printNumber}`].length;
-            const type = this.expansions.value[card.expansionName].cards[card.printNumber - 1].cardType;
+            let oldLength = 0;
+            const type = this.expansions.value[cardBox.expansionName].cards[cardBox.printNumber - 1].cardType;
 
             // update cards
-            if (card.deleted) {
-              delete master[`${card.expansionName}-${card.printNumber}`];
+            if (cardBox.deleted) {
+              if (master[`${cardBox.expansionName}-${cardBox.printNumber}`]) {
+                oldLength = master[`${cardBox.expansionName}-${cardBox.printNumber}`].length;
+              }
+              delete master[`${cardBox.expansionName}-${cardBox.printNumber}`];
             } else {
               // update cards in storage bin
-              const newCards = JSON.parse(card.cards);
-              master[`${card.expansionName}-${card.printNumber}`] = newCards;
-              newLength = newCards.length;
+              const newCards: any[] = JSON.parse(cardBox.cards);
+              master[`${cardBox.expansionName}-${cardBox.printNumber}`] = newCards;
+              newLength = Object.keys(newCards).length;
             }
 
             // update population values
