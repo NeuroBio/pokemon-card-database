@@ -2,7 +2,8 @@ export class Checklist {
     name: string;
     cardKeys: string[];
     checkInfo: CheckInfo[];
-    lastUpdated: number
+    lastUpdated: number;
+    deleted?: number;
 
     constructor(name: string, keys: string[]) {
         this.name = name;

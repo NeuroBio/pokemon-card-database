@@ -68,8 +68,11 @@ export class CollectionService {
         map(cards => {
           this.getPopulation(cards);
           const cardObject = {};
-          cards.forEach(cardType => 
-            cardObject[`${cardType.expansionName}-${cardType.printNumber}`] = JSON.parse(cardType.cards));
+          cards.forEach(cardType => {
+            if (!cardType.deleted) {
+              cardObject[`${cardType.expansionName}-${cardType.printNumber}`] = JSON.parse(cardType.cards)
+            }
+          });
           return cardObject;
         }),
         tap(cards => {
@@ -87,14 +90,22 @@ export class CollectionService {
           const pop = this.populationCount.value;
           const master = this.allCards.value;
           cards.forEach(card => {
-            // update all cards
-            const newCards = JSON.parse(card.cards);
-            master[`${card.expansionName}-${card.printNumber}`] = newCards;
+            // get info for updating population
+            let newLength = 0;
+            const oldLength = master[`${card.expansionName}-${card.printNumber}`].length;
+            const type = this.expansions.value[card.expansionName].cards[card.printNumber - 1].cardType;
+
+            // update cards
+            if (card.deleted) {
+              delete master[`${card.expansionName}-${card.printNumber}`];
+            } else {
+              // update cards in storage bin
+              const newCards = JSON.parse(card.cards);
+              master[`${card.expansionName}-${card.printNumber}`] = newCards;
+              newLength = newCards.length;
+            }
 
             // update population values
-            const oldLength = master[`${card.expansionName}-${card.printNumber}`].length;
-            const newLength = newCards.length;
-            const type = this.expansions.value[card.expansionName].cards[card.printNumber - 1].cardType;
             const numCards = newLength - oldLength;
             if (type === 'special energy') {
               pop.specialEnergy += numCards;
@@ -140,7 +151,7 @@ export class CollectionService {
       .valueChanges()
         .pipe(tap(lists => {
           if (lists[0]) {
-            this.checkLists.next(lists);
+            this.checkLists.next(lists.filter(list => !list.deleted));
             if (this.initialized) {
               this.updateLastChecked(false, false, true);
             }

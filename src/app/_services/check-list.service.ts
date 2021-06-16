@@ -25,13 +25,16 @@ export class CheckListService {
     });
   }
 
-  deleteList(listName: string): Promise<boolean> {
-    return this.af.doc(`check-lists/${listName}`).delete()
-      .then(() => true)
-      .catch(err => {
-        console.error(err);
-        return false;
-      });
+  deleteList(listName: any): Promise<boolean> {
+    const list = this.collectionserv.getRawCheckList(listName);
+    list.deleted = +Date.now();
+    return this.af.collection<any>('check-lists')
+    .doc(`${list.name}`).set(Object.assign({}, list))
+    .then(() => true)
+    .catch(err => {
+      console.error(err);
+      return false;
+    });
   }
 
   changeCard(newCheckInfo: CheckInfo, listName: string, index: number): Promise<boolean> {
