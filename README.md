@@ -1,4 +1,4 @@
-# CardDatabase
+# Pokemon Card Database
 
 ## App Link
 https://carddatabase-6dfef.web.app/
