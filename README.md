@@ -18,7 +18,7 @@ In the future, I plan to make new item-specific versions of this app to help my 
 * Angular 11
 * Angular Materials
 * Firebase and Angularfire
-* ngLint for code quality
+* ngLint for code quality control
 * Custom Fonts
 * APP_INITIALIZER for prefetching data
 * OAUTH with Google as a provider
