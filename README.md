@@ -40,4 +40,4 @@ In the future, I plan to make new item-specific versions of this app to help my 
 ## Planning to implement
 * unit tests with Jasmine
 * custom icon
-* web scraper to get expansion data
+* web scraper or API calls to get expansion data from Bulbepedia
