@@ -15,7 +15,7 @@ export class CheckListService {
 
   uploadList(list: any, oldListName?: string): Promise<boolean> {
     list.checkInfo = JSON.stringify(list.checkInfo);
-    list.updatedAt = +Date.now();
+    list.lastUpdated = +Date.now();
     return this.af.collection<any>('check-lists')
       .doc(`${list.name}`).set(Object.assign({}, list))
       .then(() => true)
@@ -36,6 +36,7 @@ export class CheckListService {
 
   deleteList(listName: any): Promise<boolean> {
     const list = this.collectionserv.getRawCheckList(listName);
+    list.lastUpdated = +Date.now();
     list.deleted = +Date.now();
     return this.af.collection<any>('check-lists')
     .doc(`${list.name}`).set(Object.assign({}, list))

@@ -49,12 +49,12 @@ export class CollectionService {
       ]).pipe(tap(() => {
         // update checking time if exists
         const checks = JSON.parse(localStorage.getItem('lastChecked'))
-        if (checks) {
+        if (checks && this.notExpired(checks)) {
           // stored cache
           this.lastChecked = checks;
         }
         this.initialized = true;
-        this.updateCards().subscribe();
+        this.updateCards().pipe(skip(1)).subscribe();
         this.getExpansions().pipe(skip(1)).subscribe();
         this.getCheckLists().pipe(skip(1)).subscribe();
       }))
@@ -151,7 +151,7 @@ export class CollectionService {
 
   private getCheckLists(): Observable<Checklist[]> {
     return this.af.collection<Checklist>('check-lists',
-      ref => ref.where('lastUpdated', '>', this.lastChecked.expansions))
+      ref => ref.where('lastUpdated', '>', 0))
       .valueChanges()
         .pipe(tap(lists => {
           if (lists[0]) {
@@ -162,6 +162,7 @@ export class CollectionService {
           }
         }));
   }
+
 
   private updateLastChecked(cards: boolean = false, exps: boolean = false, lists: boolean = false) {
     if (cards) {
@@ -338,6 +339,16 @@ export class CollectionService {
       });
       this.populationCount.next(newPop);
     });
+  }
+
+  private notExpired(checks: any) {
+    const now = +Date.now();
+    if ((checks.cards-now)/1000/60/60 > 12
+      || (checks.expansions-now)/1000/60/60 > 12
+      || (checks.checkLists-now)/1000/60/60 > 12) {
+        return false;
+      }
+      return true;
   }
 
 }
