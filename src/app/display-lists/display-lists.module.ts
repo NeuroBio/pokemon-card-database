@@ -26,6 +26,9 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BinderViewComponent } from './binder-view/binder-view.component';
+import { GoBackModule } from '../go-back/go-back.module';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [
@@ -39,15 +42,18 @@ import { BinderViewComponent } from './binder-view/binder-view.component';
 
     CardPreviewModule,
     ConfirmModule,
+    GoBackModule,
 
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
     MatFormFieldModule,
+    MatGridListModule,
     MatIconModule,
     MatInputModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
+    MatRadioModule,
     MatSelectModule,
     MatSortModule,
     MatTableModule,

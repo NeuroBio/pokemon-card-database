@@ -1,1 +1,70 @@
-<p>binder-view works!</p>
+<app-go-back></app-go-back>
+
+<form [formGroup]="viewForm">
+    <!-- View mode -->
+    <mat-radio-group formControlName="viewStyle">
+        <mat-label>View Mode:</mat-label><br>
+        <mat-radio-button [value]="1">Page</mat-radio-button>
+        <mat-radio-button [value]="2">Book</mat-radio-button>    
+    </mat-radio-group>
+
+    <mat-divider [vertical]="true"></mat-divider>
+
+    <!-- Rows and Cols -->
+    <mat-form-field class="short">
+        <mat-label>Rows</mat-label>
+        <input matInput type="number" formControlName="rows" min="1">
+    </mat-form-field>
+
+    <mat-form-field class="short">
+        <mat-label>Cols</mat-label>
+        <input matInput type="number" formControlName="cols">
+    </mat-form-field>
+
+    <!-- Page Start -->
+    <mat-divider [vertical]="true" *ngIf="viewForm.controls.viewStyle.value === 2"></mat-divider>
+    <mat-radio-group formControlName="paging"
+    *ngIf="viewForm.controls.viewStyle.value === 2">
+        <mat-label>Start On:</mat-label><br>
+        <mat-radio-button [value]="0">Left Page</mat-radio-button>
+        <mat-radio-button [value]="1">Right Page</mat-radio-button>    
+    </mat-radio-group>    
+</form>
+
+<div id="binder">
+    <div class="page-holder">
+        <mat-grid-list [cols]="viewForm.controls.cols.value">
+            <mat-grid-tile *ngFor="let row of getArrangement(); let i = index">
+                {{ getLink(i, 0) }}
+                <!-- <img [src]="getLink(i, 0)"> -->
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+    
+    <div class="page-holder" *ngIf="viewForm.controls.viewStyle.value === 2">
+        <mat-grid-list [cols]="viewForm.controls.cols.value">
+            <mat-grid-tile *ngFor="let row of getArrangement(); let i = index">
+                {{ getLink(i, 1) }}
+                <!-- <img [src]="getLink(i, 1)"> -->
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+
+</div>
+
+<div class="nav-holder">
+    <button mat-mini-fab color="prime" class="page-nav"
+    (click)="changeOffset(-1)"
+    [disabled]="offset===0">
+        <mat-icon>
+            chevron_left
+        </mat-icon>
+    </button>
+
+    <button mat-mini-fab color="prime" class="page-nav"
+    (click)="changeOffset(1)">
+        <mat-icon>
+            chevron_right
+        </mat-icon>
+    </button>
+</div>

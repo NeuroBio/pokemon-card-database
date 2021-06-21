@@ -1,0 +1,45 @@
+@import '../../Variables.scss';
+
+form {
+    padding: 7px;
+    display: flex;
+    background-color: $palette5;
+}
+
+mat-radio-button {
+    margin: 2px 5px;
+}
+
+.short {
+    width: 50px;
+    margin: 2px 5px;
+}
+
+mat-divider {
+    margin: 0px 10px;
+}
+
+#binder {
+    padding: 7px;
+    width: calc(100vw - 20px);
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+}
+
+.page-holder {
+    position: relative;
+    height: 48%;
+    width: 48%;
+    max-height: 900px;
+}
+
+.nav-holder {
+    background-color: $palette5;
+    display: flex;
+    justify-content: center;
+}
+
+.page-nav {
+    margin: 5px;
+}
