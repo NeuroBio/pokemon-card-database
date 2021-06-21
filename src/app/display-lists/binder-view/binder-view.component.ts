@@ -28,10 +28,10 @@ export class BinderViewComponent implements OnInit {
 
   createForm(): FormGroup {
     return this.fb.group({
-      viewStyle: 1,
-      paging: 0,
-      rows: 2,
-      cols: 2
+      viewStyle: 2,
+      paging: 1,
+      rows: 3,
+      cols: 3
     });
   }
 

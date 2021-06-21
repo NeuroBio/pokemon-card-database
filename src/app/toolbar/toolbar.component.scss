@@ -15,6 +15,11 @@ h1 {
         -webkit-text-stroke: 2.2px $pokemon-blue;
         letter-spacing: 0.15em;
         padding: .1em 0em .3em .3em;
+        white-space: pre-wrap; /* CSS3 */
+        white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+        white-space: -pre-wrap; /* Opera 4-6 */
+        white-space: -o-pre-wrap; /* Opera 7 */
+        word-wrap: break-word; /* Internet Explorer 5.5+ */
     }
 }
 

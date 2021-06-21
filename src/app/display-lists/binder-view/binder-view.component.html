@@ -33,7 +33,8 @@
 
 <div id="binder">
     <div class="page-holder">
-        <mat-grid-list [cols]="viewForm.controls.cols.value">
+        <mat-grid-list [cols]="viewForm.controls.cols.value"
+        rowHeight=".78:1">
             <mat-grid-tile *ngFor="let row of getArrangement(); let i = index">
                 <img *ngIf="getLink(i, 0)" [src]="getLink(i, 0)">
             </mat-grid-tile>
@@ -41,7 +42,8 @@
     </div>
     
     <div class="page-holder" *ngIf="viewForm.controls.viewStyle.value === 2">
-        <mat-grid-list [cols]="viewForm.controls.cols.value">
+        <mat-grid-list [cols]="viewForm.controls.cols.value"
+        rowHeight=".78:1">
             <mat-grid-tile *ngFor="let row of getArrangement(); let i = index">
                 <img *ngIf="getLink(i, 1)" [src]="getLink(i, 1)">
             </mat-grid-tile>

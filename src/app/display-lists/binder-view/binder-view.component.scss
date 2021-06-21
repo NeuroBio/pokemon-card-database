@@ -31,9 +31,13 @@ mat-divider {
     position: relative;
     height: 48%;
     width: 48%;
-    max-height: 900px;
     background-color: $off-black;
 }
+mat-grid-list {
+    position: relative;
+    max-height: 30vh;
+}
+
 
 .nav-holder {
     background-color: $palette5;
