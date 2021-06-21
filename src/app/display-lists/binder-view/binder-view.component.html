@@ -27,16 +27,15 @@
     *ngIf="viewForm.controls.viewStyle.value === 2">
         <mat-label>Start On:</mat-label><br>
         <mat-radio-button [value]="0">Left Page</mat-radio-button>
-        <mat-radio-button [value]="1">Right Page</mat-radio-button>    
-    </mat-radio-group>    
+        <mat-radio-button [value]="1">Right Page</mat-radio-button>
+    </mat-radio-group>
 </form>
 
 <div id="binder">
     <div class="page-holder">
         <mat-grid-list [cols]="viewForm.controls.cols.value">
             <mat-grid-tile *ngFor="let row of getArrangement(); let i = index">
-                {{ getLink(i, 0) }}
-                <!-- <img [src]="getLink(i, 0)"> -->
+                <img *ngIf="getLink(i, 0)" [src]="getLink(i, 0)">
             </mat-grid-tile>
         </mat-grid-list>
     </div>
@@ -44,8 +43,7 @@
     <div class="page-holder" *ngIf="viewForm.controls.viewStyle.value === 2">
         <mat-grid-list [cols]="viewForm.controls.cols.value">
             <mat-grid-tile *ngFor="let row of getArrangement(); let i = index">
-                {{ getLink(i, 1) }}
-                <!-- <img [src]="getLink(i, 1)"> -->
+                <img *ngIf="getLink(i, 1)" [src]="getLink(i, 1)">
             </mat-grid-tile>
         </mat-grid-list>
     </div>

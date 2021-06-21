@@ -28,10 +28,10 @@ export class BinderViewComponent implements OnInit {
 
   createForm(): FormGroup {
     return this.fb.group({
-      viewStyle: 2,
+      viewStyle: 1,
       paging: 0,
-      rows: 3,
-      cols: 3
+      rows: 2,
+      cols: 2
     });
   }
 
@@ -53,8 +53,15 @@ export class BinderViewComponent implements OnInit {
 
     // get card
     const cardIndex = index + this.offset*numCells*numPages + paging;
-    //return this.activeList[cardIndex].owned[0].front;
-    return cardIndex.toString();
+
+    // no card or no image
+    if (cardIndex < 0
+      || !this.activeList[cardIndex].owned[0]
+      || !this.activeList[cardIndex].owned[0].front) {
+        return;
+      }
+
+    return this.activeList[cardIndex].owned[0].front;
   }
 
   changeOffset(change: number) {
