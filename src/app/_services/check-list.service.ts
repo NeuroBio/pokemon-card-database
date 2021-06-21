@@ -13,7 +13,7 @@ export class CheckListService {
     private collectionserv: CollectionService
     ) { }
 
-  uploadList(list: any): Promise<boolean> {
+  uploadList(list: any, oldListName?: string): Promise<boolean> {
     list.checkInfo = JSON.stringify(list.checkInfo);
     list.updatedAt = +Date.now();
     return this.af.collection<any>('check-lists')
@@ -22,7 +22,16 @@ export class CheckListService {
       .catch(err => {
         console.error(err);
         return false;
-    });
+    }).then(res => new Promise((resolve) => {
+      if (!res) {
+        resolve(false);
+      }
+      if (!oldListName || list.name === oldListName) {
+        resolve(true);
+      } else { // if list name changed, set old list for destruction
+        return this.deleteList(oldListName);
+      }
+    }));
   }
 
   deleteList(listName: any): Promise<boolean> {

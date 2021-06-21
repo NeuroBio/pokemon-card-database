@@ -192,7 +192,7 @@ export class AddListComponent implements OnInit, OnDestroy {
       });
     }
 
-    return this.checklistserv.uploadList(checklist)
+    return this.checklistserv.uploadList(checklist, this.editData ? this.editData.name : undefined)
       .then(res => {
         this.isLoading = false;
         if (res) {
