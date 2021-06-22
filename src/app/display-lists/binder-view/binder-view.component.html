@@ -62,7 +62,8 @@
     </button>
 
     <button mat-mini-fab color="prime" class="page-nav"
-    (click)="changeOffset(1)">
+    (click)="changeOffset(1)"
+    [disabled]="allDisplayed()">
         <mat-icon>
             chevron_right
         </mat-icon>

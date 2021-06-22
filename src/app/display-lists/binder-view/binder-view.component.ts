@@ -56,12 +56,25 @@ export class BinderViewComponent implements OnInit {
 
     // no card or no image
     if (cardIndex < 0
+      || cardIndex >= this.activeList.length
       || !this.activeList[cardIndex].owned[0]
       || !this.activeList[cardIndex].owned[0].front) {
         return;
       }
 
     return this.activeList[cardIndex].owned[0].front;
+  }
+
+  allDisplayed() {
+    // grid size
+    const numCells = this.viewForm.controls.cols.value * this.viewForm.controls.rows.value;
+    const numPages = this.viewForm.controls.viewStyle.value;
+    let paging = (numPages - 1) * numCells;
+    // handle offset from starting on right page
+    if (numPages === 2) {
+      paging -= this.viewForm.controls.paging.value * numCells;
+    }
+    return this.activeList.length < (numCells + numCells*this.offset*numPages + paging);
   }
 
   changeOffset(change: number) {
