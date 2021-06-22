@@ -212,7 +212,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
   }
 
   close(): void {
-    this.router.navigate(['']);
+    this.router.navigate([this.collectionserv.activeList]);
   }
 
   delete(): void {

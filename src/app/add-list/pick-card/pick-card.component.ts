@@ -48,7 +48,7 @@ export class PickCardComponent implements OnInit, OnDestroy {
     const chunk: CardInstance[] = this.collectionserv.getChunk(this.data.key);
     if (chunk) {
       this.edit = true;
-      const keyParts = this.data.key.split('-');
+      const keyParts = this.data.key.split(/-(?!.*-)/);
       this.cardForm.patchValue({
         exp: keyParts[0],
         activeCardChunkKey: this.data.key,

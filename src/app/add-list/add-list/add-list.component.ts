@@ -98,7 +98,7 @@ export class AddListComponent implements OnInit, OnDestroy {
   }
 
   close(): void {
-    this.router.navigate(['']);
+    this.router.navigate([this.collectionserv.activeList]);
   }
 
   // Drag and drop
@@ -207,7 +207,7 @@ export class AddListComponent implements OnInit, OnDestroy {
   loadOldData(): void {
     this.listForm.patchValue({ name: this.editData.name });
     this.cards = this.editData.cardKeys.map(key => {
-      const keyParts = key.split('-');
+      const keyParts = key.split(/-(?!.*-)/);
       return {
       preview: this.collectionserv.getActiveCard(keyParts[0], keyParts[1]),
       exp: this.expansions[keyParts[0]],
@@ -216,7 +216,7 @@ export class AddListComponent implements OnInit, OnDestroy {
     });
     this.populateMethods = this.editData.checkInfo.map(info => {
       if (info.uid) {
-        const keyParts = info.key.split('-');
+        const keyParts = info.key.split(/-(?!.*-)/);
         return new PopulateMethod('useCard', keyParts[0], keyParts[1], info.uid);
       } else {
         return {};

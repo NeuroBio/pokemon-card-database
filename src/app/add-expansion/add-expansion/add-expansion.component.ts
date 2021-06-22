@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Card } from 'src/app/_objects/expansion';
 import { StaticData } from 'src/app/_objects/pokemon-list';
+import { CollectionService } from 'src/app/_services/collection.service';
 import { ExpansionService } from 'src/app/_services/expansion.service';
 import { MessengerService } from 'src/app/_services/messenger.service';
 
@@ -25,7 +26,8 @@ export class AddExpansionComponent implements OnInit {
     private fb: FormBuilder,
     private expansionserv: ExpansionService,
     private router: Router,
-    private messenger: MessengerService) { }
+    private messenger: MessengerService,
+    private collectionserv: CollectionService) { }
 
   ngOnInit(): void {
     this.expansionForm = this.createExpansionForm();
@@ -126,7 +128,7 @@ export class AddExpansionComponent implements OnInit {
   }
 
   close(): void {
-    this.router.navigate(['']);
+    this.router.navigate([this.collectionserv.activeList]);
   }
 
 }
