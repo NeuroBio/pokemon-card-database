@@ -70,11 +70,13 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(): void {
     this.cards.data = this.displayCards;
 
-    Object.keys(this.sortingData).forEach(active => {
-      if (this.sortingData[active]) {
-        this.sortData({ active, direction: this.sortingData[active] } as Sort);
-      }
-    });
+    if (this.listName === 'Masterlist') {
+      Object.keys(this.sortingData).forEach(active => {
+        if (this.sortingData[active]) {
+          this.sortData({ active, direction: this.sortingData[active] } as Sort);
+        }
+      });
+    }
 
     this.swapListType();
   }
