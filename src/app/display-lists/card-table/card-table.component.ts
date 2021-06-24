@@ -181,7 +181,7 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
         // filter on expansion
         && card.expansionName.trim().toLowerCase().indexOf(searchString.expansion.toLowerCase()) !== -1
         // filter on dex number
-        && (!searchString.dex || card.dexNumber === searchString.dex)
+        && (!searchString.dex || card.dexNumber === searchString.dex - 1)
         // filter on generation
         && (!searchString.gen || card.generation === searchString.gen)
         // filter on release
