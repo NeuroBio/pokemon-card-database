@@ -254,7 +254,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
       expansionName: this.cardForm.controls.expansionName.value,
       printNumber: this.cardForm.controls.printNumber.value,
       condition: 'NM',
-      form: '',
+      form: this.cardForm.controls.form.value,
       front: '',
       back: '',
       flaws: this.flaws,
