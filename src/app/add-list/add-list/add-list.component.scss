@@ -60,6 +60,11 @@ mat-slide-toggle {
 #small-print-input {
     width: 50px;
 }
+#drag-n-drop-container {
+    max-height: 70vh;
+    overflow-y: auto;
+    margin: 7px;
+}
 
 #drag-n-drop {
     flex-grow: 1;
