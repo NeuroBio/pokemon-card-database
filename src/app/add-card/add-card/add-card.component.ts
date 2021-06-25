@@ -63,6 +63,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
     this.flaws = this.createFlawArray();
     if (this.editData) {
       this.cardForm = this.createEditForm(this.editData);
+      this.setForms(this.editData.expansionName);
     } else {
       this.cardForm = this.createAddForm();
     }
@@ -104,14 +105,12 @@ export class AddCardComponent implements OnInit, OnDestroy {
       this.addFlaw(flaw.type, flaw.where, flaw.landmark, flaw.severity));
 
     return this.fb.group({
-      expansionName: [
-        { value: data.expansionName },
+      expansionName: [ data.expansionName,
         Validators.required],
-      printNumber: [
-        { value: data.printNumber },
+      printNumber: [ data.printNumber,
         Validators.required],
       condition: data.condition,
-      form: { value: data.form },
+      form: data.form,
       front: data.front,
       back: data.back,
       flaws: this.flaws,
@@ -249,8 +248,10 @@ export class AddCardComponent implements OnInit, OnDestroy {
   }
 
   reset() {
-    const length = this.flaws.controls.length;
-    this.flaws.controls.forEach((_, i) => this.removeFlaw(length - (i + 1)));
+    while (this.flaws.controls.length > 0) {
+      this.removeFlaw(0);
+    }
+    
     this.cardForm.reset({
       expansionName: this.cardForm.controls.expansionName.value,
       printNumber: this.cardForm.controls.printNumber.value,
