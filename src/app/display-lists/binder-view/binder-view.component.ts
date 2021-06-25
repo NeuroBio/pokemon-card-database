@@ -12,6 +12,7 @@ import { CollectionService } from 'src/app/_services/collection.service';
 export class BinderViewComponent implements OnInit {
 
   viewForm: FormGroup;
+  activeListName: string;
   activeList: CardChunk[];
   offset = 0;
 
@@ -21,15 +22,16 @@ export class BinderViewComponent implements OnInit {
     private fb: FormBuilder) { }
 
   ngOnInit(): void {
+    this.activeListName = this.route.snapshot.paramMap.get('ChecklistID');
     this.viewForm = this.createForm();
     this.activeList = this.collectionserv
-      .getCheckList(this.route.snapshot.paramMap.get('ChecklistID'));
+      .getCheckList(this.activeListName);
   }
 
   createForm(): FormGroup {
     return this.fb.group({
       viewStyle: 2,
-      paging: 1,
+      paging: this.collectionserv.getChecklistDisplay(this.activeListName),
       rows: 3,
       cols: 3
     });

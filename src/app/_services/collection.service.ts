@@ -215,6 +215,15 @@ export class CollectionService {
     }
   }
 
+  getChecklistDisplay(listName: string): number {
+    const list = this.getRawCheckList(listName)
+    if (list && list.startOn) {
+      return list.startOn;
+    } else {
+      return 1;
+    }
+  }
+
   getCheckList(listName: string): CardChunk[] {
     const list: any = this.getRawCheckList(listName);
     if (!list) { // list does not exist

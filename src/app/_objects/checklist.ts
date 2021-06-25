@@ -4,13 +4,13 @@ export class Checklist {
     checkInfo: CheckInfo[];
     lastUpdated: number;
     deleted?: number;
-    startLeft?: number;
+    startOn?: number;
 
-    constructor(name: string, keys: string[], startLeft?: number) {
+    constructor(name: string, keys: string[], startOn?: number) {
         this.name = name;
         this.cardKeys = keys;
         this.checkInfo = new Array(keys.length).fill('');
-        this.startLeft = startLeft;
+        this.startOn = startOn;
     }
 }
 
