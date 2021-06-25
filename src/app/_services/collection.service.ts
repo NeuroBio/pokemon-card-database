@@ -19,7 +19,7 @@ export class CollectionService {
   populationCount = new BehaviorSubject<Population>(undefined);
   
   activeList = 'Masterlist'
-  allowEdit = true;
+  allowEdit = false;
 
   private lastChecked = {
     cards: 0,

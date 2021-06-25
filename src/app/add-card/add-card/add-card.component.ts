@@ -206,7 +206,6 @@ export class AddCardComponent implements OnInit, OnDestroy {
           } else {
             this.messenger.send('Card uploaded.');
           }
-          this.messenger.send('Card deleted.');
           if (this.editData) {
             this.close();
           } else {
@@ -239,7 +238,8 @@ export class AddCardComponent implements OnInit, OnDestroy {
             .subscribe(res => {
               this.isLoading = false;
               if (res) {
-               this.close();
+                this.messenger.send('Card deleted.');
+                this.close();
               } else {
                 this.messenger.send('Only the Admin may delete cards.');
               }
