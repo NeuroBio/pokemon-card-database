@@ -249,7 +249,8 @@ export class AddCardComponent implements OnInit, OnDestroy {
   }
 
   reset() {
-    this.flaws = this.createFlawArray();
+    const length = this.flaws.controls.length;
+    this.flaws.controls.forEach((_, i) => this.removeFlaw(length - (i + 1)));
     this.cardForm.reset({
       expansionName: this.cardForm.controls.expansionName.value,
       printNumber: this.cardForm.controls.printNumber.value,
