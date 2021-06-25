@@ -105,13 +105,13 @@ export class AddCardComponent implements OnInit, OnDestroy {
 
     return this.fb.group({
       expansionName: [
-        { value: data.expansionName, disabled: true },
+        { value: data.expansionName },
         Validators.required],
       printNumber: [
-        { value: data.printNumber, disabled: true },
+        { value: data.printNumber },
         Validators.required],
       condition: data.condition,
-      form: { value: data.form, disabled: true },
+      form: { value: data.form },
       front: data.front,
       back: data.back,
       flaws: this.flaws,
