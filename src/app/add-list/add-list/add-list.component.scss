@@ -96,6 +96,12 @@ app-card-preview {
     margin: 0em -1.5em 0em -1em;
 }
 
+mat-radio-group {
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+}
+
 #population-method {
     margin-left: 1em;
 }

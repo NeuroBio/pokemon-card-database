@@ -60,16 +60,34 @@
                             <mat-icon>add</mat-icon>
                             Add Card
                         </button>
+                    </div>
+                </form>
 
-                        <button mat-raised-button color="prime"
+                <br *ngIf="drag">
+
+                <mat-radio-group formControlName="startOn" *ngIf="drag">
+                    <mat-label>
+                        Start binder view on the...
+                    </mat-label>
+
+                    <mat-radio-button [value]="0" class="tab">
+                        Left page
+                    </mat-radio-button>
+                    <mat-radio-button [value]="1" class="tab">
+                        Right page
+                    </mat-radio-button>
+                </mat-radio-group>
+
+                <br>
+                
+                <div class="button-box-2">
+                    <button mat-raised-button color="prime"
                         (click)="swapState()">
                             <mat-icon>{{ drag ? 'check' : 'arrow_back_ios' }}</mat-icon>
                             {{ drag ? 'Finalize' : 'Back' }}
-                        </button>
-    
-                    </div>
-                    
-                </form>
+                    </button>
+                </div>
+                <br>
             </div>
     
             <mat-divider [vertical]="true"></mat-divider>

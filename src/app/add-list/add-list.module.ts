@@ -22,6 +22,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { GoBackModule } from '../go-back/go-back.module';
+import { MatRadioModule } from '@angular/material/radio';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { GoBackModule } from '../go-back/go-back.module';
     MatIconModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    MatRadioModule,
     MatSelectModule,
     MatSlideToggleModule,
     DragDropModule,

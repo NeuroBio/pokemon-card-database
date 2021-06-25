@@ -86,6 +86,7 @@ export class AddListComponent implements OnInit, OnDestroy {
   createListForm(): FormGroup {
     return this.fb.group({
       name: ['', Validators.required],
+      startOn: [1, Validators.required]
     });
   }
 
@@ -170,7 +171,10 @@ export class AddListComponent implements OnInit, OnDestroy {
 
   submit(): Promise<void> {
     this.isLoading = true;
-    const checklist = new Checklist(this.listForm.value.name, this.cards.map(card => card.path));
+    const checklist = new Checklist(this.listForm.value.name,
+      this.cards.map(card => card.path),
+      this.listForm.value.startOn
+      );
 
     // prepopulation with card instances
     if (this.cardForm.get('prepopulate').value) {
@@ -205,7 +209,7 @@ export class AddListComponent implements OnInit, OnDestroy {
   }
 
   loadOldData(): void {
-    this.listForm.patchValue({ name: this.editData.name });
+    this.listForm.patchValue({ name: this.editData.name, startOn: this.editData.startOn });
     this.cards = this.editData.cardKeys.map(key => {
       const keyParts = key.split(/-(?!.*-)/);
       return {
