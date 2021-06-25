@@ -189,9 +189,9 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
         // filter on print
         && (!searchString.print || card.printNumber === searchString.print)
         // filter on copies
-        && (searchString.copies === null || card.owned.length === searchString.copies)
+        && (searchString.copies === null || this.listName !== 'Masterlist' || card.owned.length === searchString.copies)
         // filter on have
-        && (!searchString.haveCard || card.haveCard() === searchString.haveCard);
+        && (!searchString.haveCard || this.listName === 'Masterlist' || card.haveCard() === searchString.haveCard);
       return include;
     };
     return myFilterPredicate;
