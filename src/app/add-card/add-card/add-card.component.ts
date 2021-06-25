@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,6 +20,8 @@ import * as uuid from 'uuid';
 })
 export class AddCardComponent implements OnInit, OnDestroy {
 
+  @ViewChild('frontInput') frontInput: ElementRef;
+  @ViewChild('backInput') backInput: ElementRef; 
   editData: CardInstance;
   cardForm: FormGroup;
   flaws: FormArray;
@@ -204,7 +206,12 @@ export class AddCardComponent implements OnInit, OnDestroy {
           } else {
             this.messenger.send('Card uploaded.');
           }
-          this.close();
+          this.messenger.send('Card deleted.');
+          if (this.editData) {
+            this.close();
+          } else {
+            this.reset();
+          }
         } else {
           this.messenger.send('Only the Admin may add or edit cards.');
         }
@@ -232,14 +239,29 @@ export class AddCardComponent implements OnInit, OnDestroy {
             .subscribe(res => {
               this.isLoading = false;
               if (res) {
-                this.messenger.send('Card deleted.');
-                this.close();
+               this.close();
               } else {
                 this.messenger.send('Only the Admin may delete cards.');
               }
             });
         }
       });
+  }
+
+  reset() {
+    this.flaws = this.createFlawArray();
+    this.cardForm.reset({
+      expansionName: this.cardForm.controls.expansionName.value,
+      printNumber: this.cardForm.controls.printNumber.value,
+      condition: 'NM',
+      form: '',
+      front: '',
+      back: '',
+      flaws: this.flaws,
+      notes: ''
+    });
+    this.inputReset(this.frontInput, 'front')
+    this.inputReset(this.backInput, 'back')
   }
 
 }
