@@ -31,7 +31,6 @@ export class SetCompletionComponent implements OnInit {
     this.expansionNames = this.collectionserv.getExpansionNames();
     this.cards = this.collectionserv.allCards.value;
     this.getSetInfo('Base Set');
-    console.log(this.activeSetInfo)
   }
 
   getSetInfo(expName: string): void {
