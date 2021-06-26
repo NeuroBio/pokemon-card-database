@@ -1,0 +1,32 @@
+<app-go-back></app-go-back>
+
+<div class="main-info-display">
+    <mat-form-field>
+        <mat-label>Expansion</mat-label>
+        <mat-select [formControl]="activeSet">
+            <mat-option *ngFor="let name of expansionNames"
+            [value]="name">
+                {{ name }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field><br>
+
+    <b>Set completion:</b> {{ activeSetInfo.unique }} / {{ activeSetInfo.total }}
+    <ul>
+        <b>Rarities</b>
+        <li *ngFor="let rare of activeSetInfo.rarity | keyvalue" class="tab">
+            {{ rare.key }}: {{ rare.value }}<br>
+        </li>
+    </ul>
+    <b>Total Bulk:</b> {{ activeSetInfo.cardCount }}<br>
+    <b>Copies of Each Print Owned:</b>
+    <div class="card-table">
+        <span class="card-cell"
+        [style.background-color]="card === 0 ? '#bdba9d' : '#c7ba22'"
+        [style.color]="card === 0 ? '#6e6e6e' : 'black'"
+        *ngFor="let card of activeSetInfo.ownership; let i = index">
+            {{ i + 1 }}/{{ activeSetInfo.print }}: x{{ card }}
+        </span>
+    </div>
+    
+</div>

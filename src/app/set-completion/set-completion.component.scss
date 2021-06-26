@@ -1,0 +1,22 @@
+@import '../Variables.scss';
+
+.main-info-display {
+    background-color: $palette5;
+    padding-left: 1em;
+}
+
+.card-table {
+    background-color: $palette6;
+    display: grid;
+    grid-template-rows: repeat(auto-fill, minmax(29px, 0fr));
+    grid-auto-flow: column;
+    max-width: 80vw;
+    height: 80vh;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 0fr));
+    overflow-x: auto;
+}
+
+.card-cell {
+    margin: 3px;
+    padding: 3px;
+}
