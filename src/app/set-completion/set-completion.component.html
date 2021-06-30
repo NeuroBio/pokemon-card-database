@@ -24,9 +24,13 @@
         <span class="card-cell"
         [style.background-color]="card === 0 ? '#bdba9d' : '#c7ba22'"
         [style.color]="card === 0 ? '#6e6e6e' : 'black'"
+        [matTooltip]="checkCard"
+        matTooltipClass="tooltip"
+        matTooltipPosition="right"
+        (mouseover)="getCardDetails(i)"
         *ngFor="let card of activeSetInfo.ownership; let i = index">
             {{ i + 1 }}/{{ activeSetInfo.print }}: x{{ card }}
         </span>
     </div>
-    
+    <br>
 </div>

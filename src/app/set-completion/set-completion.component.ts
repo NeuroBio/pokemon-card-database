@@ -14,6 +14,7 @@ export class SetCompletionComponent implements OnInit {
   expansions: SetExpansion[];
   expansionNames: string[];
   cards: any;
+  checkCard: string;
   setInfo = {};
   activeSetInfo: any;
   activeSet: FormControl;
@@ -64,6 +65,11 @@ export class SetCompletionComponent implements OnInit {
 
     // set the active data
     this.activeSetInfo = this.setInfo[expName];
+  }
+
+  getCardDetails(print: number): void {
+    const card = this.expansions[this.activeSet.value].cards[print];
+    this.checkCard = `${card.cardTitle}-${card.rarity}`
   }
 
 }

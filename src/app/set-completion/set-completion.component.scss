@@ -20,3 +20,11 @@
     margin: 3px;
     padding: 3px;
 }
+
+::ng-deep .tooltip {
+    color: black !important;
+    background-color: #e4d751;
+    font-size: 12pt;
+    white-space: pre-line;
+    margin-left: 0px !important;
+  }
