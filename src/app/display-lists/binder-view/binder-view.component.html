@@ -18,7 +18,7 @@
 
     <mat-form-field class="short">
         <mat-label>Cols</mat-label>
-        <input matInput type="number" formControlName="cols">
+        <input matInput type="number" formControlName="cols" min="1">
     </mat-form-field>
 
     <!-- Page Start -->
@@ -36,7 +36,9 @@
         <mat-grid-list [cols]="viewForm.controls.cols.value"
         rowHeight=".78:1">
             <mat-grid-tile *ngFor="let row of getArrangement(); let i = index">
-                <img *ngIf="getLink(i, 0)" [src]="getLink(i, 0)">
+                <img *ngIf="getLink(i, 0)" (load)="finishLoad(i, 0)"
+                [style.opacity]="checkLoad(i, 0) ? 0 : 1"
+                [src]="getLink(i, 0)">
             </mat-grid-tile>
         </mat-grid-list>
     </div>
@@ -45,7 +47,9 @@
         <mat-grid-list [cols]="viewForm.controls.cols.value"
         rowHeight=".78:1">
             <mat-grid-tile *ngFor="let row of getArrangement(); let i = index">
-                <img *ngIf="getLink(i, 1)" [src]="getLink(i, 1)">
+                <img *ngIf="getLink(i, 1)" (load)="finishLoad(i, 1)"
+                [style.opacity]="checkLoad(i, 1) ? 0 : 1"
+                [src]="getLink(i, 1)">
             </mat-grid-tile>
         </mat-grid-list>
     </div>

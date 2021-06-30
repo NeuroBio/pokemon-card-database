@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { CardChunk } from 'src/app/_objects/card-chunk';
 import { CollectionService } from 'src/app/_services/collection.service';
 
@@ -9,12 +10,16 @@ import { CollectionService } from 'src/app/_services/collection.service';
   templateUrl: './binder-view.component.html',
   styleUrls: ['./binder-view.component.scss']
 })
-export class BinderViewComponent implements OnInit {
+export class BinderViewComponent implements OnInit, OnDestroy {
 
   viewForm: FormGroup;
   activeListName: string;
   activeList: CardChunk[];
   offset = 0;
+  loading: boolean[];
+  size = 0;
+  resizeSubscription1: Subscription;
+  resizeSubscription2: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -26,14 +31,24 @@ export class BinderViewComponent implements OnInit {
     this.viewForm = this.createForm();
     this.activeList = this.collectionserv
       .getCheckList(this.activeListName);
+    this.resetLoading();
+    this.resizeSubscription1 = this.viewForm.controls.rows.valueChanges
+      .subscribe(rows => this.resetLoading(rows));
+    this.resizeSubscription2 = this.viewForm.controls.cols.valueChanges
+      .subscribe(cols => this.resetLoading(undefined, cols));
+  }
+
+  ngOnDestroy() {
+    this.resizeSubscription1.unsubscribe();
+    this.resizeSubscription2.unsubscribe();
   }
 
   createForm(): FormGroup {
     return this.fb.group({
       viewStyle: 2,
       paging: this.collectionserv.getChecklistDisplay(this.activeListName),
-      rows: 3,
-      cols: 3
+      rows: 1,
+      cols: 1
     });
   }
 
@@ -81,6 +96,39 @@ export class BinderViewComponent implements OnInit {
 
   changeOffset(change: number) {
     this.offset += change;
+    this.resetLoading()
+  }
+
+  resetLoading(rows?: number, cols?: number) {
+    const view = this.viewForm.value;
+    if (!rows) {
+      rows = view.rows
+    }
+    if (!cols) {
+      cols = view.cols
+    }
+    const newSize = rows * cols * view.viewStyle;
+    this.loading = new Array(newSize).fill(true);
+
+    // One the first page, resetting the array size can permanently set
+    // some of the images to loading because their src did not change.
+    // manually reset those cases to false!
+    if (this.offset === 0 && newSize !== this.size && this.size !== 0) {
+      for(let i = 0; i < Math.min(this.size, newSize); i++) {
+        this.loading[i + rows * cols * view.paging] = false;
+      }
+    }
+    this.size = newSize;
+  }
+
+  finishLoad(index: number, page: number): void {
+    const pageSlots = this.viewForm.controls.rows.value * this.viewForm.controls.cols.value;
+    this.loading[index + page * pageSlots] = false;
+  }
+
+  checkLoad(index: number, page: number): boolean {
+    const pageSlots = this.viewForm.controls.rows.value * this.viewForm.controls.cols.value;
+    return this.loading[index + page * pageSlots];
   }
 
 }
