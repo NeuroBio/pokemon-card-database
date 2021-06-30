@@ -47,8 +47,8 @@ export class BinderViewComponent implements OnInit, OnDestroy {
     return this.fb.group({
       viewStyle: 2,
       paging: this.collectionserv.getChecklistDisplay(this.activeListName),
-      rows: 1,
-      cols: 1
+      rows: 3,
+      cols: 3
     });
   }
 
