@@ -20,7 +20,7 @@ def html_to_stringlist(response):
     #catch cases where there is no japanese equiv
     res = re.sub('==Set list==\n', '', res)
 
-    #catch Diamond and Pearl idk what's going on formatting error
+    #catch Diamond and Pearl's idk-what's-going-on formatting error
     res = re.sub(r'[\s\S]+\n\|\n', '', res)
     
     # remove footer html
@@ -40,6 +40,7 @@ def row_to_data(row, setName):
     except:
         # this is why consistent formatting matters
         try:
+            # very common in the gen 5+ sets
             card_title = re.search(rf'\[\[(.*?)(?:\({setName})', row).group(1)
         except:
             try:
@@ -67,6 +68,18 @@ def row_to_data(row, setName):
             # first encountered in Neo Genesis
             # print(f"Type exception: {row}")
             card_type = re.search(r'(?<=\}\}\|)[^|]+(?:|)', row).group(0)
+
+
+    # Do this before doing the rarity check, because the rarity check depends
+    # on the titles being fixed!!!
+    # convert card color type to pokemon
+    if card_type not in ['Energy', 'Trainer']:
+        # Make sure fossils are trainers
+        if re.search('Fossil', card_title) is not None:
+            card_type = 'Trainer'
+        else:
+            card_type = 'Pokémon'
+            card_title = clean_card_title(card_title)
     
     # get the last element bounded by | and ending in }+
     # one or more } is set as the ending, because there are
@@ -76,17 +89,9 @@ def row_to_data(row, setName):
     card_rarity = clean_card_rarity(card_rarity, card_title)
 
 
-    # convert card color type to pokemon
-    if card_type not in ['Energy', 'Trainer']:
-        # Make sure fossils are trainers
-        if re.search('Fossil', card_title) is not None:
-            card_type = 'Trainer'
-        else:
-            card_type = 'Pokémon'
-            card_title = clean_card_title(card_title)
 
     # convert energy with rarity to special energy
-    elif card_type == 'Energy' and card_rarity not in ['None', 'Common']:
+    if card_type == 'Energy' and card_rarity not in ['None', 'Common']:
         card_type = 'Special Energy'
     
     # catch secret rares
@@ -152,7 +157,7 @@ def clean_card_title(title):
     title = re.sub(r'([a-z])(\s?BREAK)', lambda match: f"{match.group(1)} BREAK", title)
 
     # gen 7
-    title = re.sub(r'([a-z])(\s?GX)', lambda match: f"{match.group(1)} GX", title)
+    title = re.sub(r'([a-z])(\s?-?GX)', lambda match: f"{match.group(1)} GX", title)
     title = re.sub(r'([a-z])(\s?Tag Team)', lambda match: f"{match.group(1)} Tag Team", title)
 
     # Gen 8
@@ -161,6 +166,7 @@ def clean_card_title(title):
     return title.strip()
 
 def clean_card_rarity(rare, title):
+    print(title)
     rare = re.sub(r'Rare Holo\s*ex', 'EX', rare)
     rare = re.sub(r'Rare Holo\s*LV.X', 'LV.X', rare)
     rare = re.sub(r'Rare Holo\s*LEGEND', 'LEGEND', rare)
@@ -171,6 +177,10 @@ def clean_card_rarity(rare, title):
     ur = re.search('\s([a-zA-Z]+)\s?$', title)
     if ur is not None:
         rare = re.sub(r'Ultra-Rare Rare', ur.group(1), rare)
+
+    # get Prism Stars
+    if bool(re.search('♢', title)):
+        rare = 'Prism Star'
     
     rare = re.sub(r'ShinyRare Holo', 'Goldstar', rare)
     rare = re.sub(r'^A$', 'Amazing Rare', rare)
