@@ -60,26 +60,63 @@ def row_to_data(row, setName):
     # format issues is some of the tables, e.g. Team Rocket
     # also allow for spaces as in Gym Challenge
     card_rarity = re.search(r'(?<=\|)[^|}]+(?=}+\s*$)', row).group(0)
-    # handle the nidorans     
+
+    # handle the nidorans
     card_title = card_title.replace('♂', '(m)')
     card_title = card_title.replace('♀', '(f)')
-    
+
     # convert card color type to pokemon
     if card_type not in ['Energy', 'Trainer']:
-        card_type = 'Pokémon'
+        # Make sure fossils are trainers
+        if re.search('Fossil', card_title) is not None:
+            card_type = 'Trainer'
+        else:
+            card_type = 'Pokémon'
     # convert energy with rarity to special energy
     elif card_type == 'Energy' and card_rarity != 'None':
         card_type = 'Special Energy'
     
     # catch secret rares
     printNums = re.search(r'(?:|)(\d+)/(\d+)(?:|)', row)
-    if int(printNums.group(1)) > int(printNums.group(2)):
-        card_rarity = 'Secret Rare'
+    
+    # standard cards with #/#    
+    try:
+        if int(printNums.group(1)) > int(printNums.group(2)):
+            card_rarity = 'Secret Rare'
+        subset = False
+    
+    # subsets in collections with letters in the print count
+    except:
+        # card varients
+        printNums = re.search(r'(?:|)([a-zA-Z]+\d+)/([a-zA-Z]\d+)(?:|)', row)
+        if printNums is None:
+            printNums = re.search(r'(?:|)(\d+[a-zA-Z]+)/(\d+)(?:|)', row)
+            subset = printNums.group()
+            if int(re.sub('[a-zA-Z]+', '', printNums.group(1))) > int(printNums.group(2)):
+                card_rarity = 'Secret Rare'
+
+        # internal subset
+        else:
+            subset = True
+    
     return {
         'card_title': card_title,
         'card_type': card_type,
-        'card_rarity': card_rarity }
+        'card_rarity': card_rarity,
+        'subset': subset
+        }
 
+def dedup_prints(cards):
+    cards = cards.copy()
+    already_found = list()
+ 
+    # is a card has a special subset, and its title is not in already found, mark as not subset
+    for card in cards:
+        if card['subset'] not in [True, False] and card['card_title'] not in already_found: 
+            already_found.append(card['card_title'])
+            card['subset'] = False
+    return cards
+    
 def make_csv(setName):
     params['page'] = f"{setName} (TCG)"
     
@@ -96,8 +133,22 @@ def make_csv(setName):
     card_entries = html_to_stringlist(res)
     cards = [row_to_data(card, setName) for card in card_entries]
     
-    with open(f"{setName}.csv", 'w', newline='') as csvfile:
+    # handle subsets
+    if any([card['subset'] for card in cards]):
+        subsetName = input(f"{setName} contains an internal subset.  What should the subset be called?")
+        with open(f"{setName} {subsetName}.csv", 'w', encoding="utf-8", newline='') as csvfile:
+            writer = csv.writer(csvfile, delimiter=',')
+            for card in cards:
+                if card['subset'] == True:
+                    writer.writerow([card['card_title'], card['card_type'], card['card_rarity']])
+    
+    # remove special print notes
+    cards = dedup_prints(cards)
+    
+    # write the main set
+    with open(f"{setName}.csv", 'w', encoding="utf-8", newline='') as csvfile:
         writer = csv.writer(csvfile, delimiter=',')
         for card in cards:
-            writer.writerow(card.values())
+            if card['subset'] == False:
+                writer.writerow([card['card_title'], card['card_type'], card['card_rarity']])
     print(f"Finished writing csv for set {setName}.")
