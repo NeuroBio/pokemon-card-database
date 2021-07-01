@@ -34,6 +34,7 @@ def html_to_stringlist(response):
     return res
 
 def row_to_data(row, setName):
+    print_special = ''
     try:
         # get the element after the set name bounded by ||
         card_title = re.search(rf'(?<={setName}\|)[^\|]+', row).group(0)
@@ -54,7 +55,9 @@ def row_to_data(row, setName):
     # get special info about card
     special = re.search(r"<small>'''(.*)'''</small>", row)
     if special is not None:
-        card_title = f"{card_title} ({special.group(1)})"
+        # don't add if it's a team galactic tool or has multiple classiications (i.e. vivillon)
+        if not bool(re.search('<', special.group())) and not bool(re.search('Galactic', special.group())):
+            card_title = f"{card_title} ({special.group(1)})"
         row = re.sub(r"<small>'''(.*)'''</small>", '', row)
     try:
         # get the element following [number]}}|
@@ -73,6 +76,8 @@ def row_to_data(row, setName):
     # Do this before doing the rarity check, because the rarity check depends
     # on the titles being fixed!!!
     # convert card color type to pokemon
+    if card_type in ['Item', 'Stadium', 'Supporter']:
+        card_type = 'Trainer'
     if card_type not in ['Energy', 'Trainer']:
         # Make sure fossils are trainers
         if re.search('Fossil', card_title) is not None:
@@ -115,10 +120,14 @@ def row_to_data(row, setName):
                     card_rarity = 'Secret Rare'
             else:
                 # print(f"Subset exception: {row}")
-                if re.search(r'([SH|SL]\d+)', row) is not None:
+                check1 = re.search(r'([SH|SL]\d+)', row)
+                check2 = re.search(r'\|\s*([A-Z]{3,5})}}', row)
+                if check1 is not None:
                     card_rarity = 'Secret Shiny'
-                elif re.search(r'\|\s*([A-Z]{3,5})}}', row) is not None:
+                    print_special = check1.group()
+                elif check2 is not None:
                     card_rarity = 'Alph Lithograph'
+                    print_special = check2.group()
                 subset = False
 
         # internal subset
@@ -129,7 +138,8 @@ def row_to_data(row, setName):
         'card_title': card_title.strip(),
         'card_type': card_type,
         'card_rarity': card_rarity,
-        'subset': subset
+        'subset': subset,
+        'print_special': print_special
         }
 
 def dedup_prints(cards):
@@ -151,9 +161,12 @@ def clean_card_title(title):
     # gen 3
     title = re.sub(r'([a-z])(\s?Star)', lambda match: f"{match.group(1)} Goldstar", title)
 
+    # gen 4
+    title = re.sub(r'([a-zA-Z])\s(4)', lambda match: f"{match.group(1)} Elite Four", title)
+
     # fix EX era
     title = re.sub(r'(Mega\s?)([A-Z])', lambda match: f"Mega {match.group(2)}", title)
-    title = re.sub(r'([a-z])(\s?EX)', lambda match: f"{match.group(1)} EX", title)
+    title = re.sub(r'([a-z])(\s?-?EX)', lambda match: f"{match.group(1)} EX", title)
     title = re.sub(r'([a-z])(\s?BREAK)', lambda match: f"{match.group(1)} BREAK", title)
 
     # gen 7
@@ -166,7 +179,6 @@ def clean_card_title(title):
     return title.strip()
 
 def clean_card_rarity(rare, title):
-    print(title)
     rare = re.sub(r'Rare Holo\s*ex', 'EX', rare)
     rare = re.sub(r'Rare Holo\s*LV.X', 'LV.X', rare)
     rare = re.sub(r'Rare Holo\s*LEGEND', 'LEGEND', rare)
@@ -211,7 +223,7 @@ def make_csv(setName, path):
             writer = csv.writer(csvfile, delimiter=',')
             for card in cards:
                 if card['subset'] == True:
-                    writer.writerow([card['card_title'], card['card_type'], card['card_rarity']])
+                    writer.writerow([card['card_title'], card['card_type'], card['card_rarity'], card['print_special']])
     
     # remove special print notes
     cards = dedup_prints(cards)
@@ -221,5 +233,5 @@ def make_csv(setName, path):
         writer = csv.writer(csvfile, delimiter=',')
         for card in cards:
             if card['subset'] == False:
-                writer.writerow([card['card_title'], card['card_type'], card['card_rarity']])
+                writer.writerow([card['card_title'], card['card_type'], card['card_rarity'], card['print_special']])
     print(f"Finished writing csv for set {setName}.")

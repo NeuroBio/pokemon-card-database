@@ -61,11 +61,12 @@ export class AddExpansionComponent implements OnInit {
   }
 
   parseCSV(contents: string): void {
+    const numProp = 4
     const properties = contents.replace(/\r?\n|\r/g, ',').split(',');
     if (properties[properties.length - 1] === '') {
       properties.pop();
     }
-    const numCards = properties.length / 3;
+    const numCards = properties.length / numProp;
     const cards = [];
 
     // Check if there are three properties per card
@@ -76,13 +77,13 @@ export class AddExpansionComponent implements OnInit {
     // create cards
     for (let i = 0; i < numCards; i++) {
       // handle special characters
-      const name = properties[0 + 3 * i]
+      const name = properties[0 + numProp * i]
         .replace('(m)', '♂').replace('(f)', '♀').replace('\'', '’').replace(new RegExp('�', 'g'), 'é');
-      const type = properties[1 + 3 * i]
+      const type = properties[1 + numProp * i]
       if (!this.static.ValidTypes.includes(type)) {
-        throw new Error (`Found unexpected type in card ${i + 1}: ${properties[1 + 3 * i]}`);
+        throw new Error (`Found unexpected type in card ${i + 1}: ${properties[1 + numProp * i]}`);
       }
-      const rarity = properties[2 + 3 * i];
+      const rarity = properties[2 + numProp * i];
       const dex = this.getDexNumber(name, type);
 
       cards.push(new Card(name, type, dex , i + 1, rarity));
