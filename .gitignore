@@ -49,4 +49,4 @@ Thumbs.db
 hosting.*
 
 *.pyc
-src/api_caller/*.csv
+src/api_caller/expansions/*.csv
