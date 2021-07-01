@@ -3,12 +3,13 @@ import { CardInstance, Flaw } from './card-instance';
 
 export class StaticData {
     ValidTypes = [
-        'pokemon',
-        'trainer',
-        'energy',
-        'special energy',
-        'special pokemon',
-        'tcgo'
+        // 'pokemon',
+        'Pokémon',
+        'Trainer',
+        'Energy',
+        'Special Energy',
+        'Special Pokémon',
+        'TCGO'
     ];
     NationalDex = [
     'Bulbasaur',

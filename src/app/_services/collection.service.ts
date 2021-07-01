@@ -111,10 +111,10 @@ export class CollectionService {
 
             // update population values
             const numCards = newLength - oldLength;
-            if (type === 'special energy') {
-              pop.specialEnergy += numCards;
-            } else if (type === 'special pokemon') {
-              pop.pokemon += numCards;
+            if (type === 'Epecial Energy') {
+              pop.SpecialEnergy += numCards;
+            } else if (type === 'Special Pokémon') {
+              pop.Pokémon += numCards;
             } else {
               pop[type] += numCards;
             }
@@ -339,9 +339,9 @@ export class CollectionService {
         const cardType = exp[cardStorage.expansionName].cards[cardStorage.printNumber - 1].cardType;
         const numCards = Object.keys(JSON.parse(cardStorage.cards)).length;
         if (cardType === 'special energy') {
-          newPop.specialEnergy += numCards;
-        } else if (cardType === 'special pokemon') {
-          newPop.pokemon += numCards;
+          newPop.SpecialEnergy += numCards;
+        } else if (cardType === 'Special Pokémon') {
+          newPop.Pokémon += numCards;
         } else {
           newPop[cardType] += numCards;
         }

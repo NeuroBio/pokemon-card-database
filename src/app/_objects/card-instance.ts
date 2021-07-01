@@ -72,17 +72,17 @@ export class CardStorage {
 }
 
 export class Population {
-    pokemon = 0;
-    trainer = 0;
-    energy = 0;
-    tcgo = 0
-    specialEnergy = 0
+    Pokémon = 0;
+    Trainer = 0;
+    Energy = 0;
+    TCGO = 0
+    SpecialEnergy = 0
 
     total() {
-        return this.pokemon + this.trainer + this.energy + this.tcgo + this.specialEnergy;
+        return this.Pokémon + this.Trainer + this.Energy + this.TCGO + this.SpecialEnergy;
     }
 
     allEnergy() {
-        return this.energy + this.specialEnergy;
+        return this.Energy + this.SpecialEnergy;
     }
 }

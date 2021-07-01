@@ -78,7 +78,7 @@ export class AddExpansionComponent implements OnInit {
       // handle special characters
       const name = properties[0 + 3 * i]
         .replace('(m)', '♂').replace('(f)', '♀').replace('\'', '’').replace(new RegExp('�', 'g'), 'é');
-      const type = properties[1 + 3 * i].toLowerCase();
+      const type = properties[1 + 3 * i]
       if (!this.static.ValidTypes.includes(type)) {
         throw new Error (`Found unexpected type in card ${i + 1}: ${properties[1 + 3 * i]}`);
       }
@@ -94,7 +94,7 @@ export class AddExpansionComponent implements OnInit {
   getDexNumber(name: string, type: string): number {
 
     // early abort
-    if (type !== 'pokemon') {
+    if (type !== 'Pokémon') {
       return null;
     }
     const nameParts = name.split(this.stringSplitter);
@@ -106,7 +106,7 @@ export class AddExpansionComponent implements OnInit {
         return ind;
       }
     }
-    throw new Error(`Pokemon ${name} not in Pokedex`);
+    throw new Error(`Pokémon ${name} not in Pokédex.`);
   }
 
   clearCards(): void {

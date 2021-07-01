@@ -9,9 +9,9 @@
                 <mat-label>Database Population</mat-label>
                 <mat-select value="default">
                     <mat-option value="default">All Cards: {{ population.total() }}</mat-option>
-                    <mat-option value="pokemon">Pok&eacute;mon: {{ population.pokemon }}</mat-option>
-                    <mat-option value="trainer">Trainers: {{ population.trainer }}</mat-option>
-                    <mat-option value="tcgo">TCGO: {{ population.tcgo }}</mat-option>
+                    <mat-option value="pokemon">Pok&eacute;mon: {{ population['Pokémon'] }}</mat-option>
+                    <mat-option value="trainer">Trainers: {{ population.Trainer }}</mat-option>
+                    <mat-option value="tcgo">TCGO: {{ population.TCGO }}</mat-option>
                     <mat-option value="energy">Energy: {{ population.allEnergy() }}</mat-option>
                 </mat-select>
             </mat-form-field>
