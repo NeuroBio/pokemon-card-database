@@ -206,8 +206,8 @@ def make_csv(setName, path):
     
     # handle subsets
     if any([card['subset'] for card in cards]):
-        subsetName = input(f"{setName} contains an internal subset.  What should the subset be called?")
-        with open(f"{path}/{setName} {subsetName}.csv", 'w', encoding="utf-8", newline='') as csvfile:
+        print(f"{setName} contains an internal subset.  The subset will be called {setName} Holos")
+        with open(f"{path}/{setName} Holos.csv", 'w', encoding="utf-8", newline='') as csvfile:
             writer = csv.writer(csvfile, delimiter=',')
             for card in cards:
                 if card['subset'] == True:
