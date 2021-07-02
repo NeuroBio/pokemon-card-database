@@ -12,4 +12,4 @@ with open('expansions.csv') as exp:
             continue
         print(f"Start parsing {row[0]} ...", end='')
         make_csv(row[0], 'expansions')
-    print('All expansions fetched.')
+    print('Finished fetching expansions.')
