@@ -18,7 +18,7 @@ export class AddExpansionComponent implements OnInit {
   private reader = new FileReader();
   private static = new StaticData();
   parseError = false;
-  stringSplitter = new RegExp('(?<![\\.:]|.*Tapu)\\s');
+  stringSplitter = new RegExp('(?<![\\.:]|Tapu|Mime)\\s');
 
   isLoading = false;
 
