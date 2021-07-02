@@ -20,6 +20,8 @@ export class ExpansionHomeComponent implements OnInit, OnDestroy {
   expansionNames: string[];
   expansions: any;
   cards: Card[];
+  gen = 1;
+  release = 1;
   expansionName: FormControl;
   expansionSubscription: Subscription;
 
@@ -38,7 +40,11 @@ export class ExpansionHomeComponent implements OnInit, OnDestroy {
     this.expansions = this.collectionserv.expansions.value;
     this.cards = this.expansions['Base Set'].cards;
     this.expansionSubscription = this.expansionName.valueChanges
-      .subscribe(setName => this.cards = this.expansions[setName].cards);
+      .subscribe(setName => {
+        this.cards = this.expansions[setName].cards;
+        this.gen = this.expansions[setName].generation;
+        this.release = this.expansions[setName].release;
+      });
   }
 
   ngOnDestroy(): void {

@@ -322,11 +322,11 @@ export class CollectionService {
     const exp = this.expansions.value;
     return Object.keys(exp).sort((a, b) =>
     // lower gens higher
-    exp[a].generation < exp[b].generation ? -1 :
-    exp[a].generation > exp[b].generation ? 1 :
+    +exp[a].generation < +exp[b].generation ? -1 :
+    +exp[a].generation > +exp[b].generation ? 1 :
 
     // same gen, check release order
-    exp[a].release < exp[b].release ? -1 : 1
+    +exp[a].release < +exp[b].release ? -1 : 1
     );
   }
 

@@ -1,16 +1,21 @@
 <app-go-back></app-go-back>
 <div class="main-exp-viewer">
     <div id="separate-main-actions">
-         <!-- Expansion -->
-         <mat-form-field>
-            <mat-label>View Expansion</mat-label>
-            <mat-select [formControl]="expansionName">
-                <mat-option *ngFor="let expansion of expansionNames"
-                [value]="expansion">
-                    {{ expansion }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
+
+        <div>
+            <!-- Expansion Selector -->
+            <mat-form-field>
+                <mat-label>View Expansion</mat-label>
+                <mat-select [formControl]="expansionName">
+                    <mat-option *ngFor="let expansion of expansionNames"
+                    [value]="expansion">
+                        {{ expansion }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            Gen: {{ gen }} Release: {{ release }}
+        </div>
 
         <div>
             <a mat-flat-button color="prime" [routerLink]="['../add']"
