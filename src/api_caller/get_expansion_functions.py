@@ -13,11 +13,11 @@ params = {
 
 def html_to_stringlist(response):
     # remove initial html but looking for col-2 when followed by col-2
-    # removing the lookahead returns the japanese set
+    # removing the lookahead returns the last japanese set (if there is one)
     res = re.sub(r'[\s\S]+\{{[c|C]ol-2}}\n(?=[\s\S]+{{[c|C]ol-2}})', '', response)
     
     #catch cases where there is no japanese equiv
-    res = re.sub('==Set list==\n', '', res)
+    res = re.sub(r'(==)(Set|Card)( list==\n)', '', res)
 
     #catch Diamond and Pearl's idk-what's-going-on formatting error
     res = re.sub(r'[\s\S]+\n\|\n', '', res)
@@ -34,77 +34,39 @@ def html_to_stringlist(response):
 
 def row_to_data(row, setName):
     print_special = ''
-    try:
-        # get the element after the set name bounded by ||
-        card_title = re.search(rf'(?<={setName}\|)[^\|]+', row).group(0)
-    except:
-        # this is why consistent formatting matters
-        try:
-            # very common in the gen 5+ sets
-            card_title = re.search(rf'\[\[(.*?)(?:\({setName})', row).group(1)
-        except:
-            try:
-                # first encountered in Gym Heroes
-                card_title = re.search(rf'(?:{setName}\s?\d+\)\|)([^\|\]]+)', row).group(1)
-            except:
-                # first encountered in Neo Genesis
-                # print(f"Title exception: {row}")
-                card_title = re.search(r'(?<=TCG\|)[^\|\}]+', row).group(0)
     
-    # get special info about card
-    special = re.search(r"<small>'''(.*)'''</small>", row)
-    if special is not None:
-        # don't add if it's a team galactic tool or has multiple classiications (i.e. vivillon)
-        if not bool(re.search('<', special.group())) and not bool(re.search('Galactic', special.group())):
-            card_title = f"{card_title} ({special.group(1)})"
-        row = re.sub(r"<small>'''(.*)'''</small>", '', row)
-    try:
-        # get the element following [number]}}|
-        card_type = re.search(r'(?<=\d}})\s*\|([^|]+)(?:|)', row).group(1)   
-    except:
-        # this is why consistent formtting matters
-        try:
-            # first encountered in Gym Heroes
-            card_type = re.search(r'(?<=\]\]\|)[^|]+(?:|)', row).group(0) 
-        except:
-            # first encountered in Neo Genesis
-            # print(f"Type exception: {row}")
-            card_type = re.search(r'(?<=\}\}\|)[^|]+(?:|)', row).group(0)
+    # row is return here because any "special" info is parsed from
+    # the row so it doesn't interfere with getting the type
+    card_title, row = get_title(row, setName)
+    card_type = get_type(row)
 
+    # ***Watch the order below; some checks require multiple, pre-cleaned card properties***
 
-    # Do this before doing the rarity check, because the rarity check depends
-    # on the titles being fixed!!!
-    # convert card color type to pokemon
-    if card_type in ['Item', 'Stadium', 'Supporter']:
-        card_type = 'Trainer'
+    # convert all color types to pokemon
     if card_type not in ['Energy', 'Trainer']:
-        # Make sure fossils are trainers
+
+        # Make sure fossils are trainers, not pokemon
         if re.search('Fossil', card_title) is not None:
             card_type = 'Trainer'
+
+        # make sure tag team pokemon are marked as special
         elif re.search('&', card_title) is not None:
             card_type = 'Special Pokémon'
             card_title = clean_card_title(card_title)
+
         else:
             card_type = 'Pokémon'
             card_title = clean_card_title(card_title)
-    
-    # get the last element bounded by | and ending in }+
-    # one or more } is set as the ending, because there are
-    # format issues is some of the tables, e.g. Team Rocket
-    # also allow for spaces as in Gym Challenge
-    card_rarity = re.search(r'(?<=\|)[^|}]+(?=\|*}+\s*$)', row).group(0)
-    card_rarity = clean_card_rarity(card_rarity, card_title)
-
-
-
-    # convert energy with rarity to special energy
+    # requires the a fully cleaned title
+    card_rarity = get_rarity(row, card_title)
+    # convert energy with non-common rarity to special energy
     if card_type == 'Energy' and card_rarity not in ['None', 'Common']:
         card_type = 'Special Energy'
     
-    # catch secret rares
+    # find secret rares and subsets to mark them as such
     printNums = re.search(r'(?:|)(\d+)/(\d+)(?:|)', row)
     
-    # standard cards with #/#    
+    # standard cards with #/#
     try:
         if int(printNums.group(1)) > int(printNums.group(2)):
             card_rarity = 'Secret Rare'
@@ -112,18 +74,23 @@ def row_to_data(row, setName):
     
     # subsets in collections with letters in the print count
     except:
-        # card varients
+        # special print varients
         printNums = re.search(r'(?:|)([a-zA-Z]+\d+)/([a-zA-Z]\d+)(?:|)', row)
         if printNums is None:
+            # first check for alternates. with the format #[a-z].  I believe these only exist
+            # for aquapolis and skyridge where the same card art could come with one of two
+            # dot codes
             printNums = re.search(r'(?:|)(\d+[a-zA-Z]+)/(\d+)(?:|)', row)
             if printNums is not None:
                 subset = printNums.group()
                 if int(re.sub('[a-zA-Z]+', '', printNums.group(1))) > int(printNums.group(2)):
                     card_rarity = 'Secret Rare'
             else:
-                # print(f"Subset exception: {row}")
+                # get 4 shiny rares
                 check1 = re.search(r'([SH|SL]\d+)', row)
+                # gen 4 alpth lithographs
                 check2 = re.search(r'\|\s*([A-Z]{3,5})}}', row)
+
                 if check1 is not None:
                     card_rarity = 'Secret Shiny'
                     print_special = check1.group()
@@ -132,7 +99,7 @@ def row_to_data(row, setName):
                     print_special = check2.group()
                 subset = False
 
-        # internal subset
+        # internal subset (Aquapolis and Skyridge holos)
         else:
             subset = True
     
@@ -144,11 +111,70 @@ def row_to_data(row, setName):
         'print_special': print_special
         }
 
+def get_title(row, setName):
+    try:
+        # get the element after the set name bounded by ||
+        card_title = re.search(rf'(?<={setName}\|)[^\|]+', row).group(0)
+    except:
+        # this is why consistent formatting matters
+        try:
+            # very common alterate in gen 5+ sets
+            card_title = re.search(rf'\[\[(.*?)(?:\({setName})', row).group(1)
+        except:
+            try:
+                # first encountered in Gym Heroes
+                card_title = re.search(rf'(?:{setName}\s?\d+\)\|)([^\|\]]+)', row).group(1)
+            except:
+                # first encountered in Neo Genesis
+                card_title = re.search(r'(?<=TCG\|)[^\|\}]+', row).group(0)
+
+    # get special info about card and add to title
+    special = re.search(r"<small>'''(.*)'''</small>", row)
+    if special is not None:
+        # don't add if it's a team galactic tool or has multiple classifications (i.e. XY Vivillon)
+        if not bool(re.search('<', special.group())) and not bool(re.search('Galactic', special.group())):
+            card_title = f"{card_title} ({special.group(1)})"
+        row = re.sub(r"<small>'''(.*)'''</small>", '', row)
+    return card_title, row
+
+def get_type(row):
+    try:
+        # get the element following [number]}}|
+        card_type = re.search(r'(?<=\d}})\s*\|([^|]+)(?:|)', row).group(1)   
+    except:
+        # this is why consistent formtting matters
+        try:
+            # first encountered in Gym Heroes
+            card_type = re.search(r'(?<=\]\]\|)[^|]+(?:|)', row).group(0) 
+        except:
+            # first encountered in Neo Genesis
+            card_type = re.search(r'(?<=\}\}\|)[^|]+(?:|)', row).group(0)
+
+    # convert more descriptive trainer types in modern sets to just trainer
+    if card_type in ['Item', 'Stadium', 'Supporter']:
+        card_type = 'Trainer'
+    
+    return card_type
+
+def get_rarity(row, card_title):
+    # get the last element bounded by | and ending in
+    # one or more } with set as the ending, because there are
+    # format issues is some of the tables, e.g. Team Rocket
+    # also allow for accidental spaces as in Gym Challenge
+    try:
+        card_rarity = re.search(r'(?<=\|)[^|}]+(?=\|{0,1}}+\s*$)', row).group(0)
+    except:
+        # the Kalos starter set just has blank space...
+        card_rarity = 'None'
+    card_rarity = clean_card_rarity(card_rarity, card_title)
+    return card_rarity
+
 def dedup_prints(cards):
     cards = cards.copy()
     already_found = list()
  
-    # is a card has a special subset, and its title is not in already found, mark as not subset
+    # if a card has a special subset, and its title is not in already found
+    # mark as not subset so it will rite into the final data
     for card in cards:
         if card['subset'] not in [True, False] and card['card_title'] not in already_found: 
             already_found.append(card['card_title'])
@@ -156,9 +182,9 @@ def dedup_prints(cards):
     return cards
     
 def clean_card_title(title):
-    # handle the nidorans
-    title = title.replace('♂', '(m)')
-    title = title.replace('♀', '(f)')
+    # # handle the nidorans
+    # title = title.replace('♂', '(m)')
+    # title = title.replace('♀', '(f)')
 
     # gen 3
     title = re.sub(r'([a-z])(\s?Star)', lambda match: f"{match.group(1)} Goldstar", title)
@@ -209,7 +235,7 @@ def seek_set_list(setName):
         }
     sections = requests.get(base_url, params=seek_params).json()['parse']['sections']
     for sec in sections:
-        if sec['line'] in ['Set lists', 'Set List']:
+        if sec['line'] in ['Set lists', 'Set List', 'Card List', 'Card Lists']:
             return sec['index']
     raise ValueError(f"Set {setName} does not yet have a set list on Bulbapedia.  Try again in a few weeks.")
 
@@ -231,7 +257,7 @@ def make_csv(setName, path):
 
     # make sure it is the set list
     try:
-        re.search('==Set list', res).group()
+        re.search(r'==(Set)|(Card) list', res).group()
     # if not, is means that there are the wrong number of sections on the page :/
     # find the correct section number instead, and then try again
     except:
