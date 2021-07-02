@@ -54,7 +54,6 @@ The app has increased the amount of data I can display for each card and made co
 and [api call functions source](src/api_caller/get_expansion_functions.py).
 
 ### Next Task
-* allow expansion deletion
 * add custom icon
 * add custom illustrations for the background to add some interest to the empty blue space
 
