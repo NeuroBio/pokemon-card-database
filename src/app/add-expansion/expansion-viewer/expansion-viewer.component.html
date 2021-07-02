@@ -1,0 +1,22 @@
+<div class="individual-cards-card">
+    <table>
+        <!-- Header -->
+        <tr>
+            <th><b>Print:</b></th>
+            <th><b>Card:</b></th>
+            <th><b>Type:</b></th>
+            <th><b>Rarity:</b></th>
+        </tr>
+
+        <!-- Content -->
+        <tr *ngFor="let card of cards">
+            <td>{{ card.printNumber }} {{ card.specialPrint ? '(' + card.specialPrint + ')': '' }}</td>
+            <td>
+                {{ card.cardTitle }}<span *ngIf="card.dexNumber">
+                ({{ card.dexNumber + 1 }})</span>
+            </td>
+            <td>{{ card.cardType }}</td>
+            <td>{{ card.rarity }}</td>
+        </tr>
+    </table>
+</div>

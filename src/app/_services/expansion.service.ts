@@ -23,6 +23,21 @@ export class ExpansionService {
       .catch(err => {
         console.error(err);
         return false;
-      });
+    });
+  }
+
+  deleteExpansion(expName: string): Promise<boolean> {
+    const exps = this.collectionserv.expansions.value;
+    delete exps[expName];
+    const expData = { 
+      data: JSON.stringify(exps),
+      lastUpdated: +Date.now()
+    }
+    return this.af.collection<any>('expansions').doc('expansions').set(expData)
+      .then(() => true)
+      .catch(err => {
+        console.error(err);
+        return false;
+    });
   }
 }

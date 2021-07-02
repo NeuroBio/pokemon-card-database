@@ -36,30 +36,6 @@ h2 {
     width: calc(100% - 2em);
 }
 
-#individual-cards-card {
-    padding: 1em;
-    display: flex;
-    flex-flow: column;
-}
-
 #expected-form {
     margin: 0em 1em 1em 1em;
-}
-
-table {
-    border-collapse: collapse;
-}
-
-th {
-    text-align: left;
-    border-bottom: 1px solid $borders-grey;
-}
-
-td {
-    line-height: 1.6;
-    border-bottom: 1px solid $borders-grey;
-}
-
-tr:hover {
-    background-color: $palette5;
 }

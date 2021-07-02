@@ -13,24 +13,33 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { GoBackModule } from '../go-back/go-back.module';
+import { ExpansionViewerComponent } from './expansion-viewer/expansion-viewer.component';
+import { ExpansionHomeComponent } from './expansion-home/expansion-home.component';
+import { MatSelectModule } from '@angular/material/select';
+import { ConfirmModule } from '../confirm/confirm.module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
-    AddExpansionComponent
+    AddExpansionComponent,
+    ExpansionViewerComponent,
+    ExpansionHomeComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
 
     GoBackModule,
+    ConfirmModule,
 
     MatButtonModule,
     MatCardModule,
+    MatDialogModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatProgressSpinnerModule,
-
+    MatSelectModule,
     AddExpansionRoutingModule
   ],
   exports: [

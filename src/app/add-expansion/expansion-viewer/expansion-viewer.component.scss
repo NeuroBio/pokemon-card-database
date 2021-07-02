@@ -1,0 +1,25 @@
+@import '../../Variables.scss';
+
+.individual-cards-card {
+    padding: 1em;
+    display: flex;
+    flex-flow: column;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    border-bottom: 1px solid $borders-grey;
+}
+
+td {
+    line-height: 1.6;
+    border-bottom: 1px solid $borders-grey;
+}
+
+tr:hover {
+    background-color: $palette5;
+}

@@ -61,33 +61,15 @@
             </h2>
 
             <!-- View Cards -->
-            <div id="individual-cards-card" *ngIf="expansionForm.get('cards').value[0]">
-                <table>
-                    <!-- Header -->
-                    <tr>
-                        <th><b>Print:</b></th>
-                        <th><b>Card:</b></th>
-                        <th><b>Type:</b></th>
-                        <th><b>Rarity:</b></th>
-                    </tr>
-
-                    <!-- Content -->
-                    <tr *ngFor="let card of expansionForm.get('cards').value">
-                        <td>{{ card.printNumber }} {{ card.specialPrint ? '(' + card.specialPrint + ')': '' }}</td>
-                        <td>
-                            {{ card.cardTitle }}<span *ngIf="card.dexNumber">
-                            ({{ card.dexNumber + 1 }})</span>
-                        </td>
-                        <td>{{ card.cardType }}</td>
-                        <td>{{ card.rarity }}</td>
-                    </tr>
-                </table>
-
-            </div>
+            <app-expansion-viewer *ngIf="expansionForm.get('cards').value[0]"
+            [cards]="expansionForm.get('cards').value"
+            ></app-expansion-viewer>
         </mat-card>
 
         <span id="expected-form">
-            <b>Expected Form:</b> Name, Type, Rarity (print number is inferred by order).
+            <b>Expected Form:</b><br>
+            Required: Name, Type, Rarity<br>
+            Optional: Special Print (standard print number is inferred by order)
         </span>
 
     </mat-card>

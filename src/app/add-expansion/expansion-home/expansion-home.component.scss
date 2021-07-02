@@ -1,0 +1,21 @@
+@import '../../Variables.scss';
+
+.main-exp-viewer {
+    position: relative;
+    background-color: $palette2;
+    padding: 1em;
+}
+
+#separate-main-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.add-background {
+    background-color: $palette6;
+}
+
+button {
+    margin: .5em;
+}
