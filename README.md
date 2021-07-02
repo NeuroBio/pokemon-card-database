@@ -25,6 +25,9 @@ I often wonder how many cards I have for a specific expansion (bulk), how much o
 ### Binder View
 When organizing my binder collection, I put a lot of thought into which cards to include in the binder and where.  In general, I like to keep all cards for one pokemon and it's evolutions on one page or across two adjacent pages when possible, and I always order pokemon by their national pokedex number.  It is very difficult to keep track of how additions or removal of individual card will affect the organization of the binder at large without taking all of the cards out of the binder and arranging them manually.  I created binder view so I can add, remove, or move around cards in a checklist and then view how this would affect binder organization without having to touch my physical binders.
 
+### Fetching Expansion Data
+Manually copying and cleaning set list data from Bulbapedia was time consuming, error prone, and frustrating.  To simplify this step, I wrote a python script that makes a call to the WIkiMedia APIs to get the html code for a set/card list table from a specified expansion or subset.   The code then removes unnecessary html to yeild just the table rows for the first table in the section, which is always the main set for the English expansion.  Rows were then parsed to retrieve the card title, type, rarity, and any special information about its print number (e.g. Alph Lithographs are numbered as ONE, TWO, ect instead of numerically).  A number of special cases that modify the card type, rarity, or title are handled, and explained in comments in the script.  Once the data is cleaned, it is output as a csv file for manual loading onto the website.  In the future, I would like figure out how to automate the load step as well.
+
 ## Summary
 The app has increased the amount of data I can display for each card and made collection management faster and easier.  In the future, I plan to make new item-specific versions of this app to help my family organize their stamp, ornament, and shell collections.
 
@@ -51,6 +54,7 @@ The app has increased the amount of data I can display for each card and made co
 and [api call functions source](src/api_caller/get_expansion_functions.py).
 
 ### Next Task
+* allow expansion deletion
 * add custom icon
 * add custom illustrations for the background to add some interest to the empty blue space
 
