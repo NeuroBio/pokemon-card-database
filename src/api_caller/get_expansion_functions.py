@@ -97,7 +97,7 @@ def row_to_data(row, setName):
                     print_special = check1.group()
                 elif check2 is not None:
                     card_rarity = 'Alph Lithograph'
-                    print_special = check2.group()
+                    print_special = check2.group(1)
                 elif check3 is not None:
                     card_rarity = 'Promo'
                 subset = False
