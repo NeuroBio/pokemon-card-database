@@ -69,9 +69,9 @@ export class AddExpansionComponent implements OnInit {
     const numCards = properties.length / numProp;
     const cards = [];
 
-    // Check if there are three properties per card
+    // Check if there are n properties per card
     if (numCards % 1 !== 0) {
-      throw new Error('CSV file did not have the expected numer of properties.');
+      throw new Error('CSV file did not have the expected number of properties.');
     }
 
     // create cards
@@ -85,8 +85,13 @@ export class AddExpansionComponent implements OnInit {
       }
       const rarity = properties[2 + numProp * i];
       const dex = this.getDexNumber(name, type);
-
-      cards.push(new Card(name, type, dex , i + 1, rarity));
+      const newCard = new Card(name, type, dex , i + 1, rarity);
+      
+      // add special print info if any exists
+      if (properties[3 + numProp * i]) {
+        newCard.specialPrint = properties[3 + numProp * i];
+      }
+      cards.push(newCard);
     }
 
     this.expansionForm.patchValue({ cards });

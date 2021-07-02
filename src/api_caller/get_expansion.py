@@ -14,3 +14,4 @@ with open('expansions.csv') as exp:
             break
         print(f"Start parsing {row[0]} ...", end='')
         make_csv(row[0], 'expansions')
+    print('All Expansions Gotten')

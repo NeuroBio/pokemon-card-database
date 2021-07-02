@@ -20,6 +20,7 @@ export class Card {
     dexNumber: number;
     printNumber: number;
     rarity: string;
+    specialPrint?: string
 
     constructor(cardTitle: string, type: string, dex: number, print: number, rarity: string) {
         this.cardTitle = cardTitle;

@@ -68,12 +68,12 @@
                         <th><b>Print:</b></th>
                         <th><b>Card:</b></th>
                         <th><b>Type:</b></th>
-                        <th><b>Rarity:</b></th>    
+                        <th><b>Rarity:</b></th>
                     </tr>
 
                     <!-- Content -->
                     <tr *ngFor="let card of expansionForm.get('cards').value">
-                        <td>{{ card.printNumber }}</td>
+                        <td>{{ card.printNumber }} {{ card.specialPrint ? '(' + card.specialPrint + ')': '' }}</td>
                         <td>
                             {{ card.cardTitle }}<span *ngIf="card.dexNumber">
                             ({{ card.dexNumber + 1 }})</span>
