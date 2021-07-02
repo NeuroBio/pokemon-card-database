@@ -14,8 +14,7 @@ params = {
 def html_to_stringlist(response):
     # remove initial html but looking for col-2 when followed by col-2
     # removing the lookahead returns the japanese set
-    # print(response)
-    res = re.sub(r'[\s\S]+\{{col-2}}\n(?=[\s\S]+{{col-2}})', '', response)
+    res = re.sub(r'[\s\S]+\{{[c|C]ol-2}}\n(?=[\s\S]+{{[c|C]ol-2}})', '', response)
     
     #catch cases where there is no japanese equiv
     res = re.sub('==Set list==\n', '', res)
@@ -24,7 +23,7 @@ def html_to_stringlist(response):
     res = re.sub(r'[\s\S]+\n\|\n', '', res)
     
     # remove footer html
-    res = re.sub(r'\n{{Setlist/n?m?footer[\s\S]+', '', res) 
+    res = re.sub(r'\n+{{Setlist/n?m?footer[\s\S]+', '', res) 
  
     # split rows into entries
     res = res.split('\n')
@@ -82,6 +81,9 @@ def row_to_data(row, setName):
         # Make sure fossils are trainers
         if re.search('Fossil', card_title) is not None:
             card_type = 'Trainer'
+        elif re.search('&', card_title) is not None:
+            card_type = 'Special Pokémon'
+            card_title = clean_card_title(card_title)
         else:
             card_type = 'Pokémon'
             card_title = clean_card_title(card_title)
@@ -198,6 +200,19 @@ def clean_card_rarity(rare, title):
     rare = re.sub(r'^A$', 'Amazing Rare', rare)
     return rare
 
+def seek_set_list(setName):
+    seek_params = {
+            'action': 'parse',
+            'prop': 'sections',
+            'format': 'json',
+            'page': params['page']
+        }
+    sections = requests.get(base_url, params=seek_params).json()['parse']['sections']
+    for sec in sections:
+        if sec['line'] in ['Set lists', 'Set List']:
+            return sec['index']
+    raise ValueError(f"Set {setName} does not yet have a set list on Bulbapedia.  Try again in a few weeks.")
+
 def make_csv(setName, path):
     params['page'] = f"{setName} (TCG)"
     
@@ -206,16 +221,31 @@ def make_csv(setName, path):
         params['page'] = f"Expedition Base Set (TCG)"
     elif setName == 'Arceus':
         params['page'] = 'Platinum: Arceus (TCG)'
-        
+
+    # Get the data
     try:
         res = requests.get(base_url, params=params).json()['parse']['wikitext']['*']
     except:
         print(f"Cound not find set {setName}.")
         return
-    
+
+    # make sure it is the set list
+    try:
+        re.search('==Set list', res).group()
+    # if not, is means that there are the wrong number of sections on the page :/
+    # find the correct section number instead, and then try again
+    except:
+        params['section'] = seek_set_list(setName)
+        res = requests.get(base_url, params=params).json()['parse']['wikitext']['*']
+
     card_entries = html_to_stringlist(res)
-    cards = [row_to_data(card, setName) for card in card_entries]
-    
+
+    try:
+        cards = [row_to_data(card, setName) for card in card_entries]
+    except:
+        print(f"There is some formatting error in the data not yet covered by the cleaning script. See parsed response text below...\n {card_entries}")
+        return
+
     # handle subsets
     if any([card['subset'] for card in cards]):
         print(f"{setName} contains an internal subset.  The subset will be called {setName} Holos")

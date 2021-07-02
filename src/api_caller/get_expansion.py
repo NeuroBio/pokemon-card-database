@@ -10,8 +10,6 @@ with open('expansions.csv') as exp:
         if Path(f"expansions/{row[0]}.csv").exists():
             print(f"Skipping {row[0]}")
             continue
-        if row[0] == 'Battle Styles':
-            break
         print(f"Start parsing {row[0]} ...", end='')
         make_csv(row[0], 'expansions')
-    print('All Expansions Gotten')
+    print('All expansions fetched.')
