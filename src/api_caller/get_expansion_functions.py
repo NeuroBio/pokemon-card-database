@@ -87,16 +87,19 @@ def row_to_data(row, setName):
                     card_rarity = 'Secret Rare'
             else:
                 # get 4 shiny rares
-                check1 = re.search(r'([SH|SL]\d+)', row)
+                check1 = re.search(r'((SH|SL)\d+)', row)
                 # gen 4 alpth lithographs
                 check2 = re.search(r'\|\s*([A-Z]{3,5})}}', row)
-
+                # get promos from any gen (hopefully)
+                check3 = re.search(r'p|Promo', row)
                 if check1 is not None:
                     card_rarity = 'Secret Shiny'
                     print_special = check1.group()
                 elif check2 is not None:
                     card_rarity = 'Alph Lithograph'
                     print_special = check2.group()
+                elif check3 is not None:
+                    card_rarity = 'Promo'
                 subset = False
 
         # internal subset (Aquapolis and Skyridge holos)
@@ -265,6 +268,10 @@ def make_csv(setName, path):
         res = requests.get(base_url, params=params).json()['parse']['wikitext']['*']
 
     card_entries = html_to_stringlist(res)
+
+    # more bulapedia nconsistencies
+    if setName == 'Wizards Black Star Promos':
+        setName = 'Wizards Promo'
 
     try:
         cards = [row_to_data(card, setName) for card in card_entries]
