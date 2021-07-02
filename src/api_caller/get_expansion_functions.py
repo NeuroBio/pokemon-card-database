@@ -190,7 +190,7 @@ def clean_card_title(title):
     # title = title.replace('♀', '(f)')
 
     # gen 3
-    title = re.sub(r'([a-z])(\s?Star)', lambda match: f"{match.group(1)} Goldstar", title)
+    # title = re.sub(r'([a-z])(\s?Star)', lambda match: f"{match.group(1)} Goldstar", title)
 
     # gen 4
     title = re.sub(r'([a-zA-Z])\s(4)', lambda match: f"{match.group(1)} Elite Four", title)
