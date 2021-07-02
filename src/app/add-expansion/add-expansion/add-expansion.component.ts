@@ -126,7 +126,7 @@ export class AddExpansionComponent implements OnInit {
         this.isLoading = false;
         if (res) {
           this.messenger.send('Expansion uploaded.');
-          this.close();
+          this.reset();
         } else {
           this.messenger.send('Only the Admin may add or edit expansions.');
         }
@@ -135,6 +135,15 @@ export class AddExpansionComponent implements OnInit {
 
   close(): void {
     this.router.navigate([this.collectionserv.activeList]);
+  }
+
+  reset() {
+    this.expansionForm.patchValue({
+      name: '',
+      release: this.expansionForm.value['release'] + 1,
+      numCards: 1,
+      cards: ''
+    })
   }
 
 }
