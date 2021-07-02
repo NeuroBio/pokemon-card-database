@@ -44,14 +44,15 @@ The app has increased the amount of data I can display for each card and made co
 * rxjs and rxjs operators: tap, map, switchmap, forkjoin, take, skip, skipWhile, of, catchError, finalize, Observable, BehaviorSubject, Subscription
 * routing, resolvers, and lazy-loaded modules
 * cacheing with soft deletes and local storage to reduce read counts on firebase; only changed data is requested from the server; cache expires after 12 hours
-* Google cloud functions written in `Python` 3.8 to handle hard deletes on a scheduled interval (once per day, clears out soft deletes that are at least 12 hours old)
+* Google cloud function written in `Python 3.8` to handle hard deletes on a scheduled interval (once per day, clears out soft deletes that are at least 12 hours old).  [Function source](src/assets/cloud%20functions/main.py).
 * card instances that are deleted but referenced in a checklist are automatically removed from the checklist on next load
 * checklists can be told to seek out cards to fill empty slots on button click
+* expansion data is fetched from Bulpapedia and automatically cleaned into the correct formatting using `Python 3.8`.  [Api caller source](src/api_caller/get_expansion.py)
+and [api call functions source](src/api_caller/get_expansion_functions.py).
 
 ### Next Task
-* implement web scraper or API calls to extract and transform expansion data from Bulbepedia (load will still be manual)
+* add custom icon
+* add custom illustrations for the background to add some interest to the empty blue space
 
 ### Planned Tasks
 * unit tests with Jasmine
-* add custom icon
-* add custom illustrations for the background to add some interest to the empty blue space
