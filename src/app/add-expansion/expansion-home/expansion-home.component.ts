@@ -58,10 +58,11 @@ export class ExpansionHomeComponent implements OnInit, OnDestroy {
       data: `Are you sure you want to delete the ${this.expansionName.value} Expansion?`
     }).afterClosed().pipe(take(1)).subscribe(confirm => {
       if (confirm) {
-        return this.expansionserv.deleteExpansion(this.expansionName.value)
+        const exp = this.expansionName.value
+        return this.expansionserv.deleteExpansion(exp, this.expansions[exp].generation)
         .then(res => {
           if (res) {
-            this.messenger.send(`Successfully deleted ${this.expansionName.value}.`);
+            this.messenger.send(`Successfully deleted ${exp}.`);
             this.expansionName.patchValue('Base Set');
           } else {
             this.messenger.send('Only the Admin may delete expanions.');
@@ -72,7 +73,7 @@ export class ExpansionHomeComponent implements OnInit, OnDestroy {
   }
 
   isLoggedIn(): boolean {
-    return this.auth.isLoggedIn;
+    return !this.auth.isLoggedIn;
   }
 
 }

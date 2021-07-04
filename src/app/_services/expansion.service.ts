@@ -12,13 +12,18 @@ export class ExpansionService {
     private collectionserv: CollectionService) { }
 
   addExpansion(newExpansion: any): Promise<boolean> {
-    const exps = this.collectionserv.expansions.value;
-    exps[newExpansion.name] = newExpansion;
-    const expData = { 
-      data: JSON.stringify(exps),
-      lastUpdated: +Date.now()
+    const genNum = newExpansion.generation
+    let gen = this.collectionserv.generations.value[genNum];
+    if (gen === undefined) {
+      gen = {};
     }
-    return this.af.collection<any>('expansions').doc('expansions').set(expData)
+    // remove custom card object, convert to standard oject
+    newExpansion.cards = newExpansion.cards.map(card => Object.assign({}, card));
+    gen.data[newExpansion.name] = newExpansion;
+    gen.lastUpdated = +Date.now();
+
+    console.log(gen)
+    return this.af.collection<any>('expansions').doc(`Gen-${genNum}`).set(gen)
       .then(() => true)
       .catch(err => {
         console.error(err);
@@ -26,14 +31,13 @@ export class ExpansionService {
     });
   }
 
-  deleteExpansion(expName: string): Promise<boolean> {
-    const exps = this.collectionserv.expansions.value;
-    delete exps[expName];
-    const expData = { 
-      data: JSON.stringify(exps),
-      lastUpdated: +Date.now()
-    }
-    return this.af.collection<any>('expansions').doc('expansions').set(expData)
+  deleteExpansion(expName: string, genNum: number): Promise<boolean> {
+    const gen = this.collectionserv.generations.value[genNum];
+    delete gen.data[expName];
+    gen.lastUpdated = +Date.now();
+    console.log(gen)
+    return this.af.collection<any>('expansions').doc(`Gen-${genNum}`)
+      .set(Object.assign({}, gen))
       .then(() => true)
       .catch(err => {
         console.error(err);

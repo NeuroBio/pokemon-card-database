@@ -13,6 +13,7 @@ import { AuthService } from './auth.service';
 export class CollectionService {
 
   allCards = new BehaviorSubject<any>(undefined);
+  generations = new BehaviorSubject<any>(undefined);
   expansions = new BehaviorSubject<any>(undefined);
   checkLists = new BehaviorSubject<any[]>(undefined);
   masterList = new BehaviorSubject<CardChunk[]>(undefined);
@@ -53,6 +54,28 @@ export class CollectionService {
           // stored cache
           this.lastChecked = checks;
         }
+
+        // const exp = this.expansions.value;
+        // const restructure = {};
+        // Object.keys(exp).forEach(key => {
+        //     if (!restructure[`Gen-${exp[key].generation}`]) {
+        //       restructure[`Gen-${exp[key].generation}`] = {};
+        //       restructure[`Gen-${exp[key].generation}`]['lastUpdated'] = +Date.now();
+        //       restructure[`Gen-${exp[key].generation}`]['data'] = {};
+        //     }
+        //     restructure[`Gen-${exp[key].generation}`]['data'][exp[key].name] = exp[key];
+        //   });
+        //   Object.keys(restructure).forEach(key => {
+        //     console.log(key)
+        //     console.log(restructure[key])
+        //     return this.af.collection<any>('expansions').doc(key).set(restructure[key])
+        //     .then(() => true)
+        //     .catch(err => {
+        //       console.error(err);
+        //       return false;
+        //   });
+        // });
+
         this.initialized = true;
         this.updateCards().pipe(skip(1)).subscribe();
         this.getExpansions().pipe(skip(1)).subscribe();
@@ -132,21 +155,37 @@ export class CollectionService {
     return this.af.collection<any>('expansions',
       ref => ref.where('lastUpdated', '>', this.lastChecked.expansions))
       .valueChanges().pipe(
-          tap(expansions => {
-            if (expansions[0]) {
-              const exps = JSON.parse(expansions[0].data);
-              const parsed = {};
-              Object.keys(exps).forEach(key => {
-                parsed[key.split('-').join(' ')] = exps[key];
-              });
-              this.expansions.next(parsed);
+        tap(expansions => {
+          if (expansions[0]) {
+            // get existing data for use
+            const exps = this.expansions.value ? this.expansions.value : {};
+            const gens = this.generations.value ? this.generations.value : {};
+            expansions.forEach(gen => {
+              if (typeof gen.data === 'string') {
 
-              if (this.initialized) {
-                this.updateLastChecked(false, true);
+              } else {
+                Object.keys(gen.data).forEach((key, i) => {
+                  const exp = gen.data[key];
+
+                  // load in generations for quick write access
+                  if (i === 0) {
+                    gens[exp.generation] = gen; 
+                  }
+                  // unpack expansion data for quick read access
+                  exps[exp.name] = exp;
+                });
               }
+            });
+            this.generations.next(gens);
+            this.expansions.next(exps);
+
+            if (this.initialized) {
+              this.updateLastChecked(false, true);
             }
-          })
-    );
+
+          }
+        })
+      );
   }
 
   private getCheckLists(): Observable<Checklist[]> {
