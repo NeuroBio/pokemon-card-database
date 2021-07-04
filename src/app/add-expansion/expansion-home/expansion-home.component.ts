@@ -73,7 +73,7 @@ export class ExpansionHomeComponent implements OnInit, OnDestroy {
   }
 
   isLoggedIn(): boolean {
-    return !this.auth.isLoggedIn;
+    return this.auth.isLoggedIn;
   }
 
 }

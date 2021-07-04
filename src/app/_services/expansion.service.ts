@@ -22,7 +22,6 @@ export class ExpansionService {
     gen.data[newExpansion.name] = newExpansion;
     gen.lastUpdated = +Date.now();
 
-    console.log(gen)
     return this.af.collection<any>('expansions').doc(`Gen-${genNum}`).set(gen)
       .then(() => true)
       .catch(err => {
@@ -35,7 +34,6 @@ export class ExpansionService {
     const gen = this.collectionserv.generations.value[genNum];
     delete gen.data[expName];
     gen.lastUpdated = +Date.now();
-    console.log(gen)
     return this.af.collection<any>('expansions').doc(`Gen-${genNum}`)
       .set(Object.assign({}, gen))
       .then(() => true)
