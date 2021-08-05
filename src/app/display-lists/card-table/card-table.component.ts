@@ -101,7 +101,7 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
     this.dialog.open(PickCardComponent, {
     width: '80vw',
     data: {
-      key: key,
+      key,
       listName: this.listName,
       index
       }
@@ -119,7 +119,7 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
 
   rowClass(card: CardChunk): string {
     if (card.owned.length === 0) {
-      return 'main-rows-none'
+      return 'main-rows-none';
     }
     return card.checkInfo && card.checkInfo.placeholder
     ? 'main-rows-placeholder'

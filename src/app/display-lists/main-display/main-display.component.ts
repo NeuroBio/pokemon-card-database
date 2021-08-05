@@ -122,7 +122,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
       });
   }
 
-  getchecklistNames() {
+  getchecklistNames(): void {
     this.checklists = ['Masterlist'].concat(
       this.collectionserv.checkLists.value.map(list => list.name));
   }
@@ -133,7 +133,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
 
   toolTipText(): string {
     return `${this.owned}/${this.activeList.length} cards owned
-    ${Math.round((this.owned/this.activeList.length*100)*100)/100}% complete`;
+    ${Math.round((this.owned / this.activeList.length * 100) * 100) / 100}% complete`;
   }
 
   getOwned(): number {

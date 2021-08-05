@@ -8,7 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ExpansionViewerComponent implements OnInit {
 
   @Input() cards = [];
-  
+
   constructor() { }
 
   ngOnInit(): void {

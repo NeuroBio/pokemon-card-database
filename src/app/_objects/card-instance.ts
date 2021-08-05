@@ -75,14 +75,14 @@ export class Population {
     Pokémon = 0;
     Trainer = 0;
     Energy = 0;
-    TCGO = 0
-    SpecialEnergy = 0
+    TCGO = 0;
+    SpecialEnergy = 0;
 
-    total() {
+    total(): number {
         return this.Pokémon + this.Trainer + this.Energy + this.TCGO + this.SpecialEnergy;
     }
 
-    allEnergy() {
+    allEnergy(): number {
         return this.Energy + this.SpecialEnergy;
     }
 }

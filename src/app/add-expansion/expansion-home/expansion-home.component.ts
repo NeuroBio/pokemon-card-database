@@ -58,7 +58,7 @@ export class ExpansionHomeComponent implements OnInit, OnDestroy {
       data: `Are you sure you want to delete the ${this.expansionName.value} Expansion?`
     }).afterClosed().pipe(take(1)).subscribe(confirm => {
       if (confirm) {
-        const exp = this.expansionName.value
+        const exp = this.expansionName.value;
         return this.expansionserv.deleteExpansion(exp, this.expansions[exp].generation)
         .then(res => {
           if (res) {

@@ -42,7 +42,7 @@ export class SetCompletionComponent implements OnInit {
       const ownership = [];
       let cardCount = 0;
       let unique = 0;
-  
+
       exp.cards.forEach(card => {
         const instances = this.cards[`${expName}-${card.printNumber}`];
         if (instances) {
@@ -58,9 +58,9 @@ export class SetCompletionComponent implements OnInit {
           ownership.push(0);
         }
       });
-  
+
       this.setInfo[expName] =  { expName, rarity, cardCount,
-        unique, ownership, print: exp.numCards, total: exp.cards.length };  
+        unique, ownership, print: exp.numCards, total: exp.cards.length };
     }
 
     // set the active data
@@ -69,7 +69,7 @@ export class SetCompletionComponent implements OnInit {
 
   getCardDetails(print: number): void {
     const card = this.expansions[this.activeSet.value].cards[print];
-    this.checkCard = `${card.cardTitle}-${card.rarity}`
+    this.checkCard = `${card.cardTitle}-${card.rarity}`;
   }
 
 }

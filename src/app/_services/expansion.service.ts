@@ -12,7 +12,7 @@ export class ExpansionService {
     private collectionserv: CollectionService) { }
 
   addExpansion(newExpansion: any): Promise<boolean> {
-    const genNum = newExpansion.generation
+    const genNum = newExpansion.generation;
     let gen = this.collectionserv.generations.value[genNum];
     if (gen === undefined) {
       gen = {};

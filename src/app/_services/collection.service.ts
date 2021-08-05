@@ -18,8 +18,8 @@ export class CollectionService {
   checkLists = new BehaviorSubject<any[]>(undefined);
   masterList = new BehaviorSubject<CardChunk[]>(undefined);
   populationCount = new BehaviorSubject<Population>(undefined);
-  
-  activeList = 'Masterlist'
+
+  activeList = 'Masterlist';
   allowEdit = false;
 
   private lastChecked = {
@@ -36,7 +36,7 @@ export class CollectionService {
     private af: AngularFirestore,
     private auth: AuthService) {
       // ensure that master is updated as needed when cards change
-      this.allCards.subscribe(() => 
+      this.allCards.subscribe(() =>
         this.changed = true);
     //
   }
@@ -49,7 +49,7 @@ export class CollectionService {
         this.getCheckLists().pipe(take(1))
       ]).pipe(tap(() => {
         // update checking time if exists
-        const checks = JSON.parse(localStorage.getItem('lastChecked'))
+        const checks = JSON.parse(localStorage.getItem('lastChecked'));
         if (checks && this.notExpired(checks)) {
           // stored cache
           this.lastChecked = checks;
@@ -94,7 +94,7 @@ export class CollectionService {
           const cardObject = {};
           cards.forEach(cardType => {
             if (!cardType.deleted) {
-              cardObject[`${cardType.expansionName}-${cardType.printNumber}`] = JSON.parse(cardType.cards)
+              cardObject[`${cardType.expansionName}-${cardType.printNumber}`] = JSON.parse(cardType.cards);
             }
           });
           return cardObject;
@@ -169,7 +169,7 @@ export class CollectionService {
 
                   // load in generations for quick write access
                   if (i === 0) {
-                    gens[exp.generation] = gen; 
+                    gens[exp.generation] = gen;
                   }
                   // unpack expansion data for quick read access
                   exps[exp.name] = exp;
@@ -203,7 +203,7 @@ export class CollectionService {
   }
 
 
-  private updateLastChecked(cards: boolean = false, exps: boolean = false, lists: boolean = false) {
+  private updateLastChecked(cards: boolean = false, exps: boolean = false, lists: boolean = false): void {
     if (cards) {
       this.lastChecked.cards = +Date.now();
     }
@@ -247,7 +247,7 @@ export class CollectionService {
     try {
       const list = Object.assign({}, this.checkLists.value.find(li => li.name === listName));
       list.checkInfo = JSON.parse(list.checkInfo);
-      return list as Checklist;  
+      return list as Checklist;
     } catch {
       // list does not exist
       return;
@@ -255,7 +255,7 @@ export class CollectionService {
   }
 
   getChecklistDisplay(listName: string): number {
-    const list = this.getRawCheckList(listName)
+    const list = this.getRawCheckList(listName);
     if (list && list.startOn) {
       return list.startOn;
     } else {
@@ -374,29 +374,29 @@ export class CollectionService {
       skipWhile(res => !res),
       take(1)).subscribe(exp => {
         const newPop = new Population();
-      cards.forEach((cardStorage) => {
-        const cardType = exp[cardStorage.expansionName].cards[cardStorage.printNumber - 1].cardType;
-        const numCards = Object.keys(JSON.parse(cardStorage.cards)).length;
-        if (cardType === 'special energy') {
-          newPop.SpecialEnergy += numCards;
-        } else if (cardType === 'Special Pokémon') {
-          newPop.Pokémon += numCards;
-        } else {
-          newPop[cardType] += numCards;
-        }
-      });
-      this.populationCount.next(newPop);
+        cards.forEach((cardStorage) => {
+          const cardType = exp[cardStorage.expansionName].cards[cardStorage.printNumber - 1].cardType;
+          const numCards = Object.keys(JSON.parse(cardStorage.cards)).length;
+          if (cardType === 'special energy') {
+            newPop.SpecialEnergy += numCards;
+          } else if (cardType === 'Special Pokémon') {
+            newPop.Pokémon += numCards;
+          } else {
+            newPop[cardType] += numCards;
+          }
+        });
+        this.populationCount.next(newPop);
     });
   }
 
-  private notExpired(checks: any) {
+  private notExpired(checks: any): boolean {
     const now = +Date.now();
-    if ((checks.cards-now)/1000/60/60 > 12
-      || (checks.expansions-now)/1000/60/60 > 12
-      || (checks.checkLists-now)/1000/60/60 > 12) {
+    if ((checks.cards - now) / 1000 / 60 / 60 > 12
+      || (checks.expansions - now) / 1000 / 60 / 60 > 12
+      || (checks.checkLists - now) / 1000 / 60 / 60 > 12) {
         return false;
-      }
-      return true;
+    }
+    return true;
   }
 
 }

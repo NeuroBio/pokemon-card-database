@@ -61,7 +61,7 @@ export class AddExpansionComponent implements OnInit {
   }
 
   parseCSV(contents: string): void {
-    const numProp = 4
+    const numProp = 4;
     const properties = contents.replace(/\r?\n|\r/g, ',').split(',');
     if (properties[properties.length - 1] === '') {
       properties.pop();
@@ -79,14 +79,14 @@ export class AddExpansionComponent implements OnInit {
       // handle special characters
       const name = properties[0 + numProp * i]
         .replace('(m)', '♂').replace('(f)', '♀').replace('\'', '’').replace(new RegExp('�', 'g'), 'é');
-      const type = properties[1 + numProp * i]
+      const type = properties[1 + numProp * i];
       if (!this.static.ValidTypes.includes(type)) {
         throw new Error (`Found unexpected type in card ${i + 1}: ${properties[1 + numProp * i]}`);
       }
       const rarity = properties[2 + numProp * i];
       const dex = this.getDexNumber(name, type);
       const newCard = new Card(name, type, dex , i + 1, rarity);
-      
+
       // add special print info if any exists
       if (properties[3 + numProp * i]) {
         newCard.specialPrint = properties[3 + numProp * i];
@@ -106,8 +106,9 @@ export class AddExpansionComponent implements OnInit {
     const nameParts = name.split(this.stringSplitter);
 
     // standard
-    for(let i = 0; i < nameParts.length; i++) {
-      let ind = this.static.NationalDex.findIndex(poke => poke === nameParts[i]);
+    /* tslint:disable:prefer-for-of */
+    for (let i = 0; i < nameParts.length; i++) {
+      const ind = this.static.NationalDex.findIndex(poke => poke === nameParts[i]);
       if (ind !== -1) {
         return ind;
       }
@@ -137,13 +138,13 @@ export class AddExpansionComponent implements OnInit {
     this.router.navigate([this.collectionserv.activeList]);
   }
 
-  reset() {
+  reset(): void {
     this.expansionForm.patchValue({
       name: '',
-      release: this.expansionForm.value['release'] + 1,
+      release: this.expansionForm.value.release + 1,
       numCards: 1,
       cards: ''
-    })
+    });
   }
 
 }

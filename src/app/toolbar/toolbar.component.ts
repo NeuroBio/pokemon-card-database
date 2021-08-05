@@ -27,7 +27,7 @@ export class ToolbarComponent implements OnInit{
         this.domSanitizer.bypassSecurityTrustResourceUrl('assets/images/google.svg'));
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.populationSubscription = this.collectionserv.populationCount
       .subscribe(pop => this.population = pop);
   }

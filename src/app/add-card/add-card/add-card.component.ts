@@ -21,7 +21,7 @@ import * as uuid from 'uuid';
 export class AddCardComponent implements OnInit, OnDestroy {
 
   @ViewChild('frontInput') frontInput: ElementRef;
-  @ViewChild('backInput') backInput: ElementRef; 
+  @ViewChild('backInput') backInput: ElementRef;
   editData: CardInstance;
   cardForm: FormGroup;
   flaws: FormArray;
@@ -115,7 +115,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
       back: data.back,
       flaws: this.flaws,
       uid: data.uid,
-      notes: data.notes? data.notes : ''
+      notes: data.notes ? data.notes : ''
     });
   }
 
@@ -247,11 +247,11 @@ export class AddCardComponent implements OnInit, OnDestroy {
       });
   }
 
-  reset() {
+  reset(): void {
     while (this.flaws.controls.length > 0) {
       this.removeFlaw(0);
     }
-    
+
     this.cardForm.reset({
       expansionName: this.cardForm.controls.expansionName.value,
       printNumber: this.cardForm.controls.printNumber.value,
@@ -262,8 +262,8 @@ export class AddCardComponent implements OnInit, OnDestroy {
       flaws: this.flaws,
       notes: ''
     });
-    this.inputReset(this.frontInput, 'front')
-    this.inputReset(this.backInput, 'back')
+    this.inputReset(this.frontInput, 'front');
+    this.inputReset(this.backInput, 'back');
   }
 
 }

@@ -38,7 +38,7 @@ export class BinderViewComponent implements OnInit, OnDestroy {
       .subscribe(cols => this.resetLoading(undefined, cols));
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.resizeSubscription1.unsubscribe();
     this.resizeSubscription2.unsubscribe();
   }
@@ -69,7 +69,7 @@ export class BinderViewComponent implements OnInit, OnDestroy {
     }
 
     // get card
-    const cardIndex = index + this.offset*numCells*numPages + paging;
+    const cardIndex = index + this.offset * numCells * numPages + paging;
 
     // no card or no image
     if (cardIndex < 0
@@ -82,7 +82,7 @@ export class BinderViewComponent implements OnInit, OnDestroy {
     return this.activeList[cardIndex].owned[0].front;
   }
 
-  allDisplayed() {
+  allDisplayed(): boolean {
     // grid size
     const numCells = this.viewForm.controls.cols.value * this.viewForm.controls.rows.value;
     const numPages = this.viewForm.controls.viewStyle.value;
@@ -91,21 +91,21 @@ export class BinderViewComponent implements OnInit, OnDestroy {
     if (numPages === 2) {
       paging -= this.viewForm.controls.paging.value * numCells;
     }
-    return this.activeList.length < (numCells + numCells*this.offset*numPages + paging);
+    return this.activeList.length < (numCells + numCells * this.offset * numPages + paging);
   }
 
-  changeOffset(change: number) {
+  changeOffset(change: number): void {
     this.offset += change;
-    this.resetLoading()
+    this.resetLoading();
   }
 
-  resetLoading(rows?: number, cols?: number) {
+  resetLoading(rows?: number, cols?: number): void {
     const view = this.viewForm.value;
     if (!rows) {
-      rows = view.rows
+      rows = view.rows;
     }
     if (!cols) {
-      cols = view.cols
+      cols = view.cols;
     }
     const newSize = rows * cols * view.viewStyle;
     this.loading = new Array(newSize).fill(true);
@@ -114,7 +114,7 @@ export class BinderViewComponent implements OnInit, OnDestroy {
     // some of the images to loading because their src did not change.
     // manually reset those cases to false!
     if (this.offset === 0 && newSize !== this.size && this.size !== 0) {
-      for(let i = 0; i < Math.min(this.size, newSize); i++) {
+      for (let i = 0; i < Math.min(this.size, newSize); i++) {
         this.loading[i + rows * cols * view.paging] = false;
       }
     }
