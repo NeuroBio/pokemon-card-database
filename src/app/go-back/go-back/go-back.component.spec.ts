@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterTestingModule } from '@angular/router/testing';
-import { environment } from 'src/environments/environment';
+import { CollectionServiceMock } from 'src/app/_mock_services/collection.service.mock';
+import { CollectionService } from 'src/app/_services/collection.service';
 
 import { GoBackComponent } from './go-back.component';
 
@@ -17,13 +16,12 @@ describe('GoBackComponent', () => {
       declarations: [ GoBackComponent ],
       imports: [
         RouterTestingModule,
-        AngularFireModule.initializeApp(environment.firebase),
 
         MatButtonModule,
         MatIconModule
       ],
       providers: [
-        AngularFireAuth
+        { provide: CollectionService, useClass: CollectionServiceMock }
       ]
     })
     .compileComponents();

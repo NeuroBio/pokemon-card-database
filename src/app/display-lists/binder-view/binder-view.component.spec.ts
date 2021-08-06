@@ -1,6 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -12,7 +10,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GoBackModule } from 'src/app/go-back/go-back.module';
-import { environment } from 'src/environments/environment';
 import { convertToParamMap } from '@angular/router';
 
 import { BinderViewComponent } from './binder-view.component';
@@ -36,7 +33,6 @@ describe('BinderViewComponent', () => {
       imports: [
         RouterTestingModule,
         ReactiveFormsModule,
-        AngularFireModule.initializeApp(environment.firebase),
 
         GoBackModule,
 
@@ -49,9 +45,8 @@ describe('BinderViewComponent', () => {
         MatRadioModule
       ],
       providers: [
-        { provide: ActivatedRoute, useValue: mockActiveRoute },
-        AngularFireAuth,
         FormBuilder,
+        { provide: ActivatedRoute, useValue: mockActiveRoute },
         { provide: CollectionService, useClass: CollectionServiceMock }
       ]
     })
