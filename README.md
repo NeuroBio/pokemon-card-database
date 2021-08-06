@@ -59,3 +59,8 @@ and [api call functions source](src/api_caller/get_expansion_functions.py).
 
 ### Planned Tasks
 * unit tests with Jasmine
+  * lint app (complete)
+  * make mock services and objects (complete)
+  * get existing 'can create' unit tests to pass (complete)
+  * write service unit tests
+  * write component unit tests
