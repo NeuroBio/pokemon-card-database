@@ -1,4 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterTestingModule } from '@angular/router/testing';
+import { environment } from 'src/environments/environment';
 
 import { GoBackComponent } from './go-back.component';
 
@@ -8,7 +14,17 @@ describe('GoBackComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GoBackComponent ]
+      declarations: [ GoBackComponent ],
+      imports: [
+        RouterTestingModule,
+        AngularFireModule.initializeApp(environment.firebase),
+
+        MatButtonModule,
+        MatIconModule
+      ],
+      providers: [
+        AngularFireAuth
+      ]
     })
     .compileComponents();
   });
