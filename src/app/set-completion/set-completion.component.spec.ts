@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GoBackModule } from '../go-back/go-back.module';
 import { CollectionServiceMock } from '../_mock_services/collection.service.mock';
@@ -18,6 +19,7 @@ describe('SetCompletionComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ SetCompletionComponent ],
       imports: [
+        BrowserAnimationsModule,
         RouterTestingModule,
         ReactiveFormsModule,
 

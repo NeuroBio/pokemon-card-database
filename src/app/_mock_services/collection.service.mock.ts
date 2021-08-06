@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { MockCardChunk } from '../_mock_objects/card-chunk.mock';
 import { MockCardInstance, MockPopulation } from '../_mock_objects/card-instance.mock';
+import { MockChecklist } from '../_mock_objects/check-list.mock';
 import { MockSetExpansion } from '../_mock_objects/expansion.mock';
 
 import { CardChunk } from '../_objects/card-chunk';
@@ -27,19 +28,15 @@ export class CollectionServiceMock {
   private cardChunkMock = new MockCardChunk();
   private expansionMock = new MockSetExpansion();
   private populationmock = new MockPopulation();
+  private checklistMock = new MockChecklist();
 
   constructor() { 
-    console.log('constructing...')
     this.allCards.next(this.cardInstanceMock.mockAllCards());
-    this.expansions.next([this.expansionMock.mock(10)]);
-    this.generations.next(this.expansionMock.mockUpload([1], [[this.expansions.value]]));
-    console.log(3)
-    // this.checkLists.next([this.cardChunkMock.mock(this.expansions.value[0])]);
-    console.log(4)
-    // this.masterList.next([this.cardChunkMock.mock(this.expansions.value[0])]);
-    console.log(5)
+    this.expansions.next({'Base Set': this.expansionMock.mock(10)});
+    this.generations.next(this.expansionMock.mockUpload([1], [[this.expansions.value['Base Set']]]));
+    this.checkLists.next([this.checklistMock.mock()]);
+    this.masterList.next([this.cardChunkMock.mock(this.expansions.value['Base Set'])]);
     this.populationCount.next(this.populationmock.mock());
-    console.log('finished')
   }
 
   getMaster(): CardChunk[] {

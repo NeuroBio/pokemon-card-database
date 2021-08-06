@@ -28,10 +28,8 @@ export class ToolbarComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    console.log('init');
     this.populationSubscription = this.collectionserv.populationCount
       .subscribe(pop => this.population = pop);
-      console.log(this.population)
   }
 
   changelogin(): void {

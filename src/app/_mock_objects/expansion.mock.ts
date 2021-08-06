@@ -5,7 +5,7 @@ export class MockSetExpansion {
         const cards = [];
         const mock = new MockCard();
         for (let i = 0; i < numCards; i++) {
-            cards.push(mock.mock(i));
+            cards.push(mock.mock(i + 1));
         }
         return new SetExpansion(name, cards, 1, 1, cards.length)
     }
@@ -13,14 +13,15 @@ export class MockSetExpansion {
     mockUpload(gens: number[] = [1], expansions: SetExpansion[][]) {
         const upload = {}
         gens.forEach((gen, i) => {
-            upload[`Gen-${gen}`] = {
+            upload[gen] = {
                 data: {},            
                 lastUpdated: 0
-            } 
+            } ;
             expansions[i].forEach(exp =>
-                upload[`Gen-${gen}`].data[exp.name] = exp
+                upload[gen].data[exp.name] = exp
             );
         });
+        return upload;
     }
 }
 

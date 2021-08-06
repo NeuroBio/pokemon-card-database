@@ -44,7 +44,6 @@ describe('ToolbarComponent', () => {
     fixture = TestBed.createComponent(ToolbarComponent);
     component = fixture.componentInstance;
     component.population = popMock;
-    console.log(component.population)
     fixture.detectChanges();
   });
 

@@ -38,7 +38,6 @@ export class CollectionService {
       // ensure that master is updated as needed when cards change
       this.allCards.subscribe(() =>
         this.changed = true);
-    //
   }
 
   load(): Promise<boolean> {

@@ -5,6 +5,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GoBackModule } from 'src/app/go-back/go-back.module';
 import { AuthServiceMock } from 'src/app/_mock_services/auth.service.mock';
@@ -30,6 +31,7 @@ describe('ExpansionHomeComponent', () => {
         ExpansionViewerComponent
       ],
       imports: [
+        BrowserAnimationsModule,
         ReactiveFormsModule,
         RouterTestingModule,
 
