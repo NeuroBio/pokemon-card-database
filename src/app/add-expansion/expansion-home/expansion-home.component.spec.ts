@@ -10,7 +10,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GoBackModule } from 'src/app/go-back/go-back.module';
+import { AuthServiceMock } from 'src/app/_mock_services/auth.service.mock';
 import { CollectionServiceMock } from 'src/app/_mock_services/collection.service.mock';
+import { ExpansionServiceMock } from 'src/app/_mock_services/expansion.service.mock';
+import { MessengerServiceMock } from 'src/app/_mock_services/messenger.service.mock';
 import { AuthService } from 'src/app/_services/auth.service';
 import { CollectionService } from 'src/app/_services/collection.service';
 import { ExpansionService } from 'src/app/_services/expansion.service';
@@ -47,10 +50,10 @@ describe('ExpansionHomeComponent', () => {
       providers: [
         AngularFireAuth,
         { provide: CollectionService, useClass: CollectionServiceMock },
-        ExpansionService,
-        MessengerService,
+        { provide: ExpansionService, useClass: ExpansionServiceMock },
+        { provide: MessengerService, useClass: MessengerServiceMock },
         FormBuilder,
-        AuthService,
+        { provide: AuthService, useClass: AuthServiceMock }
       ]
     })
     .compileComponents();

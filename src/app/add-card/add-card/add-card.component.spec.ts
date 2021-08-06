@@ -16,6 +16,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { CardPreviewModule } from 'src/app/card-preview/card-preview.module';
 import { GoBackModule } from 'src/app/go-back/go-back.module';
+import { CardServiceMock } from 'src/app/_mock_services/card.service.mock';
+import { CollectionServiceMock } from 'src/app/_mock_services/collection.service.mock';
+import { MessengerServiceMock } from 'src/app/_mock_services/messenger.service.mock';
+import { ResizeServiceMock } from 'src/app/_mock_services/resize.service.mock';
 import { CardService } from 'src/app/_services/card.service';
 import { CollectionService } from 'src/app/_services/collection.service';
 import { MessengerService } from 'src/app/_services/messenger.service';
@@ -59,10 +63,10 @@ describe('AddCardComponent', () => {
       providers: [
         AngularFireAuth,
         FormBuilder,
-        CardService,
-        MessengerService,
-        CollectionService,
-        ResizeService,
+        { provide: CardService, useClass: CardServiceMock },
+        { provide: MessengerService, useClass: MessengerServiceMock },
+        { provide: CollectionService, useClass: CollectionServiceMock },
+        { provide: ResizeService, useClass: ResizeServiceMock },
         { provide: ActivatedRoute, useValue: mockActiveRoute }
       ]
     })

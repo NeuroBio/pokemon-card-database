@@ -11,7 +11,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CardPreviewModule } from 'src/app/card-preview/card-preview.module';
+import { CheckListServiceMock } from 'src/app/_mock_services/check-list.service.mock';
 import { CollectionServiceMock } from 'src/app/_mock_services/collection.service.mock';
+import { MessengerServiceMock } from 'src/app/_mock_services/messenger.service.mock';
 import { CheckListService } from 'src/app/_services/check-list.service';
 import { CollectionService } from 'src/app/_services/collection.service';
 import { MessengerService } from 'src/app/_services/messenger.service';
@@ -44,8 +46,8 @@ describe('PickCardComponent', () => {
       providers: [
         FormBuilder,
         AngularFireAuth,
-        MessengerService,
-        CheckListService,
+        { provide: MessengerService, useClass: MessengerServiceMock },
+        { provide: CheckListService, useClass: CheckListServiceMock },
         { provide: CollectionService, useClass: CollectionServiceMock }
       ]
     })

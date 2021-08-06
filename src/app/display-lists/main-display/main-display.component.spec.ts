@@ -14,7 +14,10 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { CardPreviewModule } from 'src/app/card-preview/card-preview.module';
+import { AuthServiceMock } from 'src/app/_mock_services/auth.service.mock';
+import { CheckListServiceMock } from 'src/app/_mock_services/check-list.service.mock';
 import { CollectionServiceMock } from 'src/app/_mock_services/collection.service.mock';
+import { MessengerServiceMock } from 'src/app/_mock_services/messenger.service.mock';
 import { AuthService } from 'src/app/_services/auth.service';
 import { CheckListService } from 'src/app/_services/check-list.service';
 import { CollectionService } from 'src/app/_services/collection.service';
@@ -60,9 +63,9 @@ describe('MainDisplayComponent', () => {
         AngularFireAuth,
         MatDialog,
         { provide: CollectionService, useClass: CollectionServiceMock },
-        CheckListService,
-        AuthService,
-        MessengerService,
+        { provide: CheckListService, useClass: CheckListServiceMock },
+        { provide: AuthService, useClass: AuthServiceMock },
+        { provide: MessengerService, useClass: MessengerServiceMock },
         { provide: ActivatedRoute, useValue: mockActiveRoute }
       ]
     })
