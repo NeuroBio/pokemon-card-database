@@ -10,8 +10,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { of } from 'rxjs';
 import { CardPreviewModule } from 'src/app/card-preview/card-preview.module';
+import { CollectionServiceMock } from 'src/app/_mock_services/collection.service.mock';
+import { AuthService } from 'src/app/_services/auth.service';
+import { CheckListService } from 'src/app/_services/check-list.service';
+import { CollectionService } from 'src/app/_services/collection.service';
+import { MessengerService } from 'src/app/_services/messenger.service';
 import { environment } from 'src/environments/environment';
 import { CardTableComponent } from '../card-table/card-table.component';
 
@@ -20,6 +27,11 @@ import { MainDisplayComponent } from './main-display.component';
 describe('MainDisplayComponent', () => {
   let component: MainDisplayComponent;
   let fixture: ComponentFixture<MainDisplayComponent>;
+  const mockActiveRoute = {
+    data: of({
+      checklist: {}
+    })
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -46,7 +58,12 @@ describe('MainDisplayComponent', () => {
       providers: [
         FormBuilder,
         AngularFireAuth,
-        MatDialog
+        MatDialog,
+        { provide: CollectionService, useClass: CollectionServiceMock },
+        CheckListService,
+        AuthService,
+        MessengerService,
+        { provide: ActivatedRoute, useValue: mockActiveRoute }
       ]
     })
     .compileComponents();

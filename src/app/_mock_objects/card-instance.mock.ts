@@ -1,12 +1,12 @@
 import { CardInstance, CardStorage, Flaw, Population } from "../_objects/card-instance";
-]
+
 export class MockCardInstance {
-    mock(int: number = 0, expName: string = 'Test') {
+    mock(int: number = 0, expName: string = 'Base Set') {
         const mock = new MockFlaw();
         return new CardInstance(int, expName, 'standard', 'NM', [mock.mock()], 'This is a test card');
     }
 
-    mockAllCards(expNames: string[] = ['Test'], prints: number[][] = [[1, 2, 3, 4]]) {
+    mockAllCards(expNames: string[] = ['Base Set'], prints: number[][] = [[1, 2, 3, 4]]) {
         const upload = {};
         expNames.forEach((exp, i) =>
             prints[i].forEach(print =>
@@ -15,7 +15,7 @@ export class MockCardInstance {
         return upload;
     }
     
-    mockUploadInstance(expName: string = 'Test', print: number = 1, cards: number = 1) {
+    mockUploadInstance(expName: string = 'Base Set', print: number = 1, cards: number = 1) {
         const mock = new MockCardInstance();
         const upload = {
             cards: {},

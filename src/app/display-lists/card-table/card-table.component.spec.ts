@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CardPreviewModule } from 'src/app/card-preview/card-preview.module';
 
 import { CardTableComponent } from './card-table.component';
@@ -22,6 +23,7 @@ describe('CardTableComponent', () => {
       declarations: [ CardTableComponent ],
       imports: [
         ReactiveFormsModule,
+        BrowserAnimationsModule,
 
         CardPreviewModule,
 

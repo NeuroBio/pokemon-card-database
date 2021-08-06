@@ -11,6 +11,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CardPreviewModule } from 'src/app/card-preview/card-preview.module';
+import { CollectionServiceMock } from 'src/app/_mock_services/collection.service.mock';
+import { CheckListService } from 'src/app/_services/check-list.service';
+import { CollectionService } from 'src/app/_services/collection.service';
+import { MessengerService } from 'src/app/_services/messenger.service';
 import { environment } from 'src/environments/environment';
 
 import { PickCardComponent } from './pick-card.component';
@@ -40,7 +44,9 @@ describe('PickCardComponent', () => {
       providers: [
         FormBuilder,
         AngularFireAuth,
-        MatDialogRef
+        MessengerService,
+        CheckListService,
+        { provide: CollectionService, useClass: CollectionServiceMock }
       ]
     })
     .compileComponents();

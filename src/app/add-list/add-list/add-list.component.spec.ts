@@ -2,7 +2,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -14,9 +14,15 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { of } from 'rxjs';
 import { CardPreviewModule } from 'src/app/card-preview/card-preview.module';
 import { GoBackModule } from 'src/app/go-back/go-back.module';
+import { CollectionServiceMock } from 'src/app/_mock_services/collection.service.mock';
+import { CheckListService } from 'src/app/_services/check-list.service';
+import { CollectionService } from 'src/app/_services/collection.service';
+import { MessengerService } from 'src/app/_services/messenger.service';
 import { environment } from 'src/environments/environment';
 
 import { AddListComponent } from './add-list.component';
@@ -24,6 +30,11 @@ import { AddListComponent } from './add-list.component';
 describe('AddListComponent', () => {
   let component: AddListComponent;
   let fixture: ComponentFixture<AddListComponent>;
+  const mockActiveRoute = {
+    data: of({
+      checklist: {}
+    })
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -51,7 +62,11 @@ describe('AddListComponent', () => {
       ],
       providers: [
         AngularFireAuth,
-        MatDialog
+        { provide: ActivatedRoute, useValue: mockActiveRoute },
+        FormBuilder,
+        { provide: CollectionService, useClass: CollectionServiceMock },
+        CheckListService,
+        MessengerService,
       ]
     })
     .compileComponents();

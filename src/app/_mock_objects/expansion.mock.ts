@@ -1,7 +1,7 @@
 import { Card, SetExpansion } from "../_objects/expansion";
 
 export class MockSetExpansion {
-    mock(numCards: number = 10, name: string = 'Test') {
+    mock(numCards: number = 10, name: string = 'Base Set') {
         const cards = [];
         const mock = new MockCard();
         for (let i = 0; i < numCards; i++) {

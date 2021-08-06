@@ -7,12 +7,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'src/environments/environment';
+import { MockPopulation } from '../_mock_objects/card-instance.mock';
+import { CollectionServiceMock } from '../_mock_services/collection.service.mock';
+import { CollectionService } from '../_services/collection.service';
 
 import { ToolbarComponent } from './toolbar.component';
 
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
   let fixture: ComponentFixture<ToolbarComponent>;
+  const popMock = (new MockPopulation()).mock();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -29,6 +33,7 @@ describe('ToolbarComponent', () => {
       ],
       providers: [
         AngularFireAuth,
+        { provide: CollectionService, useClass: CollectionServiceMock}
       ]
     })
     .compileComponents();
@@ -37,6 +42,8 @@ describe('ToolbarComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ToolbarComponent);
     component = fixture.componentInstance;
+    component.population = popMock;
+    console.log(component.population)
     fixture.detectChanges();
   });
 

@@ -49,7 +49,8 @@ export class AddListComponent implements OnInit, OnDestroy {
     private messenger: MessengerService,
     private router: Router,
     private route: ActivatedRoute,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
