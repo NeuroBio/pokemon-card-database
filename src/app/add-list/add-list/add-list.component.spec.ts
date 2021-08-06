@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
@@ -30,7 +31,7 @@ describe('AddListComponent', () => {
   let fixture: ComponentFixture<AddListComponent>;
   const mockActiveRoute = {
     data: of({
-      checklist: {}
+      checklist: undefined
     })
   };
 
@@ -38,6 +39,7 @@ describe('AddListComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ AddListComponent ],
       imports: [
+        BrowserAnimationsModule,
         RouterTestingModule,
         ReactiveFormsModule,
 

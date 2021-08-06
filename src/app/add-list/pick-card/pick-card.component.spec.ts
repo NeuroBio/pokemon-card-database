@@ -7,6 +7,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CardPreviewModule } from 'src/app/card-preview/card-preview.module';
 import { CheckListServiceMock } from 'src/app/_mock_services/check-list.service.mock';
 import { CollectionServiceMock } from 'src/app/_mock_services/collection.service.mock';
@@ -25,6 +26,7 @@ describe('PickCardComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ PickCardComponent ],
       imports: [
+        BrowserAnimationsModule,
         ReactiveFormsModule,
 
         CardPreviewModule,
@@ -40,7 +42,7 @@ describe('PickCardComponent', () => {
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: {} },
-        { provide: MAT_DIALOG_DATA, useValue: undefined },
+        { provide: MAT_DIALOG_DATA, useValue: { key: 'Base Set-1' } },
         { provide: MessengerService, useClass: MessengerServiceMock },
         { provide: CheckListService, useClass: CheckListServiceMock },
         { provide: CollectionService, useClass: CollectionServiceMock }

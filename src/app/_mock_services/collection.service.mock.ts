@@ -55,12 +55,7 @@ export class CollectionServiceMock {
   }
 
   getChecklistDisplay(listName: string): number {
-    const list = this.getRawCheckList(listName);
-    if (list && list.startOn) {
-      return list.startOn;
-    } else {
-      return 1;
-    }
+    return 1;
   }
 
   getCheckList(listName: string): CardChunk[] {
@@ -84,7 +79,7 @@ export class CollectionServiceMock {
   }
 
   getExpansionNames(): string[] {
-    return ['Test'];
+    return Object.keys(this.expansions.value);
   }
 
 }
