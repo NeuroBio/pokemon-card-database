@@ -6,8 +6,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
@@ -39,6 +41,7 @@ describe('AddCardComponent', () => {
         AddCardComponent,
        ],
       imports: [
+        BrowserAnimationsModule,
         RouterTestingModule,
         ReactiveFormsModule,
         
@@ -51,6 +54,7 @@ describe('AddCardComponent', () => {
         MatDialogModule,
         MatFormFieldModule,
         MatIconModule,
+        MatInputModule,
         MatProgressSpinnerModule,
         MatSelectModule,
       ],

@@ -29,12 +29,17 @@ export class CollectionServiceMock {
   private populationmock = new MockPopulation();
 
   constructor() { 
+    console.log('constructing...')
     this.allCards.next(this.cardInstanceMock.mockAllCards());
     this.expansions.next([this.expansionMock.mock(10)]);
     this.generations.next(this.expansionMock.mockUpload([1], [[this.expansions.value]]));
-    this.checkLists.next([this.cardChunkMock.mock(this.expansions.value[0])]);
-    this.masterList.next([this.cardChunkMock.mock(this.expansions.value[0])]);
+    console.log(3)
+    // this.checkLists.next([this.cardChunkMock.mock(this.expansions.value[0])]);
+    console.log(4)
+    // this.masterList.next([this.cardChunkMock.mock(this.expansions.value[0])]);
+    console.log(5)
     this.populationCount.next(this.populationmock.mock());
+    console.log('finished')
   }
 
   getMaster(): CardChunk[] {

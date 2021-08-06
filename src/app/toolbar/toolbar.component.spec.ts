@@ -5,10 +5,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockPopulation } from '../_mock_objects/card-instance.mock';
+import { AuthServiceMock } from '../_mock_services/auth.service.mock';
 import { CollectionServiceMock } from '../_mock_services/collection.service.mock';
+import { AuthService } from '../_services/auth.service';
 import { CollectionService } from '../_services/collection.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { ToolbarComponent } from './toolbar.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
@@ -19,16 +23,18 @@ describe('ToolbarComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ ToolbarComponent ],
       imports: [
+        BrowserAnimationsModule,
         RouterTestingModule,
+        HttpClientTestingModule,
 
         MatButtonModule,
         MatFormFieldModule,
         MatIconModule,
         MatSelectModule
-
       ],
       providers: [
-        { provide: CollectionService, useClass: CollectionServiceMock}
+        { provide: CollectionService, useClass: CollectionServiceMock },
+        { provide: AuthService, useClass: AuthServiceMock }
       ]
     })
     .compileComponents();

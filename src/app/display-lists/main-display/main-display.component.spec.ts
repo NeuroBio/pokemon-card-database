@@ -7,7 +7,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { CardPreviewModule } from 'src/app/card-preview/card-preview.module';
@@ -29,7 +29,10 @@ describe('MainDisplayComponent', () => {
   const mockActiveRoute = {
     data: of({
       checklist: {}
-    })
+    }),
+    snapshot: {
+      paramMap: convertToParamMap({ ChecklistID: 'test' })
+    }
   };
 
   beforeEach(async () => {

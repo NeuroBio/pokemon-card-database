@@ -15,6 +15,7 @@ import { convertToParamMap } from '@angular/router';
 import { BinderViewComponent } from './binder-view.component';
 import { CollectionService } from 'src/app/_services/collection.service';
 import { CollectionServiceMock } from 'src/app/_mock_services/collection.service.mock';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('BinderViewComponent', () => {
   let component: BinderViewComponent;
@@ -33,6 +34,7 @@ describe('BinderViewComponent', () => {
       imports: [
         RouterTestingModule,
         ReactiveFormsModule,
+        BrowserAnimationsModule,
 
         GoBackModule,
 
