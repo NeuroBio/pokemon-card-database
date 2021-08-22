@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -44,6 +44,8 @@ export class AddCardComponent implements OnInit, OnDestroy {
   maxWidth = 500;
   images: any = {};
 
+  multi = new FormControl(false);
+
   constructor(
     private fb: FormBuilder,
     private cardserv: CardService,
@@ -85,6 +87,10 @@ export class AddCardComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.expansionSubscription.unsubscribe();
     this.printSubscription.unsubscribe();
+  }
+
+  isMultiUpload(): boolean {
+    return this.multi.value;
   }
 
   createAddForm(): FormGroup {

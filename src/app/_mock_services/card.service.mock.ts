@@ -13,6 +13,10 @@ export class CardServiceMock {
         return of(true);
     }
 
+    massUploadCard(newCards: CardInstance[]) {
+        return of (true);
+    }
+
     deleteCard(expansion: string, print: number, uid: string): Observable<boolean> {
         return of(true);
     }
