@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
@@ -20,6 +20,7 @@ export class ToolbarComponent implements OnInit{
     private collectionserv: CollectionService,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer,
+    private cdRef: ChangeDetectorRef,
     private auth: AuthService
   ) {
       this.matIconRegistry.addSvgIcon(
@@ -29,7 +30,10 @@ export class ToolbarComponent implements OnInit{
 
   ngOnInit(): void {
     this.populationSubscription = this.collectionserv.populationCount
-      .subscribe(pop => this.population = pop);
+      .subscribe(pop => {
+        this.population = pop;
+        this.cdRef.detectChanges();
+      });
   }
 
   changelogin(): void {

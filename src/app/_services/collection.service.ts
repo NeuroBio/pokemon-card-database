@@ -119,10 +119,11 @@ export class CollectionService {
             const type = this.expansions.value[cardBox.expansionName].cards[cardBox.printNumber - 1].cardType;
 
             // update cards
+            if (master[`${cardBox.expansionName}-${cardBox.printNumber}`]) {
+              oldLength = Object.keys(master[`${cardBox.expansionName}-${cardBox.printNumber}`]).length;
+            }
+
             if (cardBox.deleted) {
-              if (master[`${cardBox.expansionName}-${cardBox.printNumber}`]) {
-                oldLength = master[`${cardBox.expansionName}-${cardBox.printNumber}`].length;
-              }
               delete master[`${cardBox.expansionName}-${cardBox.printNumber}`];
             } else {
               // update cards in storage bin
@@ -133,7 +134,7 @@ export class CollectionService {
 
             // update population values
             const numCards = newLength - oldLength;
-            if (type === 'Epecial Energy') {
+            if (type === 'Special Energy') {
               pop.SpecialEnergy += numCards;
             } else if (type === 'Special Pokémon') {
               pop.Pokémon += numCards;
@@ -145,6 +146,7 @@ export class CollectionService {
           if (this.initialized) {
             this.updateLastChecked(true);
           }
+          
           this.populationCount.next(pop);
         }
       ));
