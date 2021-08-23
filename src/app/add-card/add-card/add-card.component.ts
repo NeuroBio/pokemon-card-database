@@ -108,8 +108,10 @@ export class AddCardComponent implements OnInit, OnDestroy {
   }
 
   createEditForm(data: CardInstance): FormGroup {
-    data.flaws.forEach(flaw =>
-      this.addFlaw(flaw.type, flaw.where, flaw.landmark, flaw.severity));
+    if (data.flaws) {
+      data.flaws.forEach(flaw =>
+        this.addFlaw(flaw.type, flaw.where, flaw.landmark, flaw.severity));  
+    }
 
     return this.fb.group({
       expansionName: [ data.expansionName,
@@ -295,7 +297,8 @@ export class AddCardComponent implements OnInit, OnDestroy {
       front: '',
       back: '',
       flaws: this.flaws,
-      notes: ''
+      notes: '',
+      numCards: 1
     });
     this.inputReset(this.frontInput, 'front');
     this.inputReset(this.backInput, 'back');
