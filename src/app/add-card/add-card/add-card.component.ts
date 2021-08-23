@@ -102,7 +102,8 @@ export class AddCardComponent implements OnInit, OnDestroy {
       front: '',
       back: '',
       flaws: this.flaws,
-      notes: ''
+      notes: '',
+      numCards: 1
     });
   }
 
@@ -188,6 +189,9 @@ export class AddCardComponent implements OnInit, OnDestroy {
   submit(): Subscription {
     this.isLoading = true;
     const newCard = this.cardForm.getRawValue();
+    if (this.isMultiUpload()) {
+      return this.multiSubmit(newCard);
+    }
 
     if (!newCard.uid) {
       newCard.uid = uuid.v4();
@@ -216,6 +220,25 @@ export class AddCardComponent implements OnInit, OnDestroy {
           } else {
             this.reset();
           }
+        } else {
+          this.messenger.send('Only the Admin may add or edit cards.');
+        }
+    });
+  }
+
+  multiSubmit(cardInfo: any): Subscription {
+    const newCards: CardInstance[] = [];
+    for (let i = 0; i < cardInfo.numCards; i++) {
+      newCards.push(new CardInstance(cardInfo.printNumber,
+        cardInfo.expansionName, cardInfo.form, cardInfo.condition));
+    }
+    console.log(newCards);
+    return this.cardserv.massUploadCard(newCards)
+      .pipe(take(1)).subscribe(res => {
+        this.isLoading = false;
+        if (res) {
+            this.messenger.send('Cards uploaded.');
+            this.reset();
         } else {
           this.messenger.send('Only the Admin may add or edit cards.');
         }

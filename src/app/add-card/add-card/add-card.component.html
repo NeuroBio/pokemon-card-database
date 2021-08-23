@@ -3,30 +3,22 @@
 <form [formGroup]="cardForm">
 
     <div class="side-by-side">
-        <!-- Preview Card -->
-        <mat-card class="sub-card" id="preview-new-card">
-            <app-individual-card
-            [instance]="this.cardForm.value"
-            [showAll]="true"
-            [creating]="true"
-            ></app-individual-card>
-        </mat-card>
-
 
         <div>
             <mat-card class="tight-card" id="card-info-section">
 
                 <!-- Header -->
-                <h2 class="center-align">
+                <h2>
                     Card Info
-
-                    <mat-slide-toggle [formControl]="multi">
-                        Multi Upload
-                    </mat-slide-toggle>
                 </h2>
                 <br>
             
                 <div class="add-margin">
+                    <mat-slide-toggle [formControl]="multi">
+                        Multi Upload
+                    </mat-slide-toggle>
+
+
                     <!-- Pick Card -->
                     <div>
                         <!-- Expansion -->
@@ -41,7 +33,7 @@
                         </mat-form-field>
                 
                         <!-- Print Number -->
-                        <mat-form-field id="print-input">
+                        <mat-form-field class="print-input">
                             <mat-label>Print</mat-label>
                             <input matInput formControlName="printNumber" type="number" min="1">
                         </mat-form-field>
@@ -71,6 +63,12 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
+
+                    <!-- Print Number -->
+                    <mat-form-field class="print-input" *ngIf="isMultiUpload()">
+                        <mat-label>Copies</mat-label>
+                        <input matInput formControlName="numCards" type="number" min="1">
+                    </mat-form-field>
 
                     <mat-form-field id="card-notes" *ngIf="!isMultiUpload()">
                         <mat-label>Notes</mat-label>
@@ -211,7 +209,7 @@
                 [disabled]="!cardForm.valid || activeCard === null || isLoading"
                 (click)="submit()">
                     <mat-icon>cloud_upload</mat-icon>
-                    Upload Card
+                    Upload Card{{ isMultiUpload() ? 's' : '' }}
                 </button>
         
         
@@ -225,6 +223,16 @@
                 </button>
             </div>
         </div>
+
+
+          <!-- Preview Card -->
+          <mat-card class="sub-card" id="preview-new-card">
+            <app-individual-card
+            [instance]="this.cardForm.value"
+            [showAll]="true"
+            [creating]="true"
+            ></app-individual-card>
+        </mat-card>
     </div>
 
 </form>
