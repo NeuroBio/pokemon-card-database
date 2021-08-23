@@ -20,7 +20,7 @@ export class CollectionService {
   populationCount = new BehaviorSubject<Population>(undefined);
 
   activeList = 'Masterlist';
-  allowEdit = false;
+  allowEdit = true;
 
   private lastChecked = {
     cards: 0,
@@ -257,7 +257,8 @@ export class CollectionService {
 
   getChecklistDisplay(listName: string): number {
     const list = this.getRawCheckList(listName);
-    if (list && list.startOn) {
+    console.log(list)
+    if (list && list.startOn !== undefined) {
       return list.startOn;
     } else {
       return 1;
