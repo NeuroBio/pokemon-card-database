@@ -35,7 +35,7 @@
                 </div>
 
                 <!-- No Flaws -->
-                <div *ngIf="instance.flaws.length === 0" class="tab">
+                <div *ngIf="!instance.flaws || instance.flaws.length === 0" class="tab">
                     - None
                 </div>
 
