@@ -3,15 +3,6 @@
 <form [formGroup]="cardForm">
 
     <div class="side-by-side">
-        <!-- Preview Card -->
-        <mat-card class="sub-card" id="preview-new-card">
-            <app-individual-card
-            [instance]="this.cardForm.value"
-            [showAll]="true"
-            [creating]="true"
-            ></app-individual-card>
-        </mat-card>
-
 
         <div>
             <mat-card class="tight-card" id="card-info-section">
@@ -23,6 +14,11 @@
                 <br>
             
                 <div class="add-margin">
+                    <mat-slide-toggle [formControl]="multi">
+                        Multi Upload
+                    </mat-slide-toggle>
+
+
                     <!-- Pick Card -->
                     <div>
                         <!-- Expansion -->
@@ -37,7 +33,7 @@
                         </mat-form-field>
                 
                         <!-- Print Number -->
-                        <mat-form-field id="print-input">
+                        <mat-form-field class="print-input">
                             <mat-label>Print</mat-label>
                             <input matInput formControlName="printNumber" type="number" min="1">
                         </mat-form-field>
@@ -68,13 +64,19 @@
                         </mat-form-field>
                     </div>
 
-                    <mat-form-field id="card-notes">
+                    <!-- Print Number -->
+                    <mat-form-field class="print-input" *ngIf="isMultiUpload()">
+                        <mat-label>Copies</mat-label>
+                        <input matInput formControlName="numCards" type="number" min="1">
+                    </mat-form-field>
+
+                    <mat-form-field id="card-notes" *ngIf="!isMultiUpload()">
                         <mat-label>Notes</mat-label>
                         <textarea matInput rows="7" cols="600" formControlName="notes"></textarea>
                     </mat-form-field>
         
                     <!-- Images -->
-                    <div id="card-image-uploaders">
+                    <div id="card-image-uploaders" *ngIf="!isMultiUpload()">
                         <!-- Front Image -->
                         <div>
                             <button mat-raised-button color="primary"
@@ -123,6 +125,7 @@
         
             <!-- Flaws -->
             <mat-card formArrayName="flaws" class="tight-card" id="flaw-section"
+            *ngIf="!isMultiUpload()"
             [ngClass]="flaws.controls[0] ? 'open' : ''">
                 <!-- header /w add button -->
                 <h2>
@@ -206,7 +209,7 @@
                 [disabled]="!cardForm.valid || activeCard === null || isLoading"
                 (click)="submit()">
                     <mat-icon>cloud_upload</mat-icon>
-                    Upload Card
+                    Upload Card{{ isMultiUpload() ? 's' : '' }}
                 </button>
         
         
@@ -220,6 +223,16 @@
                 </button>
             </div>
         </div>
+
+
+          <!-- Preview Card -->
+          <mat-card class="sub-card" id="preview-new-card">
+            <app-individual-card
+            [instance]="this.cardForm.value"
+            [showAll]="true"
+            [creating]="true"
+            ></app-individual-card>
+        </mat-card>
     </div>
 
 </form>

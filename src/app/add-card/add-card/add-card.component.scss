@@ -19,12 +19,12 @@ form {
     margin-right: 10px;
 }
 
-#print-input {
+.print-input {
     width: 60px;
 }
 
 #condition-input {
-    width: 100px;
+    width: 50px;
 }
 
 h2 {
@@ -50,6 +50,7 @@ h3 {
     display: flex;
     flex-flow: column;
     align-items: flex-start;
+    min-width: 300px;
 }
 
 #card-info-inputs {

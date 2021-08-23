@@ -20,6 +20,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ConfirmModule } from '../confirm/confirm.module';
 import { CardPreviewModule } from '../card-preview/card-preview.module';
 import { GoBackModule } from '../go-back/go-back.module';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { GoBackModule } from '../go-back/go-back.module';
     MatInputModule,
     MatProgressSpinnerModule,
     MatSelectModule,
+    MatSlideToggleModule,
 
     AddCardRoutingModule
   ],
