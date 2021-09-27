@@ -54,33 +54,15 @@ export class CollectionService {
           this.lastChecked = checks;
         }
 
-        // const exp = this.expansions.value;
-        // const restructure = {};
-        // Object.keys(exp).forEach(key => {
-        //     if (!restructure[`Gen-${exp[key].generation}`]) {
-        //       restructure[`Gen-${exp[key].generation}`] = {};
-        //       restructure[`Gen-${exp[key].generation}`]['lastUpdated'] = +Date.now();
-        //       restructure[`Gen-${exp[key].generation}`]['data'] = {};
-        //     }
-        //     restructure[`Gen-${exp[key].generation}`]['data'][exp[key].name] = exp[key];
-        //   });
-        //   Object.keys(restructure).forEach(key => {
-        //     console.log(key)
-        //     console.log(restructure[key])
-        //     return this.af.collection<any>('expansions').doc(key).set(restructure[key])
-        //     .then(() => true)
-        //     .catch(err => {
-        //       console.error(err);
-        //       return false;
-        //   });
-        // });
-
-        this.initialized = true;
         this.updateCards().pipe(skip(1)).subscribe();
         this.getExpansions().pipe(skip(1)).subscribe();
         this.getCheckLists().pipe(skip(1)).subscribe();
       }))
-      .subscribe(() => resolve(true));
+      .subscribe(() => {
+        // doesn't call it initialized until all subs are working
+        this.initialized = true;
+        resolve(true)
+      });
     });
   }
 
@@ -105,6 +87,7 @@ export class CollectionService {
 
   private updateCards(): Observable<any> {
     // only read cards that changed, skip first check on cache, as the cache is the initial data
+    console.log('Last Updated: ', this.lastChecked.cards)
     return this.af.collection<any>('pokemon-cards',
       ref => ref.where('lastUpdated', '>', this.lastChecked.cards))
       .valueChanges().pipe(
@@ -401,3 +384,26 @@ export class CollectionService {
   }
 
 }
+
+
+
+        // const exp = this.expansions.value;
+        // const restructure = {};
+        // Object.keys(exp).forEach(key => {
+        //     if (!restructure[`Gen-${exp[key].generation}`]) {
+        //       restructure[`Gen-${exp[key].generation}`] = {};
+        //       restructure[`Gen-${exp[key].generation}`]['lastUpdated'] = +Date.now();
+        //       restructure[`Gen-${exp[key].generation}`]['data'] = {};
+        //     }
+        //     restructure[`Gen-${exp[key].generation}`]['data'][exp[key].name] = exp[key];
+        //   });
+        //   Object.keys(restructure).forEach(key => {
+        //     console.log(key)
+        //     console.log(restructure[key])
+        //     return this.af.collection<any>('expansions').doc(key).set(restructure[key])
+        //     .then(() => true)
+        //     .catch(err => {
+        //       console.error(err);
+        //       return false;
+        //   });
+        // });

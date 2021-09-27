@@ -6,7 +6,17 @@ from  get_expansion_functions import make_csv
 misc = [
     'EX Trainer Kit',
     'POP Series 1',
-    'POP Series 4'
+    'POP Series 2',
+    'POP Series 3',
+    'POP Series 4',
+    'POP Series 5',
+    'POP Series 6',
+    'POP Series 7',
+    'POP Series 8',
+    'POP Series 9',
+    'Nintendo Black Star Promos',
+    'DP Black Star Promos',
+    'XY Black Star Promos'
 ]
 for string in misc:
 

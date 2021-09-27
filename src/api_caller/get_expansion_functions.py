@@ -11,20 +11,24 @@ params = {
     'prop': 'wikitext'
 }
 
-def html_to_stringlist(response):
+def html_to_stringlist(response, subset):
     # remove initial html by looking for col-2 when followed by col-2
     # removing the lookahead returns the last japanese set (if there is one)
-    res = re.sub(r'[\s\S]+\{{[c|C]ol-2}}\n(?=[\s\S]+{{[c|C]ol-2}})', '', response)
     
+    res = re.sub(r'[\s\S]+\{{[c|C]ol-2}}\n(?=[\s\S]+{{[c|C]ol-2}})', '', response)
+
     #catch cases where there is no japanese equiv
     res = re.sub(r'(==)(Set|Card|Deck)( lists?==\n)', '', res)
 
     #catch Diamond and Pearl's idk-what's-going-on formatting error
     res = re.sub(r'[\s\S]+\n\|\n', '', res)
     
-    # remove footer html
-    res = re.sub(r'\n+{{Setlist/n?m?footer[\s\S]+', '', res) 
- 
+    if not subset:
+        # remove footer html
+        res = re.sub(r'\n+{{Setlist/n?m?footer[\s\S]+', '', res)
+    else:
+        res = re.findall(r'({{Setlist/nmheader[\s\S]+?(?=\n{{Setlist/?n?mfooter))', res)[1]
+
     # split rows into entries
     res = res.split('\n')
 
@@ -250,7 +254,7 @@ def seek_set_list(setName):
             return sec['index']
     raise ValueError(f"Set {setName} does not yet have a set list on Bulbapedia.  Try again in a few weeks.")
 
-def make_csv(setName, path):
+def make_csv(setName, path, subset = ''):
     params['page'] = f"{setName} (TCG)"
     
     # controlling for inconsitencies in bulbapedia
@@ -263,8 +267,17 @@ def make_csv(setName, path):
     try:
         res = requests.get(base_url, params=params).json()['parse']['wikitext']['*']
     except:
-        print(f"Cound not find set {setName}.")
-        return
+        if re.search('Promo', setName):
+            params['section'] = 1
+            try:
+                res = requests.get(base_url, params=params).json()['parse']['wikitext']['*']
+            except:
+                print(f"Could not find set {setName}.")
+                return
+        else:
+            print(f"Could not find set {setName}.")
+            return
+
 
     # make sure it is the set list
     try:
@@ -275,11 +288,10 @@ def make_csv(setName, path):
         params['section'] = seek_set_list(setName)
         res = requests.get(base_url, params=params).json()['parse']['wikitext']['*']
 
-    card_entries = html_to_stringlist(res)
+    card_entries = html_to_stringlist(res, subset != '')
 
     # more bulapedia nconsistencies
-    if setName == 'Wizards Black Star Promos':
-        setName = 'Wizards Promo'
+    setName = setName.replace('Black Star Promos', 'Promo')
 
     card_sets = []
     try:
@@ -298,8 +310,9 @@ def make_csv(setName, path):
         return
 
     i = 0
+    output_name = setName if subset == '' else f"{setName}-{subset}"
     for cards in card_sets:
-        write_sets(cards, setName, path, 'w' if i == 0 else 'a')
+        write_sets(cards, output_name, path, 'w' if i == 0 else 'a')
         i += 1
     
     print(f"Finished writing csv for set {setName}.")
