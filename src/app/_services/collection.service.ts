@@ -125,7 +125,9 @@ export class CollectionService {
               pop[type] += numCards;
             }
           });
-          this.allCards.next(master);
+          if (cards[0]) {
+            this.allCards.next(master);
+          }
           if (this.initialized) {
             this.updateLastChecked(true);
           }
@@ -209,7 +211,8 @@ export class CollectionService {
     const cardChunks: CardChunk[] = [];
     // loop through all cards
     Object.keys(cards).forEach(key => {
-      const keyParts = key.split('-');
+      const splitInd = key.lastIndexOf('-');
+      const keyParts = [key.substr(0, splitInd), key.substr(splitInd + 1)];
 
       // create card chunk based on print/expansion
       cardChunks.push(new CardChunk(
@@ -245,6 +248,10 @@ export class CollectionService {
     } else {
       return 1;
     }
+  }
+
+  checkListExists(listName: string): boolean {
+      return this.getRawCheckList(listName) ? true : false;
   }
 
   getCheckList(listName: string): CardChunk[] {

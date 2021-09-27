@@ -5,14 +5,13 @@ import {
   ActivatedRouteSnapshot
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { CardChunk } from 'src/app/_objects/card-chunk';
 import { CollectionService } from 'src/app/_services/collection.service';
 import { MessengerService } from 'src/app/_services/messenger.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ListResolver implements Resolve<CardChunk[]> {
+export class ListResolver implements Resolve<string> {
 
   constructor(
     private collectionserv: CollectionService,
@@ -20,21 +19,21 @@ export class ListResolver implements Resolve<CardChunk[]> {
     private messenger: MessengerService
   ) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<CardChunk[]> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<string> {
     const listname = route.paramMap.get('ChecklistID');
-    let list: CardChunk[];
+    let list: boolean;
 
     if (listname === 'Masterlist') {
-      list = this.collectionserv.getMaster();
+      return of ('Masterlist');
     } else {
-      list = this.collectionserv.getCheckList(listname);
+      list = this.collectionserv.checkListExists(listname);
+      if (list) {
+        return of (listname);
+      } else {
+        this.router.navigate(['Masterlist']);
+        this.messenger.send(`List ${listname} was not found.`);
+        return of (null);  
+      }
     }
-
-    if (list) {
-      return of (list);
-    }
-    this.router.navigate(['Masterlist']);
-    this.messenger.send(`List ${listname} was not found.`);
-    return of (null);
   }
 }

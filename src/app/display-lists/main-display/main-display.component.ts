@@ -21,7 +21,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
   cardSubscription: Subscription;
 
   checklists: string[];
-  activeList: CardChunk[];
+  activeList: CardChunk[] = [];
 
   whichList: FormControl;
   listSubscription: Subscription;
@@ -43,11 +43,12 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // control active list and list info
+    this.whichList = this.fb.control('')
     this.route.data.subscribe(data => {
-      this.activeList = data.checklist;
+      this.whichList.patchValue(data.checklist);
+      this.getList();
     });
     this.allowEdit = this.collectionserv.allowEdit;
-    this.whichList = this.fb.control(this.route.snapshot.paramMap.get('ChecklistID'));
     this.getchecklistNames();
     this.owned = this.getOwned();
 
@@ -84,7 +85,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
 
   getList(): void {
     if (this.whichList.value === 'Masterlist') {
-      this.activeList = Object.assign([], this.collectionserv.getMaster());
+      this.activeList = this.collectionserv.getMaster();
     } else {
       this.activeList = Object.assign([], this.collectionserv.getCheckList(this.whichList.value));
       this.owned = this.getOwned();
