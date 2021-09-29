@@ -55,7 +55,6 @@ export class CardTableComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(): void {
-    console.log('changes')
     this.loading = true;
     this.cards.data = [];
     setTimeout(() => {
