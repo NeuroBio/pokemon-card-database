@@ -87,7 +87,7 @@ export class MainDisplayComponent implements OnInit, OnDestroy {
     if (this.whichList.value === 'Masterlist') {
       this.activeList = this.collectionserv.getMaster();
     } else {
-      this.activeList = Object.assign([], this.collectionserv.getCheckList(this.whichList.value));
+      this.activeList = this.collectionserv.getCheckList(this.whichList.value);
       this.owned = this.getOwned();
     }
   }

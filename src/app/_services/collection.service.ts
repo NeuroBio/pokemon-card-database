@@ -20,6 +20,7 @@ export class CollectionService {
   populationCount = new BehaviorSubject<Population>(undefined);
 
   activeList = 'Masterlist';
+  processedChecklists: any = {};
   allowEdit = true;
 
   private lastChecked = {
@@ -29,15 +30,15 @@ export class CollectionService {
   };
   private bestForm = { '1st': 0, shadowless: 1, 'UK 2000': 2, unlimited: 3, reverse: 4, standard: 5 };
   private bestCondition = { M: 0, NM: 1, LP: 2, MP: 3, HP: 4 };
-  private changed: boolean;
+  private changed: any = {};
   private initialized = false;
 
   constructor(
     private af: AngularFirestore,
     private auth: AuthService) {
       // ensure that master is updated as needed when cards change
-      this.allCards.subscribe(() =>
-        this.changed = true);
+      this.allCards.subscribe(() => 
+        Object.keys(this.changed).forEach(key => this.changed[key] = true));
   }
 
   load(): Promise<boolean> {
@@ -203,7 +204,7 @@ export class CollectionService {
   }
 
   getMaster(): CardChunk[] {
-    if (!this.changed) {
+    if (this.changed['Masterlist'] == false) {
       return this.masterList.value;
     }
 
@@ -226,7 +227,7 @@ export class CollectionService {
     });
 
     this.masterList.next(cardChunks);
-    this.changed = false;
+    this.changed['Masterlist'] = false;
     return cardChunks;
   }
 
@@ -258,6 +259,8 @@ export class CollectionService {
     const list: any = this.getRawCheckList(listName);
     if (!list) { // list does not exist
       return;
+    } else if (this.processedChecklists[listName] && this.changed[listName] == false) {
+      return this.processedChecklists[listName];
     }
     const cardChunks: CardChunk[] = [];
     const cards = this.allCards.value;
@@ -291,6 +294,8 @@ export class CollectionService {
         .then(() => true).catch(() => false);
     }
 
+    this.processedChecklists[listName] = cardChunks;
+    this.changed[listName] = false;
     return cardChunks;
   }
 

@@ -1,5 +1,5 @@
 <mat-card id="table-holder">
-    <form [formGroup]="filterForm" id="filter-row">
+    <form [formGroup]="filterserv.filterForm" id="filter-row">
 
         <!-- header -->
         <div class="center-align" id="filter-header">
@@ -60,14 +60,14 @@
         </mat-form-field>
 
         <button mat-raised-button color="prime"
-        (click)="clearFilter()">
+        (click)="filterserv.clearFilter()">
             <mat-icon>clear</mat-icon>
             Clear
         </button>
     </form>
     
     <mat-divider></mat-divider><br>
-    
+
     <table mat-table [dataSource]="cards" multiTemplateDataRows
         matSort (matSortChange)="sortData($event)">
     
@@ -166,5 +166,9 @@
     
         <tr mat-row *matRowDef="let card; columns: ['expandedDetail']" class="drop-down"></tr>
     </table>
+
+    <div class="table-spinner" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
     
 </mat-card>
