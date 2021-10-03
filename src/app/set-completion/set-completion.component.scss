@@ -12,13 +12,21 @@
     grid-auto-flow: column;
     max-width: 80vw;
     height: 80vh;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 0fr));
+    grid-template-columns: repeat(auto-fill, minmax(120px, 0fr));
     overflow-x: auto;
 }
 
 .card-cell {
     margin: 3px;
     padding: 3px;
+    white-space: nowrap;
+    display: flex;
+    justify-content: space-between;
+
+    mat-icon {
+        margin-top: -1px;
+        font-size: 15pt;
+    }
 }
 
 ::ng-deep .tooltip {
@@ -27,4 +35,8 @@
     font-size: 12pt;
     white-space: pre-line;
     margin-left: 0px !important;
-  }
+}
+
+.max-width {
+    width: 650px;
+}

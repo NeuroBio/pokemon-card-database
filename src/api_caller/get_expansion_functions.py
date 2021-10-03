@@ -11,20 +11,24 @@ params = {
     'prop': 'wikitext'
 }
 
-def html_to_stringlist(response):
-    # remove initial html but looking for col-2 when followed by col-2
+def html_to_stringlist(response, subset):
+    # remove initial html by looking for col-2 when followed by col-2
     # removing the lookahead returns the last japanese set (if there is one)
-    res = re.sub(r'[\s\S]+\{{[c|C]ol-2}}\n(?=[\s\S]+{{[c|C]ol-2}})', '', response)
     
+    res = re.sub(r'[\s\S]+\{{[c|C]ol-2}}\n(?=[\s\S]+{{[c|C]ol-2}})', '', response)
+
     #catch cases where there is no japanese equiv
-    res = re.sub(r'(==)(Set|Card)( list==\n)', '', res)
+    res = re.sub(r'(==)(Set|Card|Deck)( lists?==\n)', '', res)
 
     #catch Diamond and Pearl's idk-what's-going-on formatting error
     res = re.sub(r'[\s\S]+\n\|\n', '', res)
     
-    # remove footer html
-    res = re.sub(r'\n+{{Setlist/n?m?footer[\s\S]+', '', res) 
- 
+    if not subset:
+        # remove footer html
+        res = re.sub(r'\n+{{Setlist/n?m?footer[\s\S]+', '', res)
+    else:
+        res = re.findall(r'({{Setlist/nmheader[\s\S]+?(?=\n{{Setlist/?n?mfooter))', res)[1]
+
     # split rows into entries
     res = res.split('\n')
 
@@ -34,11 +38,11 @@ def html_to_stringlist(response):
 
 def row_to_data(row, setName):
     print_special = ''
-    
     # row is return here because any "special" info is parsed from
     # the row so it doesn't interfere with getting the type
     card_title, row = get_title(row, setName)
     card_type = get_type(row)
+
 
     # ***Watch the order below; some checks require multiple, pre-cleaned card properties***
 
@@ -128,8 +132,12 @@ def get_title(row, setName):
                 # first encountered in Gym Heroes
                 card_title = re.search(rf'(?:{setName}\s?\d+\)\|)([^\|\]]+)', row).group(1)
             except:
-                # first encountered in Neo Genesis
-                card_title = re.search(r'(?<=TCG\|)[^\|\}]+', row).group(0)
+                try:
+                    # first encountered in Neo Genesis
+                    card_title = re.search(r'(?<=TCG\|)[^\|\}]+', row).group(0)
+                except:
+                    # deck lists
+                    card_title = re.search(r'(TCG ID\|)[^\|]+(\|)([^\|]+)', row).group(3)
 
     # get special info about card and add to title
     special = re.search(r"<small>'''(.*)'''</small>", row)
@@ -166,6 +174,9 @@ def get_rarity(row, card_title):
     # also allow for accidental spaces as in Gym Challenge
     try:
         card_rarity = re.search(r'(?<=\|)[^|}]+(?=\|{0,1}}+\s*$)', row).group(0)
+        # covers decks
+        if card_rarity.isnumeric():
+            card_rarity = 'None'
     except:
         # the Kalos starter set just has blank space...
         card_rarity = 'None'
@@ -238,11 +249,12 @@ def seek_set_list(setName):
         }
     sections = requests.get(base_url, params=seek_params).json()['parse']['sections']
     for sec in sections:
-        if sec['line'] in ['Set lists', 'Set List', 'Card List', 'Card Lists']:
+        if sec['line'].lower() in ['set lists', 'set list',
+        'card list', 'card lists', 'deck list', 'deck lists']:
             return sec['index']
     raise ValueError(f"Set {setName} does not yet have a set list on Bulbapedia.  Try again in a few weeks.")
 
-def make_csv(setName, path):
+def make_csv(setName, path, subset = ''):
     params['page'] = f"{setName} (TCG)"
     
     # controlling for inconsitencies in bulbapedia
@@ -255,30 +267,57 @@ def make_csv(setName, path):
     try:
         res = requests.get(base_url, params=params).json()['parse']['wikitext']['*']
     except:
-        print(f"Cound not find set {setName}.")
-        return
+        if re.search('Promo', setName):
+            params['section'] = 1
+            try:
+                res = requests.get(base_url, params=params).json()['parse']['wikitext']['*']
+            except:
+                print(f"Could not find set {setName}.")
+                return
+        else:
+            print(f"Could not find set {setName}.")
+            return
+
 
     # make sure it is the set list
     try:
-        re.search(r'==(Set)|(Card) list', res).group()
+        re.search(r'==(Set)|(Card)|(Deck) list', res).group()
     # if not, is means that there are the wrong number of sections on the page :/
     # find the correct section number instead, and then try again
     except:
         params['section'] = seek_set_list(setName)
         res = requests.get(base_url, params=params).json()['parse']['wikitext']['*']
 
-    card_entries = html_to_stringlist(res)
+    card_entries = html_to_stringlist(res, subset != '')
 
     # more bulapedia nconsistencies
-    if setName == 'Wizards Black Star Promos':
-        setName = 'Wizards Promo'
+    setName = setName.replace('Black Star Promos', 'Promo')
 
+    card_sets = []
     try:
-        cards = [row_to_data(card, setName) for card in card_entries]
+        # halfdeck kits
+        if '{{Halfdecklist/nmfooter}}' in card_entries:
+            split = card_entries.index('{{Halfdecklist/nmfooter}}')
+            deck1 = card_entries[0:split]
+            deck2 = card_entries[split + 3:len(card_entries) - 2]
+
+            card_sets.append([row_to_data(card, setName) for card in deck1])
+            card_sets.append([row_to_data(card, setName) for card in deck2])
+        else:
+            card_sets.append([row_to_data(card, setName) for card in card_entries])
     except:
         print(f"There is some formatting error in the data not yet covered by the cleaning script. See parsed response text below...\n {card_entries}")
         return
 
+    i = 0
+    output_name = setName if subset == '' else f"{setName}-{subset}"
+    for cards in card_sets:
+        write_sets(cards, output_name, path, 'w' if i == 0 else 'a')
+        i += 1
+    
+    print(f"Finished writing csv for set {setName}.")
+
+def write_sets(cards, setName, path, mode = 'w'):
     # handle subsets
     if any([card['subset'] for card in cards]):
         print(f"{setName} contains an internal subset.  The subset will be called {setName} Holos")
@@ -292,9 +331,8 @@ def make_csv(setName, path):
     cards = dedup_prints(cards)
     
     # write the main set
-    with open(f"{path}/{setName}.csv", 'w', encoding="utf-8", newline='') as csvfile:
+    with open(f"{path}/{setName}.csv", mode, encoding="utf-8", newline='') as csvfile:
         writer = csv.writer(csvfile, delimiter=',')
         for card in cards:
             if card['subset'] == False:
                 writer.writerow([card['card_title'], card['card_type'], card['card_rarity'], card['print_special']])
-    print(f"Finished writing csv for set {setName}.")

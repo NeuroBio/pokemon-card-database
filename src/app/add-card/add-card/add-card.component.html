@@ -14,7 +14,7 @@
                 <br>
             
                 <div class="add-margin">
-                    <mat-slide-toggle [formControl]="multi">
+                    <mat-slide-toggle [formControl]="multi" *ngIf="!editData">
                         Multi Upload
                     </mat-slide-toggle>
 

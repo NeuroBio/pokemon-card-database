@@ -65,7 +65,7 @@ export class AddCardComponent implements OnInit, OnDestroy {
     this.flaws = this.createFlawArray();
     if (this.editData) {
       this.cardForm = this.createEditForm(this.editData);
-      this.setForms(this.editData.expansionName);
+      this.setForms(this.editData.expansionName, false);
     } else {
       this.cardForm = this.createAddForm();
     }
@@ -108,8 +108,10 @@ export class AddCardComponent implements OnInit, OnDestroy {
   }
 
   createEditForm(data: CardInstance): FormGroup {
-    data.flaws.forEach(flaw =>
-      this.addFlaw(flaw.type, flaw.where, flaw.landmark, flaw.severity));
+    if (data.flaws) {
+      data.flaws.forEach(flaw =>
+        this.addFlaw(flaw.type, flaw.where, flaw.landmark, flaw.severity));  
+    }
 
     return this.fb.group({
       expansionName: [ data.expansionName,
@@ -160,11 +162,13 @@ export class AddCardComponent implements OnInit, OnDestroy {
     delete this.images[where];
   }
 
-  setForms(exp: string): void {
+  setForms(exp: string, patch: boolean = true): void {
     switch (exp) {
       case 'Base Set':
         this.expectedForms = ['1st', 'shadowless', 'unlimited', 'UK 2000'];
-        this.cardForm.patchValue({ form: 'unlimited' });
+        if (patch) {
+          this.cardForm.patchValue({ form: 'unlimited' });
+        }
         break;
       case 'Fossil':
       case 'Jungle':
@@ -177,11 +181,15 @@ export class AddCardComponent implements OnInit, OnDestroy {
       case 'Neo Revelation':
       case 'Neo Destiny':
         this.expectedForms = ['1st', 'unlimited'];
-        this.cardForm.patchValue({ form: 'unlimited' });
+        if (patch) {
+          this.cardForm.patchValue({ form: 'unlimited' });
+        }
         break;
       default:
         this.expectedForms = ['standard', 'reverse-holo'];
-        this.cardForm.patchValue({ form: 'standard' });
+        if (patch) {
+          this.cardForm.patchValue({ form: 'standard' });
+        }
         break;
     }
   }
@@ -289,7 +297,8 @@ export class AddCardComponent implements OnInit, OnDestroy {
       front: '',
       back: '',
       flaws: this.flaws,
-      notes: ''
+      notes: '',
+      numCards: 1
     });
     this.inputReset(this.frontInput, 'front');
     this.inputReset(this.backInput, 'back');

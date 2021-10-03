@@ -20,7 +20,8 @@ export class CollectionService {
   populationCount = new BehaviorSubject<Population>(undefined);
 
   activeList = 'Masterlist';
-  allowEdit = false;
+  processedChecklists: any = {};
+  allowEdit = true;
 
   private lastChecked = {
     cards: 0,
@@ -29,15 +30,15 @@ export class CollectionService {
   };
   private bestForm = { '1st': 0, shadowless: 1, 'UK 2000': 2, unlimited: 3, reverse: 4, standard: 5 };
   private bestCondition = { M: 0, NM: 1, LP: 2, MP: 3, HP: 4 };
-  private changed: boolean;
+  private changed: any = {};
   private initialized = false;
 
   constructor(
     private af: AngularFirestore,
     private auth: AuthService) {
       // ensure that master is updated as needed when cards change
-      this.allCards.subscribe(() =>
-        this.changed = true);
+      this.allCards.subscribe(() => 
+        Object.keys(this.changed).forEach(key => this.changed[key] = true));
   }
 
   load(): Promise<boolean> {
@@ -54,33 +55,15 @@ export class CollectionService {
           this.lastChecked = checks;
         }
 
-        // const exp = this.expansions.value;
-        // const restructure = {};
-        // Object.keys(exp).forEach(key => {
-        //     if (!restructure[`Gen-${exp[key].generation}`]) {
-        //       restructure[`Gen-${exp[key].generation}`] = {};
-        //       restructure[`Gen-${exp[key].generation}`]['lastUpdated'] = +Date.now();
-        //       restructure[`Gen-${exp[key].generation}`]['data'] = {};
-        //     }
-        //     restructure[`Gen-${exp[key].generation}`]['data'][exp[key].name] = exp[key];
-        //   });
-        //   Object.keys(restructure).forEach(key => {
-        //     console.log(key)
-        //     console.log(restructure[key])
-        //     return this.af.collection<any>('expansions').doc(key).set(restructure[key])
-        //     .then(() => true)
-        //     .catch(err => {
-        //       console.error(err);
-        //       return false;
-        //   });
-        // });
-
-        this.initialized = true;
         this.updateCards().pipe(skip(1)).subscribe();
         this.getExpansions().pipe(skip(1)).subscribe();
         this.getCheckLists().pipe(skip(1)).subscribe();
       }))
-      .subscribe(() => resolve(true));
+      .subscribe(() => {
+        // doesn't call it initialized until all subs are working
+        this.initialized = true;
+        resolve(true)
+      });
     });
   }
 
@@ -105,6 +88,7 @@ export class CollectionService {
 
   private updateCards(): Observable<any> {
     // only read cards that changed, skip first check on cache, as the cache is the initial data
+    console.log('Last Updated: ', this.lastChecked.cards)
     return this.af.collection<any>('pokemon-cards',
       ref => ref.where('lastUpdated', '>', this.lastChecked.cards))
       .valueChanges().pipe(
@@ -119,10 +103,11 @@ export class CollectionService {
             const type = this.expansions.value[cardBox.expansionName].cards[cardBox.printNumber - 1].cardType;
 
             // update cards
+            if (master[`${cardBox.expansionName}-${cardBox.printNumber}`]) {
+              oldLength = Object.keys(master[`${cardBox.expansionName}-${cardBox.printNumber}`]).length;
+            }
+
             if (cardBox.deleted) {
-              if (master[`${cardBox.expansionName}-${cardBox.printNumber}`]) {
-                oldLength = master[`${cardBox.expansionName}-${cardBox.printNumber}`].length;
-              }
               delete master[`${cardBox.expansionName}-${cardBox.printNumber}`];
             } else {
               // update cards in storage bin
@@ -133,7 +118,7 @@ export class CollectionService {
 
             // update population values
             const numCards = newLength - oldLength;
-            if (type === 'Epecial Energy') {
+            if (type === 'Special Energy') {
               pop.SpecialEnergy += numCards;
             } else if (type === 'Special Pokémon') {
               pop.Pokémon += numCards;
@@ -141,10 +126,13 @@ export class CollectionService {
               pop[type] += numCards;
             }
           });
-          this.allCards.next(master);
+          if (cards[0]) {
+            this.allCards.next(master);
+          }
           if (this.initialized) {
             this.updateLastChecked(true);
           }
+          
           this.populationCount.next(pop);
         }
       ));
@@ -216,7 +204,7 @@ export class CollectionService {
   }
 
   getMaster(): CardChunk[] {
-    if (!this.changed) {
+    if (this.changed['Masterlist'] == false) {
       return this.masterList.value;
     }
 
@@ -224,7 +212,8 @@ export class CollectionService {
     const cardChunks: CardChunk[] = [];
     // loop through all cards
     Object.keys(cards).forEach(key => {
-      const keyParts = key.split('-');
+      const splitInd = key.lastIndexOf('-');
+      const keyParts = [key.substr(0, splitInd), key.substr(splitInd + 1)];
 
       // create card chunk based on print/expansion
       cardChunks.push(new CardChunk(
@@ -238,7 +227,7 @@ export class CollectionService {
     });
 
     this.masterList.next(cardChunks);
-    this.changed = false;
+    this.changed['Masterlist'] = false;
     return cardChunks;
   }
 
@@ -255,17 +244,23 @@ export class CollectionService {
 
   getChecklistDisplay(listName: string): number {
     const list = this.getRawCheckList(listName);
-    if (list && list.startOn) {
+    if (list && list.startOn !== undefined) {
       return list.startOn;
     } else {
       return 1;
     }
   }
 
+  checkListExists(listName: string): boolean {
+      return this.getRawCheckList(listName) ? true : false;
+  }
+
   getCheckList(listName: string): CardChunk[] {
     const list: any = this.getRawCheckList(listName);
     if (!list) { // list does not exist
       return;
+    } else if (this.processedChecklists[listName] && this.changed[listName] == false) {
+      return this.processedChecklists[listName];
     }
     const cardChunks: CardChunk[] = [];
     const cards = this.allCards.value;
@@ -299,6 +294,8 @@ export class CollectionService {
         .then(() => true).catch(() => false);
     }
 
+    this.processedChecklists[listName] = cardChunks;
+    this.changed[listName] = false;
     return cardChunks;
   }
 
@@ -399,3 +396,26 @@ export class CollectionService {
   }
 
 }
+
+
+
+        // const exp = this.expansions.value;
+        // const restructure = {};
+        // Object.keys(exp).forEach(key => {
+        //     if (!restructure[`Gen-${exp[key].generation}`]) {
+        //       restructure[`Gen-${exp[key].generation}`] = {};
+        //       restructure[`Gen-${exp[key].generation}`]['lastUpdated'] = +Date.now();
+        //       restructure[`Gen-${exp[key].generation}`]['data'] = {};
+        //     }
+        //     restructure[`Gen-${exp[key].generation}`]['data'][exp[key].name] = exp[key];
+        //   });
+        //   Object.keys(restructure).forEach(key => {
+        //     console.log(key)
+        //     console.log(restructure[key])
+        //     return this.af.collection<any>('expansions').doc(key).set(restructure[key])
+        //     .then(() => true)
+        //     .catch(err => {
+        //       console.error(err);
+        //       return false;
+        //   });
+        // });

@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CardPreviewModule } from 'src/app/card-preview/card-preview.module';
+import { FilterService } from 'src/app/_services/filter.service';
 
 import { CardTableComponent } from './card-table.component';
 
@@ -39,7 +40,8 @@ describe('CardTableComponent', () => {
       ],
       providers: [
         FormBuilder,
-        MatDialog
+        MatDialog,
+        FilterService
       ]
     })
     .compileComponents();
