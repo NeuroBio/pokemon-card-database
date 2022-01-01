@@ -240,7 +240,6 @@ export class AddCardComponent implements OnInit, OnDestroy {
       newCards.push(new CardInstance(cardInfo.printNumber,
         cardInfo.expansionName, cardInfo.form, cardInfo.condition));
     }
-    console.log(newCards);
     return this.cardserv.massUploadCard(newCards)
       .pipe(take(1)).subscribe(res => {
         this.isLoading = false;

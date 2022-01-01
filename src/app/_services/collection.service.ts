@@ -61,6 +61,7 @@ export class CollectionService {
       }))
       .subscribe(() => {
         // doesn't call it initialized until all subs are working
+        // console.log('initialized')
         this.initialized = true;
         resolve(true)
       });
@@ -88,7 +89,8 @@ export class CollectionService {
 
   private updateCards(): Observable<any> {
     // only read cards that changed, skip first check on cache, as the cache is the initial data
-    console.log('Last Updated: ', this.lastChecked.cards)
+    // console.log('Last Updated: ', this.lastChecked.cards)
+    // console.log(this.lastChecked)
     return this.af.collection<any>('pokemon-cards',
       ref => ref.where('lastUpdated', '>', this.lastChecked.cards))
       .valueChanges().pipe(
@@ -387,9 +389,9 @@ export class CollectionService {
 
   private notExpired(checks: any): boolean {
     const now = +Date.now();
-    if ((checks.cards - now) / 1000 / 60 / 60 > 12
-      || (checks.expansions - now) / 1000 / 60 / 60 > 12
-      || (checks.checkLists - now) / 1000 / 60 / 60 > 12) {
+    if ((now - checks.cards) / 1000 / 60 / 60 > 12
+      || (now - checks.expansions) / 1000 / 60 / 60 > 12
+      || (now - checks.checkLists) / 1000 / 60 / 60 > 12) {
         return false;
     }
     return true;
