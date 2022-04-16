@@ -38,7 +38,7 @@ def html_to_stringlist(response, subset):
 
 def row_to_data(row, setName):
     print_special = ''
-    # row is return here because any "special" info is parsed from
+    # row is returned here because any "special" info is parsed from
     # the row so it doesn't interfere with getting the type
     card_title, row = get_title(row, setName)
     card_type = get_type(row)
@@ -92,18 +92,18 @@ def row_to_data(row, setName):
             else:
                 # get 4 shiny rares
                 check1 = re.search(r'((SH|SL)\d+)', row)
-                # gen 4 alpth lithographs
-                check2 = re.search(r'\|\s*([A-Z]{3,5})}}', row)
                 # get promos from any gen (hopefully)
-                check3 = re.search(r'p|Promo', row)
+                check2 = re.search(r'(p|P)romo', row)
+                # gen 4 alpth lithographs
+                check3 = re.search(r'\|\s*([A-Z]{3,5})}}', row)
                 if check1 is not None:
                     card_rarity = 'Secret Shiny'
                     print_special = check1.group()
                 elif check2 is not None:
+                    card_rarity = 'Promo'
+                elif check3 is not None:
                     card_rarity = 'Alph Lithograph'
                     print_special = check2.group(1)
-                elif check3 is not None:
-                    card_rarity = 'Promo'
                 subset = False
 
         # internal subset (Aquapolis and Skyridge holos)
@@ -136,16 +136,18 @@ def get_title(row, setName):
                     # first encountered in Neo Genesis
                     card_title = re.search(r'(?<=TCG\|)[^\|\}]+', row).group(0)
                 except:
-                    # deck lists
-                    card_title = re.search(r'(TCG ID\|)[^\|]+(\|)([^\|]+)', row).group(3)
-
+                    try:
+                        # deck lists
+                        card_title = re.search(r'(TCG ID\|)[^\|]+(\|)([^\|]+)', row).group(3)
+                    except:
+                        card_title = re.search(r'[^\|]+(\|\[\[)([^\|\]]+)', row).group(2)
     # get special info about card and add to title
-    special = re.search(r"<small>'''(.*)'''</small>", row)
+    special = re.search(r"<small>'''([^|]*)'{0,3}(</small>)?", row)
     if special is not None:
         # don't add if it's a team galactic tool or has multiple classifications (i.e. XY Vivillon)
         if not bool(re.search('<', special.group())) and not bool(re.search('Galactic', special.group())):
             card_title = f"{card_title} ({special.group(1)})"
-        row = re.sub(r"<small>'''(.*)'''</small>", '', row)
+        row = re.sub(r"<small>'''([^|]*)'{0,3}(</small>)?", '', row)
     return card_title, row
 
 def get_type(row):
@@ -153,7 +155,7 @@ def get_type(row):
         # get the element following [number]}}|
         card_type = re.search(r'(?<=\d}})\s*\|([^|]+)(?:|)', row).group(1)   
     except:
-        # this is why consistent formtting matters
+        # this is why consistent formatting matters
         try:
             # first encountered in Gym Heroes
             card_type = re.search(r'(?<=\]\]\|)[^|]+(?:|)', row).group(0) 
@@ -174,9 +176,12 @@ def get_rarity(row, card_title):
     # also allow for accidental spaces as in Gym Challenge
     try:
         card_rarity = re.search(r'(?<=\|)[^|}]+(?=\|{0,1}}+\s*$)', row).group(0)
+        promo = re.search(r'((c|C)ollection)|((b|B)ox)', card_rarity)
         # covers decks
         if card_rarity.isnumeric():
             card_rarity = 'None'
+        elif promo is not None:
+            card_rarity = 'Promo'
     except:
         # the Kalos starter set just has blank space...
         card_rarity = 'None'
@@ -306,7 +311,7 @@ def make_csv(setName, path, subset = ''):
         else:
             card_sets.append([row_to_data(card, setName) for card in card_entries])
     except:
-        print(f"There is some formatting error in the data not yet covered by the cleaning script. See parsed response text below...\n {card_entries}")
+        # print(f"There is some formatting error in the data not yet covered by the cleaning script. See parsed response text below...\n {card_entries}")
         return
 
     i = 0

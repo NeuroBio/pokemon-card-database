@@ -16,7 +16,8 @@ misc = [
     'POP Series 9',
     'Nintendo Black Star Promos',
     'DP Black Star Promos',
-    'XY Black Star Promos'
+    'XY Black Star Promos',
+    'SM Black Star Promos'
 ]
 for string in misc:
 
